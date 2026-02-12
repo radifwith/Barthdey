@@ -766,12 +766,12 @@
                     <input type="number" id="year" placeholder="Year" min="1900" max="2100">
                 </div>
                 
-                <label for="photo">Photo (Optional)</label>
+                <label for="photo">Photo (Optional) - Keep under 200KB for best results</label>
                 <div class="photo-upload">
                     <input type="file" id="photo" accept="image/*" onchange="handlePhotoUpload(event)">
                     <div class="photo-preview" id="photoPreview">
                         <div class="upload-icon">📷</div>
-                        <div class="upload-text">Click to upload photo</div>
+                        <div class="upload-text">Click to upload photo<br><small style="opacity: 0.7;">Tip: Smaller photos work better!</small></div>
                         <img id="previewImage" style="display: none;">
                     </div>
                 </div>
@@ -844,22 +844,22 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            // Check file size (warn if > 1MB)
-            if (file.size > 1024 * 1024) {
-                alert('Photo is large! Compressing it for sharing... 📸');
+            // Check file size (warn if > 200KB for URL sharing)
+            if (file.size > 200 * 1024) {
+                alert('⚠️ Photo is larger than 200KB!\n\n✅ It will be compressed, but for best results:\n- Use smaller photos (under 200KB)\n- OR use Supabase storage for unlimited size\n\nCompressing now... 📸');
             }
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    // Compress image
+                    // Compress image more aggressively
                     const canvas = document.createElement('canvas');
                     let width = img.width;
                     let height = img.height;
                     
-                    // Resize if too large (max 800px width/height)
-                    const maxSize = 800;
+                    // Resize to max 600px (smaller than before)
+                    const maxSize = 600;
                     if (width > maxSize || height > maxSize) {
                         if (width > height) {
                             height = (height / width) * maxSize;
@@ -876,8 +876,8 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // Convert to base64 with compression (0.7 quality for JPEG)
-                    photoData = canvas.toDataURL('image/jpeg', 0.7);
+                    // Convert to base64 with higher compression (0.5 quality)
+                    photoData = canvas.toDataURL('image/jpeg', 0.5);
                     
                     // Show preview
                     const previewImg = document.getElementById('previewImage');
@@ -885,6 +885,10 @@
                     previewImg.style.display = 'block';
                     document.querySelector('.upload-icon').style.display = 'none';
                     document.querySelector('.upload-text').style.display = 'none';
+                    
+                    // Show size info
+                    const sizeKB = Math.round(photoData.length / 1024);
+                    console.log('Compressed photo size:', sizeKB + 'KB');
                 };
                 img.src = e.target.result;
             };
@@ -1018,11 +1022,13 @@
                 return;
             }
 
-            // Check if photo data is too large for URL
-            if (photoData && photoData.length > 50000) {
-                const confirmed = confirm('⚠️ Photo is quite large! It might not work in all browsers.\n\n✅ For best results, we recommend using Supabase storage.\n\nDo you want to continue anyway?');
+            // Check if photo data is too large for URL (30KB base64 = ~40KB in URL)
+            if (photoData && photoData.length > 30000) {
+                const sizeKB = Math.round(photoData.length / 1024);
+                const confirmed = confirm(`⚠️ WARNING: Photo size is ${sizeKB}KB\n\n❌ This may NOT work in WhatsApp/Facebook\n❌ Some browsers may reject the link\n\n✅ RECOMMENDED: Use Supabase Storage\n(Free 500MB, works perfectly)\n\n⚠️ Continue anyway with current photo?\n(May not work properly)`);
+                
                 if (!confirmed) {
-                    alert('💡 Tip: Upload a smaller photo or we can set up Supabase for better photo sharing!');
+                    alert('💡 TIP: Either:\n1. Upload a smaller photo (under 100KB)\n2. Ask to set up Supabase storage (best option!)');
                     return;
                 }
             }
@@ -1110,38 +1116,52 @@
             
             // Check URL length and warn user
             if (shareURL.length > 8000) {
-                console.warn('⚠️ URL is very long (' + shareURL.length + ' chars). May not work in all apps.');
+                console.warn('⚠️ URL is very long (' + shareURL.length + ' chars)');
+                console.warn('💡 Supabase storage recommended for photos');
             }
             
-            const message = `🎉 Happy Birthday ${name}! 🎂 Check out this special celebration: ${shareURL}`;
+            const message = `🎉 Happy Birthday ${name}! 🎂 Check out this celebration: ${shareURL}`;
             
-            // WhatsApp
+            // WhatsApp - includes message text
             document.getElementById('whatsappBtn').href = 
                 `https://wa.me/?text=${encodeURIComponent(message)}`;
             
-            // Facebook
+            // Facebook - just URL
             document.getElementById('facebookBtn').href = 
                 `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareURL)}`;
         }
 
-        // Copy link to clipboard
+        // Copy link to clipboard (ONLY URL, no message)
         function copyLink() {
             const shareURL = window.location.href;
             
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(shareURL).then(() => {
                     showCopiedNotification();
+                }).catch(err => {
+                    console.error('Copy failed:', err);
+                    fallbackCopy(shareURL);
                 });
             } else {
-                // Fallback for older browsers
-                const textarea = document.createElement('textarea');
-                textarea.value = shareURL;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showCopiedNotification();
+                fallbackCopy(shareURL);
             }
+        }
+        
+        // Fallback copy method
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showCopiedNotification();
+            } catch (err) {
+                alert('Unable to copy link. Please copy manually from address bar.');
+            }
+            document.body.removeChild(textarea);
         }
 
         // Show copied notification
