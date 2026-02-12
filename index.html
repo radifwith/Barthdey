@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday 🎂✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Happy Birthday 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -17,20 +17,17 @@
             --secondary: #00f0ff;
             --accent: #ffd700;
             --dark: #0a0118;
-            --glow-pink: rgba(255, 46, 151, 0.6);
-            --glow-cyan: rgba(0, 240, 255, 0.6);
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--dark);
+            background: #0a0118;
             color: white;
             overflow-x: hidden;
             min-height: 100vh;
-            position: relative;
         }
 
-        /* Animated Background */
+        /* INPUT PAGE STYLES */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -48,89 +45,6 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* Floating Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--secondary);
-            border-radius: 50%;
-            animation: float 10s infinite;
-            opacity: 0.3;
-            box-shadow: 0 0 10px var(--glow-cyan);
-        }
-
-        /* Floating Emoji Decorations */
-        .floating-emoji {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.15;
-            pointer-events: none;
-            user-select: none;
-        }
-
-        .floating-emoji.style1 {
-            animation: floatDiagonal 15s ease-in-out infinite;
-        }
-
-        .floating-emoji.style2 {
-            animation: floatZigzag 12s ease-in-out infinite;
-        }
-
-        .floating-emoji.style3 {
-            animation: floatCircular 18s linear infinite;
-        }
-
-        .floating-emoji.style4 {
-            animation: floatBounce 10s ease-in-out infinite;
-        }
-
-        @keyframes floatDiagonal {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(100px, -150px) rotate(90deg); }
-            50% { transform: translate(200px, -50px) rotate(180deg); }
-            75% { transform: translate(100px, 50px) rotate(270deg); }
-        }
-
-        @keyframes floatZigzag {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(-80px, -100px) scale(1.2); }
-            50% { transform: translate(80px, -200px) scale(0.8); }
-            75% { transform: translate(-50px, -100px) scale(1.1); }
-        }
-
-        @keyframes floatCircular {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(0, 0) rotate(360deg); 
-                   transform-origin: 150px 150px; }
-        }
-
-        @keyframes floatBounce {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-120px) rotate(15deg); }
-            50% { transform: translateY(-80px) rotate(-15deg); }
-            75% { transform: translateY(-150px) rotate(10deg); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-100px) translateX(50px); }
-            50% { transform: translateY(-200px) translateX(-30px); }
-            75% { transform: translateY(-100px) translateX(30px); }
-        }
-
-        /* Container */
         .container {
             max-width: 600px;
             margin: 0 auto;
@@ -139,7 +53,6 @@
             z-index: 1;
         }
 
-        /* Input Page */
         .input-page {
             text-align: center;
             animation: fadeIn 1s ease;
@@ -160,15 +73,7 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             margin-bottom: 20px;
-            animation: glow 2s ease-in-out infinite;
-            text-shadow: 0 0 30px var(--glow-pink);
-        }
-
-        @keyframes glow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
         }
 
         .subtitle {
@@ -176,7 +81,6 @@
             color: var(--secondary);
             margin-bottom: 50px;
             font-weight: 300;
-            text-shadow: 0 0 20px var(--glow-cyan);
         }
 
         .input-group {
@@ -186,13 +90,6 @@
             padding: 40px;
             margin-bottom: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.8s ease 0.3s backwards;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         label {
@@ -203,10 +100,9 @@
             text-align: left;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        input {
+        input, textarea {
             width: 100%;
             padding: 15px 20px;
             font-size: 1.1rem;
@@ -219,198 +115,15 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        input:focus {
+        input:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 20px var(--glow-pink);
-            transform: scale(1.02);
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(255, 46, 151, 0.6);
         }
 
         textarea {
-            width: 100%;
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
             resize: vertical;
             min-height: 100px;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 20px var(--glow-pink);
-            transform: scale(1.02);
-        }
-
-        textarea::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* Photo Upload Styles */
-        .photo-upload {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .photo-upload input[type="file"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            z-index: 2;
-        }
-
-        .photo-preview {
-            width: 100%;
-            min-height: 200px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .photo-preview:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 20px var(--glow-pink);
-            transform: scale(1.02);
-        }
-
-        .upload-icon {
-            font-size: 4rem;
-            margin-bottom: 10px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .upload-text {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1rem;
-        }
-
-        #previewImage {
-            max-width: 100%;
-            max-height: 300px;
-            object-fit: cover;
-            border-radius: 50%;
-            width: 200px;
-            height: 200px;
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 20px var(--glow-pink);
-        }
-
-        /* Photo Display in Celebration - CIRCULAR with ANIMATED RING */
-        .photo-display {
-            margin: 40px 0;
-            animation: fadeIn 1s ease 0.9s backwards;
-        }
-
-        .photo-frame {
-            position: relative;
-            display: inline-block;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            padding: 0;
-            background: transparent;
-            animation: photoRingPulse 3s ease-in-out infinite;
-        }
-
-        /* Animated Glowing Ring */
-        .photo-frame::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, 
-                var(--primary), 
-                var(--secondary), 
-                var(--accent), 
-                var(--primary)
-            );
-            background-size: 300% 300%;
-            animation: ringRotate 4s linear infinite, ringGlow 2s ease-in-out infinite;
-            z-index: -1;
-        }
-
-        @keyframes ringRotate {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes ringGlow {
-            0%, 100% { 
-                filter: blur(15px) brightness(1);
-                opacity: 0.8;
-            }
-            50% { 
-                filter: blur(20px) brightness(1.5);
-                opacity: 1;
-            }
-        }
-
-        @keyframes photoRingPulse {
-            0%, 100% { 
-                transform: scale(1);
-            }
-            50% { 
-                transform: scale(1.05);
-            }
-        }
-
-        .photo-frame img {
-            width: 300px;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 50%;
-            display: block;
-            border: 5px solid var(--dark);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Floating sparkles around photo */
-        .photo-frame::after {
-            content: '✨';
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            font-size: 2.5rem;
-            animation: sparkleFloat 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px var(--accent));
-        }
-
-        @keyframes sparkleFloat {
-            0%, 100% { 
-                transform: translate(0, 0) rotate(0deg) scale(1);
-            }
-            25% { 
-                transform: translate(10px, -10px) rotate(90deg) scale(1.2);
-            }
-            50% { 
-                transform: translate(0, -20px) rotate(180deg) scale(1);
-            }
-            75% { 
-                transform: translate(-10px, -10px) rotate(270deg) scale(1.2);
-            }
         }
 
         .date-inputs {
@@ -423,6 +136,65 @@
             margin-bottom: 0;
         }
 
+        .gallery-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 46, 151, 0.2), rgba(0, 240, 255, 0.2));
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .gallery-btn:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(255, 46, 151, 0.6);
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        .photo-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .photo-preview-item {
+            position: relative;
+            height: 150px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+
+        .photo-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
         .btn {
             background: linear-gradient(135deg, var(--primary), #ff6b9d);
             color: white;
@@ -432,340 +204,221 @@
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 0 30px var(--glow-pink);
+            box-shadow: 0 0 30px rgba(255, 46, 151, 0.6);
             transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
         }
 
         .btn:hover {
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 0 50px var(--glow-pink), 0 10px 30px rgba(255, 46, 151, 0.4);
         }
 
-        .btn:active {
-            transform: translateY(-1px);
-        }
-
-        /* Celebration Page */
+        /* CELEBRATION PAGE STYLES - From uploaded file */
         .celebration-page {
             display: none;
-            text-align: center;
-            animation: celebrationEntry 1.5s ease;
+            min-height: 100vh;
         }
 
         .celebration-page.active {
             display: block;
         }
 
-        @keyframes celebrationEntry {
-            0% { opacity: 0; transform: scale(0.8) rotate(-5deg); }
-            50% { transform: scale(1.1) rotate(2deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .cake-anim {
+            display: inline-block;
+            font-size: 4rem;
+            margin-bottom: 10px;
+            animation: cake-bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes cake-bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
         }
 
         .celebration-title {
-            font-family: 'Righteous', cursive;
-            font-size: 5rem;
-            background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .photo-frame {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        .birthday-photo {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 40px rgba(255, 107, 107, 0.6),
+                        0 0 80px rgba(255, 107, 107, 0.3),
+                        0 0 120px rgba(255, 215, 0, 0.2);
+            animation: photo-glow 3s ease-in-out infinite, float-photo 4s ease-in-out infinite;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .birthday-photo.hidden {
+            opacity: 0;
+        }
+
+        @keyframes photo-glow {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 107, 107, 0.6), 0 0 80px rgba(255, 107, 107, 0.3), 0 0 120px rgba(255, 215, 0, 0.2); }
+            50% { box-shadow: 0 0 60px rgba(255, 107, 107, 0.8), 0 0 100px rgba(255, 107, 107, 0.5), 0 0 140px rgba(255, 215, 0, 0.4); }
+        }
+
+        @keyframes float-photo {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.02); }
+        }
+
+        .photo-frame::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 2rem;
+            animation: sparkle-rotate 3s linear infinite;
+            z-index: 20;
+        }
+
+        .photo-frame::after {
+            content: '✨';
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            font-size: 2rem;
+            animation: sparkle-rotate 3s linear infinite reverse;
+            z-index: 20;
+        }
+
+        @keyframes sparkle-rotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .birthday-name {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 20px 0;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #ff9ff3, #54a0ff);
+            background-size: 400% 400%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 30px;
-            animation: rainbow 3s ease infinite, bounce 2s ease infinite;
-            text-shadow: 0 0 40px var(--glow-pink);
+            animation: gradient 3s ease infinite, float 3s ease-in-out infinite;
         }
 
-        @keyframes rainbow {
-            0%, 100% { filter: hue-rotate(0deg); }
-            50% { filter: hue-rotate(30deg); }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        @keyframes bounce {
+        @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-10px); }
         }
 
-        .name-display {
-            font-size: 3.5rem;
-            font-weight: 600;
-            color: var(--secondary);
+        .birthday-date {
+            font-size: 1.2rem;
+            color: #feca57;
             margin-bottom: 20px;
-            animation: slideIn 1s ease 0.5s backwards;
-            text-shadow: 0 0 30px var(--glow-cyan);
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-100px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .date-display {
-            font-size: 1.5rem;
-            color: var(--accent);
-            margin-bottom: 40px;
-            animation: slideIn 1s ease 0.7s backwards;
-        }
-
-        .emoji-container {
-            font-size: 6rem;
-            margin: 40px 0;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .emoji {
-            display: inline-block;
-            margin: 0 15px;
-            animation: spin 4s linear infinite, pulse 1.5s ease-in-out infinite;
-        }
-
-        .emoji:nth-child(1) { animation: spin 4s ease-in-out infinite; animation-delay: 0s; }
-        .emoji:nth-child(2) { animation: wiggle 2s ease-in-out infinite; animation-delay: 0.2s; }
-        .emoji:nth-child(3) { animation: bounce-emoji 2.5s ease-in-out infinite; animation-delay: 0.4s; }
-        .emoji:nth-child(4) { animation: rotate3d 3s ease-in-out infinite; animation-delay: 0.6s; }
-        .emoji:nth-child(5) { animation: pulse 1.5s ease-in-out infinite; animation-delay: 0.8s; }
-        .emoji:nth-child(6) { animation: swing 2s ease-in-out infinite; animation-delay: 1s; }
-        .emoji:nth-child(7) { animation: flip 2.5s ease-in-out infinite; animation-delay: 1.2s; }
-        .emoji:nth-child(8) { animation: shake 3s ease-in-out infinite; animation-delay: 1.4s; }
-
-        @keyframes spin {
-            0%, 100% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(10deg) scale(1.1); }
-            50% { transform: rotate(-10deg) scale(1); }
-            75% { transform: rotate(10deg) scale(1.1); }
-        }
-
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-15deg); }
-            50% { transform: rotate(15deg); }
-            75% { transform: rotate(-10deg); }
-        }
-
-        @keyframes bounce-emoji {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
-        }
-
-        @keyframes rotate3d {
-            0%, 100% { transform: rotateY(0deg) scale(1); }
-            50% { transform: rotateY(180deg) scale(1.2); }
-        }
-
-        @keyframes swing {
-            0%, 100% { transform: rotate(0deg); transform-origin: top center; }
-            25% { transform: rotate(20deg); }
-            75% { transform: rotate(-20deg); }
-        }
-
-        @keyframes flip {
-            0%, 100% { transform: rotateX(0deg); }
-            50% { transform: rotateX(180deg); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-5px); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        .message {
-            font-size: 1.4rem;
+        .birthday-message {
+            font-size: 1.1rem;
             line-height: 1.8;
+            margin: 20px 0;
             color: rgba(255, 255, 255, 0.9);
-            margin: 40px 0;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: fadeIn 1s ease 1s backwards;
         }
 
-        /* Share Section */
         .share-section {
-            margin-top: 50px;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: fadeIn 1s ease 1.3s backwards;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
         }
 
         .share-title {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: var(--accent);
-            margin-bottom: 20px;
-            font-weight: 600;
+            margin-bottom: 15px;
         }
 
         .share-buttons {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
         .share-btn {
-            padding: 12px 30px;
+            padding: 10px 25px;
             border-radius: 50px;
             border: none;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-            font-family: 'Poppins', sans-serif;
         }
 
         .share-btn.whatsapp {
             background: linear-gradient(135deg, #25D366, #128C7E);
             color: white;
-            box-shadow: 0 0 20px rgba(37, 211, 102, 0.5);
         }
 
         .share-btn.facebook {
             background: linear-gradient(135deg, #1877F2, #4267B2);
             color: white;
-            box-shadow: 0 0 20px rgba(24, 119, 242, 0.5);
-        }
-
-        .share-btn.instagram {
-            background: linear-gradient(135deg, #E1306C, #FD1D1D, #F77737);
-            color: white;
-            box-shadow: 0 0 20px rgba(225, 48, 108, 0.5);
         }
 
         .share-btn.copy {
             background: linear-gradient(135deg, var(--secondary), #0077ff);
             color: white;
-            box-shadow: 0 0 20px var(--glow-cyan);
         }
 
         .share-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .share-btn:active {
-            transform: translateY(-1px);
-        }
-
-        /* Confetti */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: var(--primary);
-            position: absolute;
-            animation: confetti-fall 3s linear infinite;
-        }
-
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-
-        /* Floating Hearts Animation */
-        .floating-heart {
-            position: fixed;
-            font-size: 2rem;
-            opacity: 0;
-            pointer-events: none;
-            animation: heartFloat 6s ease-in infinite;
-            z-index: 10;
-        }
-
-        @keyframes heartFloat {
-            0% { 
-                opacity: 0;
-                transform: translateY(100vh) scale(0) rotate(0deg);
-            }
-            10% {
-                opacity: 0.8;
-                transform: translateY(90vh) scale(1) rotate(45deg);
-            }
-            90% {
-                opacity: 0.8;
-                transform: translateY(-10vh) scale(1.2) rotate(360deg);
-            }
-            100% { 
-                opacity: 0;
-                transform: translateY(-20vh) scale(0) rotate(405deg);
-            }
-        }
-
-        /* Twinkling Stars */
-        .twinkling-star {
-            position: fixed;
-            font-size: 1.5rem;
-            opacity: 0;
-            pointer-events: none;
-            animation: starTwinkle 3s ease-in-out infinite;
-            z-index: 10;
-        }
-
-        @keyframes starTwinkle {
-            0%, 100% { 
-                opacity: 0;
-                transform: scale(0) rotate(0deg);
-            }
-            50% { 
-                opacity: 1;
-                transform: scale(1.5) rotate(180deg);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 3rem;
-            }
-
-            .celebration-title {
-                font-size: 3rem;
-            }
-
-            .name-display {
-                font-size: 2.5rem;
-            }
-
-            .emoji-container {
-                font-size: 4rem;
-            }
-
-            .date-inputs {
-                grid-template-columns: 1fr;
-            }
-
-            .share-buttons {
-                flex-direction: column;
-            }
-            
-            /* Circular photo responsive */
-            .photo-frame {
-                width: 250px;
-                height: 250px;
-            }
-            
-            .photo-frame img {
-                width: 250px;
-                height: 250px;
-            }
-            
-            #previewImage {
-                width: 150px;
-                height: 150px;
-            }
+            transform: translateY(-3px);
         }
 
         .copied-notification {
@@ -776,47 +429,40 @@
             color: white;
             padding: 15px 25px;
             border-radius: 50px;
-            font-weight: 600;
-            box-shadow: 0 0 30px var(--glow-cyan);
-            animation: slideInRight 0.5s ease, slideOutRight 0.5s ease 2.5s;
             z-index: 1000;
             display: none;
         }
 
         .copied-notification.show {
             display: block;
+            animation: slideIn 0.5s ease;
         }
 
-        @keyframes slideInRight {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        @keyframes slideIn {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
         }
 
-        @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(400px); opacity: 0; }
+        @media (max-width: 768px) {
+            .logo { font-size: 3rem; }
+            .birthday-name { font-size: 2rem; }
+            .birthday-photo { width: 180px; height: 180px; }
         }
     </style>
 </head>
 <body>
-    <!-- Background Animation -->
     <div class="bg-animation"></div>
-    
-    <!-- Particles -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Copied Notification -->
     <div class="copied-notification" id="copiedNotification">✓ Link Copied!</div>
 
     <div class="container">
-        <!-- Input Page -->
+        <!-- INPUT PAGE -->
         <div class="input-page" id="inputPage">
             <div class="logo">🎂 Birthday ✨</div>
-            <div class="subtitle">Create a magical birthday celebration</div>
+            <div class="subtitle">Create magical celebration!</div>
             
             <div class="input-group">
                 <label for="name">Name</label>
-                <input type="text" id="name" placeholder="Enter name here..." autocomplete="off">
+                <input type="text" id="name" placeholder="Enter name...">
                 
                 <label>Date of Birth (Optional)</label>
                 <div class="date-inputs">
@@ -825,242 +471,190 @@
                     <input type="number" id="year" placeholder="Year" min="1900" max="2100">
                 </div>
                 
-                <label for="photo">Photo (Optional) - EXTREME compression (300px, 20%)</label>
-                <div class="photo-upload">
-                    <input type="file" id="photo" accept="image/*" onchange="handlePhotoUpload(event)">
-                    <div class="photo-preview" id="photoPreview">
-                        <div class="upload-icon">📷</div>
-                        <div class="upload-text">Click to upload<br><small style="opacity: 0.7;">⚠️ Base64 limits apply<br>💡 Supabase for unlimited</small></div>
-                        <img id="previewImage" style="display: none;">
-                    </div>
-                </div>
+                <label for="customMessage">Message (Optional)</label>
+                <textarea id="customMessage" placeholder="Birthday message... 💝"></textarea>
                 
-                <label for="customMessage">Custom Message (Optional)</label>
-                <textarea id="customMessage" placeholder="Write your special birthday message here... 💝" rows="4"></textarea>
+                <label>Photos (Max 2)</label>
+                <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(event)">
+                <button class="gallery-btn" onclick="document.getElementById('photoInput').click()">
+                    <span style="font-size: 2rem;">📷</span>
+                    <span>Select from Gallery</span>
+                </button>
+                
+                <div class="photo-preview-grid" id="photoPreviewGrid"></div>
             </div>
 
-            <button class="btn" onclick="createCelebration()">
-                ✨ Create Magic ✨
-            </button>
+            <button class="btn" onclick="createCelebration()">✨ Create Magic ✨</button>
         </div>
 
-        <!-- Celebration Page -->
+        <!-- CELEBRATION PAGE -->
         <div class="celebration-page" id="celebrationPage">
-            <div class="celebration-title">Happy Birthday!</div>
-            
-            <div class="emoji-container">
-                <span class="emoji">🎂</span>
-                <span class="emoji">🎉</span>
-                <span class="emoji">🎈</span>
-                <span class="emoji">🎁</span>
-                <span class="emoji">✨</span>
-                <span class="emoji">💝</span>
-                <span class="emoji">🎊</span>
-                <span class="emoji">🥳</span>
-            </div>
-
-            <div class="name-display" id="displayName"></div>
-            <div class="date-display" id="displayDate"></div>
-
-            <div class="photo-display" id="photoDisplay" style="display: none;">
-                <div class="photo-frame">
-                    <img id="celebrationPhoto" alt="Birthday Photo">
+            <div class="glass-card">
+                <div class="cake-anim">🎂</div>
+                <h2 class="celebration-title">Happy Birthday</h2>
+                
+                <div class="photo-frame" id="photoContainer" style="display: none; width: 220px; height: 220px; position: relative; margin: 20px auto;">
+                    <img id="photo1" class="birthday-photo hidden">
+                    <img id="photo2" class="birthday-photo hidden">
                 </div>
-            </div>
 
-            <div class="message" id="birthdayMessage">
-                🌟 Wishing you a day filled with love, laughter, and all the things that make you smile! 💖<br>
-                May this year bring you endless joy, amazing adventures, and beautiful memories! 🎊<br>
-                Celebrate big because you deserve it! 🥳🎉
-            </div>
+                <div class="birthday-name" id="displayName"></div>
+                <div class="birthday-date" id="displayDate"></div>
+                <div class="birthday-message" id="birthdayMessage"></div>
 
-            <div class="share-section">
-                <div class="share-title">📤 Share this celebration:</div>
-                <div class="share-buttons">
-                    <a class="share-btn whatsapp" id="whatsappBtn" target="_blank">
-                        💬 WhatsApp
-                    </a>
-                    <a class="share-btn facebook" id="facebookBtn" target="_blank">
-                        📘 Facebook
-                    </a>
-                    <a class="share-btn instagram" id="instagramBtn" onclick="copyLink(); return false;">
-                        📷 Copy Link
-                    </a>
-                    <button class="share-btn copy" onclick="copyLink()">
-                        📋 Copy Link
-                    </button>
+                <div class="share-section">
+                    <div class="share-title">📤 Share:</div>
+                    <div class="share-buttons">
+                        <a class="share-btn whatsapp" id="whatsappBtn" target="_blank">💬 WhatsApp</a>
+                        <a class="share-btn facebook" id="facebookBtn" target="_blank">📘 Facebook</a>
+                        <button class="share-btn copy" onclick="copyLink()">📋 Copy</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Global variable to store photo data
-        let photoData = null;
+        const SUPABASE_API = 'https://supabasestorageapikey.radidmondal.workers.dev/';
+        const SUPABASE_KEY = 'sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K';
+        const MAX_PHOTO_SIZE = 50 * 1024; // 50KB
+        const MAX_PHOTOS = 2;
+        
+        let compressedPhotos = [];
+        let uploadedPhotoURLs = [];
 
-        // EXTREME COMPRESSION - Absolute minimum!
-        function handlePhotoUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const img = new Image();
-            const reader = new FileReader();
-
-            reader.onload = function(ev) {
-                img.src = ev.target.result;
-            };
-
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-
-                // 🔥 MAXIMUM COMPRESSION: 300px only
-                const maxWidth = 300;
-                const scale = maxWidth / img.width;
-
-                canvas.width = maxWidth;
-                canvas.height = img.height * scale;
-
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                // 🔥 LOWEST QUALITY: 0.2 = 20% (any lower looks terrible)
-                photoData = canvas.toDataURL("image/jpeg", 0.2);
-
-                // Show preview
-                const previewImg = document.getElementById('previewImage');
-                previewImg.src = photoData;
-                previewImg.style.display = 'block';
-                document.querySelector('.upload-icon').style.display = 'none';
-                document.querySelector('.upload-text').style.display = 'none';
-
-                // Show compressed size
-                const sizeKB = Math.round(photoData.length / 1024);
-                console.log('✅ Compressed:', sizeKB + 'KB (300px, 20% quality)');
-                
-                if (sizeKB > 30) {
-                    console.warn('⚠️ Still large! Supabase recommended for photos.');
-                }
-            };
-
-            reader.readAsDataURL(file);
-        }
-
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            
-            // Create light particles
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
-                particlesContainer.appendChild(particle);
-            }
-            
-            // Create floating emojis
-            const backgroundEmojis = ['🎈', '🎉', '🎁', '🎊', '💝', '✨', '⭐', '🌟', '💫', '🎀', '🎪', '🎨', '🎭', '🎯', '🎸', '🎺', '🎵', '🎶', '💖', '💗', '💓', '💞', '🌈', '🦋', '🌺', '🌸', '🎆', '🎇'];
-            const styles = ['style1', 'style2', 'style3', 'style4'];
-            
-            for (let i = 0; i < 25; i++) {
-                const emoji = document.createElement('div');
-                emoji.className = 'floating-emoji ' + styles[Math.floor(Math.random() * styles.length)];
-                emoji.textContent = backgroundEmojis[Math.floor(Math.random() * backgroundEmojis.length)];
-                emoji.style.left = Math.random() * 100 + '%';
-                emoji.style.top = Math.random() * 100 + '%';
-                emoji.style.animationDelay = Math.random() * 5 + 's';
-                emoji.style.fontSize = (Math.random() * 2 + 1) + 'rem';
-                emoji.style.opacity = Math.random() * 0.2 + 0.05;
-                particlesContainer.appendChild(emoji);
-            }
-        }
-
-        // Default birthday messages
-        const birthdayMessages = [
-            "🌟 Today is YOUR day! May it be filled with endless smiles, warm hugs, and unforgettable moments! 💖<br>You deserve all the happiness in the world! Let's make this year absolutely AMAZING! 🎊✨<br>Cheers to another year of incredible adventures! 🥳🎉",
-            
-            "💝 Wishing you a birthday as beautiful and special as you are! 🌈<br>May every moment of your day sparkle with joy and laughter! ✨💫<br>Here's to celebrating YOU and all the wonderful things you bring to this world! 🎂🎈",
-            
-            "🎉 Happy Birthday to someone who makes the world brighter! 🌟<br>May this year bring you closer to your dreams and fill your life with magical moments! 💖<br>Celebrate big, laugh loud, and make beautiful memories! 🥳🎊",
-            
-            "✨ Another year older, another year BOLDER! 💪😊<br>May your birthday be filled with love, laughter, and all your favorite things! 🎁💝<br>Here's to amazing adventures, sweet surprises, and endless joy! 🎂🎈",
-            
-            "🎊 Today we celebrate YOU - your kindness, your smile, your amazing heart! 💖<br>May your birthday be the start of the best year yet! 🌟✨<br>Wishing you happiness, success, and all the cake you can eat! 🎂🥳",
-            
-            "💫 Happy Birthday to someone truly special! 🎉<br>May your day be filled with love, your year with joy, and your life with endless blessings! 💝<br>Keep shining bright - the world needs your light! ✨🌟",
-            
-            "🌈 Sending you the biggest birthday wishes wrapped in love and sparkles! 💖✨<br>May this year overflow with beautiful moments, sweet memories, and dreams coming true! 🎊<br>You're amazing - never forget that! 🥳💝",
-            
-            "🎂 It's time to PARTY! Today is all about celebrating the wonderful person you are! 🎉<br>May your birthday be as fantastic as you've made everyone else's lives! 💖<br>Cheers to love, laughter, and happily ever after! 🥂✨"
+        const defaultMessages = [
+            "✨ Happy Birthday! 🎉 May your time be filled with happiness and beautiful moments 😊🎂",
+            "✨ Wishing you a lovely day and a year full of smiles 🌸🎈 Stay happy always 💖",
+            "✨ Happy Birthday 🎂✨ Stay blessed, stay happy, and keep shining 🌟😊",
+            "✨ May your new year bring peace, joy, and success 🎉💫 Take care always 🤍",
+            "✨ Enjoy your special day 🎈🎂 Wishing you lots of happiness and good vibes 🌼✨"
         ];
 
-        // Get random birthday message
         function getRandomMessage() {
-            return birthdayMessages[Math.floor(Math.random() * birthdayMessages.length)];
+            return defaultMessages[Math.floor(Math.random() * defaultMessages.length)];
         }
 
-        // Create confetti
-        function createConfetti() {
-            const colors = ['#ff2e97', '#00f0ff', '#ffd700', '#ff6b9d', '#00d4ff'];
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDelay = Math.random() * 3 + 's';
-                confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                document.body.appendChild(confetti);
+        // STEP 1: Compress photos FIRST
+        async function handlePhotoUpload(event) {
+            const files = Array.from(event.target.files);
+            
+            if (compressedPhotos.length + files.length > MAX_PHOTOS) {
+                alert(`⚠️ Maximum ${MAX_PHOTOS} photos!`);
+                return;
+            }
+
+            for (let file of files) {
+                if (compressedPhotos.length >= MAX_PHOTOS) break;
+                
+                // Compress immediately
+                const compressed = await compressImage(file);
+                
+                // Check size AFTER compression
+                if (compressed.length > MAX_PHOTO_SIZE) {
+                    alert('⚠️ Photo too large even after compression! Try a smaller photo.');
+                    continue;
+                }
+                
+                compressedPhotos.push(compressed);
+                showPhotoPreview(compressed);
             }
         }
 
-        // Create floating hearts
-        function createFloatingHearts() {
-            const hearts = ['💖', '💗', '💓', '💕', '💝', '❤️', '💞'];
-            for (let i = 0; i < 15; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'floating-heart';
-                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDelay = Math.random() * 6 + 's';
-                heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
-                document.body.appendChild(heart);
+        function compressImage(file) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                const reader = new FileReader();
+
+                reader.onload = (e) => { img.src = e.target.result; };
+
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    let maxWidth = 300;
+                    let scale = maxWidth / img.width;
+
+                    canvas.width = maxWidth;
+                    canvas.height = img.height * scale;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    let quality = 0.3;
+                    let data;
+
+                    // Keep compressing until under 50KB
+                    do {
+                        data = canvas.toDataURL('image/jpeg', quality);
+                        if (data.length > MAX_PHOTO_SIZE && quality > 0.1) {
+                            quality -= 0.05;
+                        } else {
+                            break;
+                        }
+                    } while (quality > 0.1);
+
+                    resolve(data);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function showPhotoPreview(photoData) {
+            const grid = document.getElementById('photoPreviewGrid');
+            const index = compressedPhotos.length - 1;
+
+            const item = document.createElement('div');
+            item.className = 'photo-preview-item';
+            item.innerHTML = `
+                <img src="${photoData}">
+                <button class="photo-remove-btn" onclick="removePhoto(${index})">×</button>
+            `;
+            grid.appendChild(item);
+        }
+
+        function removePhoto(index) {
+            compressedPhotos.splice(index, 1);
+            const grid = document.getElementById('photoPreviewGrid');
+            grid.innerHTML = '';
+            compressedPhotos.forEach(p => showPhotoPreview(p));
+        }
+
+        // STEP 2: Upload to Supabase (only AFTER compression check)
+        async function uploadPhotos() {
+            if (compressedPhotos.length === 0) return [];
+
+            const urls = [];
+
+            try {
+                for (let photo of compressedPhotos) {
+                    const res = await fetch(SUPABASE_API, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${SUPABASE_KEY}`
+                        },
+                        body: JSON.stringify({
+                            image: photo,
+                            max_size_kb: 49
+                        })
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        urls.push(data.url || data.publicUrl);
+                    } else {
+                        throw new Error('Upload failed');
+                    }
+                }
+
+                return urls;
+            } catch (err) {
+                alert('❌ Upload failed! Storage limit (7MB) may be exceeded');
+                return [];
             }
         }
 
-        // Create twinkling stars
-        function createTwinklingStars() {
-            const stars = ['⭐', '🌟', '✨', '💫', '🌠'];
-            for (let i = 0; i < 20; i++) {
-                const star = document.createElement('div');
-                star.className = 'twinkling-star';
-                star.textContent = stars[Math.floor(Math.random() * stars.length)];
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                star.style.fontSize = (Math.random() * 1 + 0.8) + 'rem';
-                document.body.appendChild(star);
-            }
-        }
-
-        // Check URL parameters on load
-        function checkURLParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const name = urlParams.get('name');
-            const day = urlParams.get('day');
-            const month = urlParams.get('month');
-            const year = urlParams.get('year');
-            const customMessage = urlParams.get('msg');
-            const photo = urlParams.get('photo');
-
-            if (name) {
-                showCelebration(name, day, month, year, customMessage, photo);
-            }
-        }
-
-        // Create celebration
-        function createCelebration() {
+        async function createCelebration() {
             const name = document.getElementById('name').value.trim();
             const day = document.getElementById('day').value;
             const month = document.getElementById('month').value;
@@ -1068,23 +662,23 @@
             const customMessage = document.getElementById('customMessage').value.trim();
 
             if (!name) {
-                alert('Please enter a name! 🎈');
+                alert('Please enter name! 🎈');
                 return;
             }
 
-            // STRICT LIMIT: Reject photos over 40KB after compression
-            if (photoData && photoData.length > 40000) {
-                const sizeKB = Math.round(photoData.length / 1024);
-                alert(`❌ PHOTO TOO LARGE: ${sizeKB}KB\n\n⚠️ Maximum: 40KB after compression\n\n💡 SOLUTIONS:\n\n1. ✅ Use WITHOUT photo (works perfect!)\n2. ✅ Set up Supabase (unlimited size)\n3. ⚠️ Upload much smaller original photo\n\nBase64 in URL has hard limits!\nSupabase is the ONLY real solution for photos.`);
-                return;
+            // Upload photos if any
+            if (compressedPhotos.length > 0) {
+                uploadedPhotoURLs = await uploadPhotos();
+                if (uploadedPhotoURLs.length === 0 && compressedPhotos.length > 0) {
+                    return; // Upload failed
+                }
             }
 
-            showCelebration(name, day, month, year, customMessage, photoData);
-            updateURL(name, day, month, year, customMessage, photoData);
+            showCelebration(name, day, month, year, customMessage, uploadedPhotoURLs);
+            updateURL(name, day, month, year, customMessage, uploadedPhotoURLs);
         }
 
-        // Show celebration page
-        function showCelebration(name, day, month, year, customMessage, photo) {
+        function showCelebration(name, day, month, year, msg, photos) {
             document.getElementById('inputPage').classList.add('hidden');
             document.getElementById('celebrationPage').classList.add('active');
             
@@ -1094,133 +688,98 @@
             if (day || month || year) {
                 const parts = [];
                 if (day) parts.push(day);
-                if (month) {
-                    const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                                    'July', 'August', 'September', 'October', 'November', 'December'];
-                    parts.push(months[parseInt(month) - 1] || month);
-                }
+                if (month) parts.push(month);
                 if (year) parts.push(year);
-                dateText = '🎂 ' + parts.join(' ') + ' 🎂';
+                dateText = '🎂 ' + parts.join('/') + ' 🎂';
             }
             document.getElementById('displayDate').textContent = dateText;
-            
-            // Display photo if available
-            if (photo) {
-                document.getElementById('celebrationPhoto').src = photo;
-                document.getElementById('photoDisplay').style.display = 'block';
-            } else {
-                document.getElementById('photoDisplay').style.display = 'none';
-            }
-            
-            // Use custom message if provided, otherwise use random default message
-            if (customMessage) {
-                // Convert line breaks to <br> tags
-                const formattedMessage = customMessage.replace(/\n/g, '<br>');
-                document.getElementById('birthdayMessage').innerHTML = formattedMessage;
-            } else {
-                document.getElementById('birthdayMessage').innerHTML = getRandomMessage();
+
+            // Display photos
+            if (photos && photos.length > 0) {
+                document.getElementById('photoContainer').style.display = 'block';
+                
+                if (photos.length === 1) {
+                    document.getElementById('photo1').src = photos[0];
+                    document.getElementById('photo1').classList.remove('hidden');
+                } else if (photos.length === 2) {
+                    document.getElementById('photo1').src = photos[0];
+                    document.getElementById('photo2').src = photos[1];
+                    document.getElementById('photo1').classList.remove('hidden');
+                    
+                    // Auto swap
+                    let current = 0;
+                    setInterval(() => {
+                        if (current === 0) {
+                            document.getElementById('photo1').classList.add('hidden');
+                            document.getElementById('photo2').classList.remove('hidden');
+                            current = 1;
+                        } else {
+                            document.getElementById('photo2').classList.add('hidden');
+                            document.getElementById('photo1').classList.remove('hidden');
+                            current = 0;
+                        }
+                    }, 4000);
+                }
             }
 
-            createConfetti();
-            createFloatingHearts();
-            createTwinklingStars();
-            setupShareButtons(name, day, month, year, customMessage, photo);
-            
-            // Auto-scroll after a short delay to show content below
-            setTimeout(() => {
-                const messageElement = document.getElementById('birthdayMessage');
-                messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 1500);
+            document.getElementById('birthdayMessage').textContent = msg || getRandomMessage();
+
+            setupShareButtons();
         }
 
-        // Update URL
-        function updateURL(name, day, month, year, customMessage, photo) {
+        function updateURL(name, day, month, year, msg, photos) {
             const params = new URLSearchParams();
-            params.set('name', name);
-            if (day) params.set('day', day);
-            if (month) params.set('month', month);
-            if (year) params.set('year', year);
-            if (customMessage) params.set('msg', customMessage);
-            if (photo) params.set('photo', photo);
+            params.set('n', name);
+            if (day) params.set('d', day);
+            if (month) params.set('m', month);
+            if (year) params.set('y', year);
+            if (msg) params.set('t', msg);
+            if (photos && photos.length > 0) params.set('p', photos.join(','));
             
-            const newURL = window.location.pathname + '?' + params.toString();
-            window.history.pushState({}, '', newURL);
+            window.history.pushState({}, '', '?' + params.toString());
         }
 
-        // Setup share buttons
-        function setupShareButtons(name, day, month, year, customMessage, photo) {
-            const baseURL = window.location.origin + window.location.pathname;
-            const params = new URLSearchParams();
-            params.set('name', name);
-            if (day) params.set('day', day);
-            if (month) params.set('month', month);
-            if (year) params.set('year', year);
-            if (customMessage) params.set('msg', customMessage);
-            if (photo) params.set('photo', photo);
-            
-            const shareURL = baseURL + '?' + params.toString();
-            
-            // Check URL length and warn user
-            if (shareURL.length > 8000) {
-                console.warn('⚠️ URL is very long (' + shareURL.length + ' chars)');
-                console.warn('💡 Supabase storage recommended for photos');
+        function checkURLParams() {
+            const p = new URLSearchParams(window.location.search);
+            const name = p.get('n');
+            if (name) {
+                const photos = p.get('p') ? p.get('p').split(',') : [];
+                showCelebration(name, p.get('d'), p.get('m'), p.get('y'), p.get('t'), photos);
             }
-            
-            const message = `🎉 Happy Birthday ${name}! 🎂 Check out this celebration: ${shareURL}`;
-            
-            // WhatsApp - includes message text
-            document.getElementById('whatsappBtn').href = 
-                `https://wa.me/?text=${encodeURIComponent(message)}`;
-            
-            // Facebook - just URL
-            document.getElementById('facebookBtn').href = 
-                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareURL)}`;
         }
 
-        // Copy link to clipboard (ONLY URL, no message)
+        function setupShareButtons() {
+            const url = window.location.href;
+            
+            // WhatsApp - ONLY link, no message text
+            document.getElementById('whatsappBtn').href = `https://wa.me/?text=${encodeURIComponent(url)}`;
+            document.getElementById('facebookBtn').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        }
+
         function copyLink() {
-            const shareURL = window.location.href;
+            const url = window.location.href;
             
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(shareURL).then(() => {
-                    showCopiedNotification();
-                }).catch(err => {
-                    console.error('Copy failed:', err);
-                    fallbackCopy(shareURL);
-                });
+                navigator.clipboard.writeText(url).then(() => showNotification());
             } else {
-                fallbackCopy(shareURL);
-            }
-        }
-        
-        // Fallback copy method
-        function fallbackCopy(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
+                const t = document.createElement('textarea');
+                t.value = url;
+                t.style.position = 'fixed';
+                t.style.opacity = '0';
+                document.body.appendChild(t);
+                t.select();
                 document.execCommand('copy');
-                showCopiedNotification();
-            } catch (err) {
-                alert('Unable to copy link. Please copy manually from address bar.');
+                document.body.removeChild(t);
+                showNotification();
             }
-            document.body.removeChild(textarea);
         }
 
-        // Show copied notification
-        function showCopiedNotification() {
-            const notification = document.getElementById('copiedNotification');
-            notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+        function showNotification() {
+            const n = document.getElementById('copiedNotification');
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 3000);
         }
 
-        // Initialize
-        createParticles();
         checkURLParams();
     </script>
 </body>
