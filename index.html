@@ -306,11 +306,15 @@
         #previewImage {
             max-width: 100%;
             max-height: 300px;
-            object-fit: contain;
-            border-radius: 8px;
+            object-fit: cover;
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 20px var(--glow-pink);
         }
 
-        /* Photo Display in Celebration */
+        /* Photo Display in Celebration - CIRCULAR with ANIMATED RING */
         .photo-display {
             margin: 40px 0;
             animation: fadeIn 1s ease 0.9s backwards;
@@ -319,55 +323,94 @@
         .photo-frame {
             position: relative;
             display: inline-block;
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(255, 46, 151, 0.2), rgba(0, 240, 255, 0.2));
-            border-radius: 20px;
-            box-shadow: 0 0 40px var(--glow-pink), 0 0 60px var(--glow-cyan);
-            animation: photoGlow 3s ease-in-out infinite;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            padding: 0;
+            background: transparent;
+            animation: photoRingPulse 3s ease-in-out infinite;
         }
 
-        @keyframes photoGlow {
+        /* Animated Glowing Ring */
+        .photo-frame::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, 
+                var(--primary), 
+                var(--secondary), 
+                var(--accent), 
+                var(--primary)
+            );
+            background-size: 300% 300%;
+            animation: ringRotate 4s linear infinite, ringGlow 2s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes ringRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes ringGlow {
             0%, 100% { 
-                box-shadow: 0 0 40px var(--glow-pink), 0 0 60px var(--glow-cyan);
+                filter: blur(15px) brightness(1);
+                opacity: 0.8;
+            }
+            50% { 
+                filter: blur(20px) brightness(1.5);
+                opacity: 1;
+            }
+        }
+
+        @keyframes photoRingPulse {
+            0%, 100% { 
                 transform: scale(1);
             }
             50% { 
-                box-shadow: 0 0 60px var(--glow-pink), 0 0 80px var(--glow-cyan);
                 transform: scale(1.05);
             }
         }
 
         .photo-frame img {
-            max-width: 400px;
-            width: 100%;
-            height: auto;
-            max-height: 400px;
+            width: 300px;
+            height: 300px;
             object-fit: cover;
-            border-radius: 12px;
+            border-radius: 50%;
             display: block;
+            border: 5px solid var(--dark);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
         }
 
-        .photo-frame::before {
+        /* Floating sparkles around photo */
+        .photo-frame::after {
             content: '✨';
             position: absolute;
-            top: -10px;
-            left: -10px;
-            font-size: 2rem;
-            animation: sparkle 2s ease-in-out infinite;
+            top: -15px;
+            right: -15px;
+            font-size: 2.5rem;
+            animation: sparkleFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px var(--accent));
         }
 
-        .photo-frame::after {
-            content: '💖';
-            position: absolute;
-            bottom: -10px;
-            right: -10px;
-            font-size: 2rem;
-            animation: sparkle 2s ease-in-out infinite 1s;
-        }
-
-        @keyframes sparkle {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-            50% { transform: scale(1.3) rotate(180deg); opacity: 0.7; }
+        @keyframes sparkleFloat {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            25% { 
+                transform: translate(10px, -10px) rotate(90deg) scale(1.2);
+            }
+            50% { 
+                transform: translate(0, -20px) rotate(180deg) scale(1);
+            }
+            75% { 
+                transform: translate(-10px, -10px) rotate(270deg) scale(1.2);
+            }
         }
 
         .date-inputs {
@@ -707,6 +750,22 @@
             .share-buttons {
                 flex-direction: column;
             }
+            
+            /* Circular photo responsive */
+            .photo-frame {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .photo-frame img {
+                width: 250px;
+                height: 250px;
+            }
+            
+            #previewImage {
+                width: 150px;
+                height: 150px;
+            }
         }
 
         .copied-notification {
@@ -766,12 +825,12 @@
                     <input type="number" id="year" placeholder="Year" min="1900" max="2100">
                 </div>
                 
-                <label for="photo">Photo (Optional) - Keep under 200KB for best results</label>
+                <label for="photo">Photo (Optional) - Auto compressed to 400px</label>
                 <div class="photo-upload">
                     <input type="file" id="photo" accept="image/*" onchange="handlePhotoUpload(event)">
                     <div class="photo-preview" id="photoPreview">
                         <div class="upload-icon">📷</div>
-                        <div class="upload-text">Click to upload photo<br><small style="opacity: 0.7;">Tip: Smaller photos work better!</small></div>
+                        <div class="upload-text">Click to upload photo<br><small style="opacity: 0.7;">Auto compressed • Circular display</small></div>
                         <img id="previewImage" style="display: none;">
                     </div>
                 </div>
@@ -839,59 +898,50 @@
         // Global variable to store photo data
         let photoData = null;
 
-        // Handle photo upload with compression
+        // Handle photo upload with MAXIMUM compression
         function handlePhotoUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            // Check file size (warn if > 200KB for URL sharing)
-            if (file.size > 200 * 1024) {
-                alert('⚠️ Photo is larger than 200KB!\n\n✅ It will be compressed, but for best results:\n- Use smaller photos (under 200KB)\n- OR use Supabase storage for unlimited size\n\nCompressing now... 📸');
-            }
-
+            const img = new Image();
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    // Compress image more aggressively
-                    const canvas = document.createElement('canvas');
-                    let width = img.width;
-                    let height = img.height;
-                    
-                    // Resize to max 600px (smaller than before)
-                    const maxSize = 600;
-                    if (width > maxSize || height > maxSize) {
-                        if (width > height) {
-                            height = (height / width) * maxSize;
-                            width = maxSize;
-                        } else {
-                            width = (width / height) * maxSize;
-                            height = maxSize;
-                        }
-                    }
-                    
-                    canvas.width = width;
-                    canvas.height = height;
-                    
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    // Convert to base64 with higher compression (0.5 quality)
-                    photoData = canvas.toDataURL('image/jpeg', 0.5);
-                    
-                    // Show preview
-                    const previewImg = document.getElementById('previewImage');
-                    previewImg.src = photoData;
-                    previewImg.style.display = 'block';
-                    document.querySelector('.upload-icon').style.display = 'none';
-                    document.querySelector('.upload-text').style.display = 'none';
-                    
-                    // Show size info
-                    const sizeKB = Math.round(photoData.length / 1024);
-                    console.log('Compressed photo size:', sizeKB + 'KB');
-                };
-                img.src = e.target.result;
+
+            reader.onload = function(ev) {
+                img.src = ev.target.result;
             };
+
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // 👉 Size CHOTO koro (400px max instead of 600px)
+                const maxWidth = 400;
+                const scale = maxWidth / img.width;
+
+                canvas.width = maxWidth;
+                canvas.height = img.height * scale;
+
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // 👉 Quality KOMAO (0.3 = 30% instead of 0.5)
+                photoData = canvas.toDataURL("image/jpeg", 0.3);
+
+                // Show preview
+                const previewImg = document.getElementById('previewImage');
+                previewImg.src = photoData;
+                previewImg.style.display = 'block';
+                document.querySelector('.upload-icon').style.display = 'none';
+                document.querySelector('.upload-text').style.display = 'none';
+
+                // Show compressed size
+                const sizeKB = Math.round(photoData.length / 1024);
+                console.log('✅ Compressed photo:', sizeKB + 'KB');
+                
+                if (sizeKB < 100) {
+                    console.log('✅ Perfect size for URL sharing!');
+                }
+            };
+
             reader.readAsDataURL(file);
         }
 
@@ -1022,15 +1072,11 @@
                 return;
             }
 
-            // Check if photo data is too large for URL (30KB base64 = ~40KB in URL)
-            if (photoData && photoData.length > 30000) {
+            // Check if photo data is too large for URL (50KB limit now - better compression!)
+            if (photoData && photoData.length > 50000) {
                 const sizeKB = Math.round(photoData.length / 1024);
-                const confirmed = confirm(`⚠️ WARNING: Photo size is ${sizeKB}KB\n\n❌ This may NOT work in WhatsApp/Facebook\n❌ Some browsers may reject the link\n\n✅ RECOMMENDED: Use Supabase Storage\n(Free 500MB, works perfectly)\n\n⚠️ Continue anyway with current photo?\n(May not work properly)`);
-                
-                if (!confirmed) {
-                    alert('💡 TIP: Either:\n1. Upload a smaller photo (under 100KB)\n2. Ask to set up Supabase storage (best option!)');
-                    return;
-                }
+                alert(`⚠️ Photo still ${sizeKB}KB after compression!\n\n💡 This is too large for URL sharing.\n\n✅ Options:\n1. Upload smaller original photo\n2. Set up Supabase (unlimited size)\n\nTry again with smaller photo!`);
+                return;
             }
 
             showCelebration(name, day, month, year, customMessage, photoData);
