@@ -825,12 +825,12 @@
                     <input type="number" id="year" placeholder="Year" min="1900" max="2100">
                 </div>
                 
-                <label for="photo">Photo (Optional) - Auto compressed to 400px</label>
+                <label for="photo">Photo (Optional) - EXTREME compression (300px, 20%)</label>
                 <div class="photo-upload">
                     <input type="file" id="photo" accept="image/*" onchange="handlePhotoUpload(event)">
                     <div class="photo-preview" id="photoPreview">
                         <div class="upload-icon">📷</div>
-                        <div class="upload-text">Click to upload photo<br><small style="opacity: 0.7;">Auto compressed • Circular display</small></div>
+                        <div class="upload-text">Click to upload<br><small style="opacity: 0.7;">⚠️ Base64 limits apply<br>💡 Supabase for unlimited</small></div>
                         <img id="previewImage" style="display: none;">
                     </div>
                 </div>
@@ -898,7 +898,7 @@
         // Global variable to store photo data
         let photoData = null;
 
-        // Handle photo upload with MAXIMUM compression
+        // EXTREME COMPRESSION - Absolute minimum!
         function handlePhotoUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -914,8 +914,8 @@
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
 
-                // 👉 Size CHOTO koro (400px max instead of 600px)
-                const maxWidth = 400;
+                // 🔥 MAXIMUM COMPRESSION: 300px only
+                const maxWidth = 300;
                 const scale = maxWidth / img.width;
 
                 canvas.width = maxWidth;
@@ -923,8 +923,8 @@
 
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                // 👉 Quality KOMAO (0.3 = 30% instead of 0.5)
-                photoData = canvas.toDataURL("image/jpeg", 0.3);
+                // 🔥 LOWEST QUALITY: 0.2 = 20% (any lower looks terrible)
+                photoData = canvas.toDataURL("image/jpeg", 0.2);
 
                 // Show preview
                 const previewImg = document.getElementById('previewImage');
@@ -935,10 +935,10 @@
 
                 // Show compressed size
                 const sizeKB = Math.round(photoData.length / 1024);
-                console.log('✅ Compressed photo:', sizeKB + 'KB');
+                console.log('✅ Compressed:', sizeKB + 'KB (300px, 20% quality)');
                 
-                if (sizeKB < 100) {
-                    console.log('✅ Perfect size for URL sharing!');
+                if (sizeKB > 30) {
+                    console.warn('⚠️ Still large! Supabase recommended for photos.');
                 }
             };
 
@@ -1072,10 +1072,10 @@
                 return;
             }
 
-            // Check if photo data is too large for URL (50KB limit now - better compression!)
-            if (photoData && photoData.length > 50000) {
+            // STRICT LIMIT: Reject photos over 40KB after compression
+            if (photoData && photoData.length > 40000) {
                 const sizeKB = Math.round(photoData.length / 1024);
-                alert(`⚠️ Photo still ${sizeKB}KB after compression!\n\n💡 This is too large for URL sharing.\n\n✅ Options:\n1. Upload smaller original photo\n2. Set up Supabase (unlimited size)\n\nTry again with smaller photo!`);
+                alert(`❌ PHOTO TOO LARGE: ${sizeKB}KB\n\n⚠️ Maximum: 40KB after compression\n\n💡 SOLUTIONS:\n\n1. ✅ Use WITHOUT photo (works perfect!)\n2. ✅ Set up Supabase (unlimited size)\n3. ⚠️ Upload much smaller original photo\n\nBase64 in URL has hard limits!\nSupabase is the ONLY real solution for photos.`);
                 return;
             }
 
