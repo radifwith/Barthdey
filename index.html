@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday 🎂✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff2e97;
+            --secondary: #00f0ff;
+            --accent: #ffd700;
+            --dark: #0a0118;
+            --glow-pink: rgba(255, 46, 151, 0.6);
+            --glow-cyan: rgba(0, 240, 255, 0.6);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0a0118, #1a0a2e, #16213e);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: float 10s infinite;
+            opacity: 0.3;
+            box-shadow: 0 0 10px var(--glow-cyan);
+        }
+
+        /* Floating Emoji Decorations */
+        .floating-emoji {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.15;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .floating-emoji.style1 {
+            animation: floatDiagonal 15s ease-in-out infinite;
+        }
+
+        .floating-emoji.style2 {
+            animation: floatZigzag 12s ease-in-out infinite;
+        }
+
+        .floating-emoji.style3 {
+            animation: floatCircular 18s linear infinite;
+        }
+
+        .floating-emoji.style4 {
+            animation: floatBounce 10s ease-in-out infinite;
+        }
+
+        @keyframes floatDiagonal {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, -150px) rotate(90deg); }
+            50% { transform: translate(200px, -50px) rotate(180deg); }
+            75% { transform: translate(100px, 50px) rotate(270deg); }
+        }
+
+        @keyframes floatZigzag {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-80px, -100px) scale(1.2); }
+            50% { transform: translate(80px, -200px) scale(0.8); }
+            75% { transform: translate(-50px, -100px) scale(1.1); }
+        }
+
+        @keyframes floatCircular {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(0, 0) rotate(360deg); 
+                   transform-origin: 150px 150px; }
+        }
+
+        @keyframes floatBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-120px) rotate(15deg); }
+            50% { transform: translateY(-80px) rotate(-15deg); }
+            75% { transform: translateY(-150px) rotate(10deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-200px) translateX(-30px); }
+            75% { transform: translateY(-100px) translateX(30px); }
+        }
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Input Page */
+        .input-page {
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        .input-page.hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-family: 'Righteous', cursive;
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite;
+            text-shadow: 0 0 30px var(--glow-pink);
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 50px;
+            font-weight: 300;
+            text-shadow: 0 0 20px var(--glow-cyan);
+        }
+
+        .input-group {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.8s ease 0.3s backwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--glow-pink);
+            transform: scale(1.02);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--glow-pink);
+            transform: scale(1.02);
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Photo Upload Styles */
+        .photo-upload {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .photo-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .photo-preview {
+            width: 100%;
+            min-height: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .photo-preview:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--glow-pink);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .upload-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+        }
+
+        #previewImage {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        /* Photo Display in Celebration */
+        .photo-display {
+            margin: 40px 0;
+            animation: fadeIn 1s ease 0.9s backwards;
+        }
+
+        .photo-frame {
+            position: relative;
+            display: inline-block;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255, 46, 151, 0.2), rgba(0, 240, 255, 0.2));
+            border-radius: 20px;
+            box-shadow: 0 0 40px var(--glow-pink), 0 0 60px var(--glow-cyan);
+            animation: photoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes photoGlow {
+            0%, 100% { 
+                box-shadow: 0 0 40px var(--glow-pink), 0 0 60px var(--glow-cyan);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 60px var(--glow-pink), 0 0 80px var(--glow-cyan);
+                transform: scale(1.05);
+            }
+        }
+
+        .photo-frame img {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .photo-frame::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 2rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .photo-frame::after {
+            content: '💖';
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            font-size: 2rem;
+            animation: sparkle 2s ease-in-out infinite 1s;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 0.7; }
+        }
+
+        .date-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .date-inputs input {
+            margin-bottom: 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), #ff6b9d);
+            color: white;
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 30px var(--glow-pink);
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 50px var(--glow-pink), 0 10px 30px rgba(255, 46, 151, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Celebration Page */
+        .celebration-page {
+            display: none;
+            text-align: center;
+            animation: celebrationEntry 1.5s ease;
+        }
+
+        .celebration-page.active {
+            display: block;
+        }
+
+        @keyframes celebrationEntry {
+            0% { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        .celebration-title {
+            font-family: 'Righteous', cursive;
+            font-size: 5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            animation: rainbow 3s ease infinite, bounce 2s ease infinite;
+            text-shadow: 0 0 40px var(--glow-pink);
+        }
+
+        @keyframes rainbow {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(30deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .name-display {
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            animation: slideIn 1s ease 0.5s backwards;
+            text-shadow: 0 0 30px var(--glow-cyan);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .date-display {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 40px;
+            animation: slideIn 1s ease 0.7s backwards;
+        }
+
+        .emoji-container {
+            font-size: 6rem;
+            margin: 40px 0;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .emoji {
+            display: inline-block;
+            margin: 0 15px;
+            animation: spin 4s linear infinite, pulse 1.5s ease-in-out infinite;
+        }
+
+        .emoji:nth-child(1) { animation: spin 4s ease-in-out infinite; animation-delay: 0s; }
+        .emoji:nth-child(2) { animation: wiggle 2s ease-in-out infinite; animation-delay: 0.2s; }
+        .emoji:nth-child(3) { animation: bounce-emoji 2.5s ease-in-out infinite; animation-delay: 0.4s; }
+        .emoji:nth-child(4) { animation: rotate3d 3s ease-in-out infinite; animation-delay: 0.6s; }
+        .emoji:nth-child(5) { animation: pulse 1.5s ease-in-out infinite; animation-delay: 0.8s; }
+        .emoji:nth-child(6) { animation: swing 2s ease-in-out infinite; animation-delay: 1s; }
+        .emoji:nth-child(7) { animation: flip 2.5s ease-in-out infinite; animation-delay: 1.2s; }
+        .emoji:nth-child(8) { animation: shake 3s ease-in-out infinite; animation-delay: 1.4s; }
+
+        @keyframes spin {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(10deg) scale(1.1); }
+            50% { transform: rotate(-10deg) scale(1); }
+            75% { transform: rotate(10deg) scale(1.1); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            50% { transform: rotate(15deg); }
+            75% { transform: rotate(-10deg); }
+        }
+
+        @keyframes bounce-emoji {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        @keyframes rotate3d {
+            0%, 100% { transform: rotateY(0deg) scale(1); }
+            50% { transform: rotateY(180deg) scale(1.2); }
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(0deg); transform-origin: top center; }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+
+        @keyframes flip {
+            0%, 100% { transform: rotateX(0deg); }
+            50% { transform: rotateX(180deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-5px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .message {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease 1s backwards;
+        }
+
+        /* Share Section */
+        .share-section {
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease 1.3s backwards;
+        }
+
+        .share-title {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .share-btn.whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.5);
+        }
+
+        .share-btn.facebook {
+            background: linear-gradient(135deg, #1877F2, #4267B2);
+            color: white;
+            box-shadow: 0 0 20px rgba(24, 119, 242, 0.5);
+        }
+
+        .share-btn.instagram {
+            background: linear-gradient(135deg, #E1306C, #FD1D1D, #F77737);
+            color: white;
+            box-shadow: 0 0 20px rgba(225, 48, 108, 0.5);
+        }
+
+        .share-btn.copy {
+            background: linear-gradient(135deg, var(--secondary), #0077ff);
+            color: white;
+            box-shadow: 0 0 20px var(--glow-cyan);
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .share-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Floating Hearts Animation */
+        .floating-heart {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            animation: heartFloat 6s ease-in infinite;
+            z-index: 10;
+        }
+
+        @keyframes heartFloat {
+            0% { 
+                opacity: 0;
+                transform: translateY(100vh) scale(0) rotate(0deg);
+            }
+            10% {
+                opacity: 0.8;
+                transform: translateY(90vh) scale(1) rotate(45deg);
+            }
+            90% {
+                opacity: 0.8;
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+            }
+            100% { 
+                opacity: 0;
+                transform: translateY(-20vh) scale(0) rotate(405deg);
+            }
+        }
+
+        /* Twinkling Stars */
+        .twinkling-star {
+            position: fixed;
+            font-size: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            animation: starTwinkle 3s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% { 
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.5) rotate(180deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+
+            .celebration-title {
+                font-size: 3rem;
+            }
+
+            .name-display {
+                font-size: 2.5rem;
+            }
+
+            .emoji-container {
+                font-size: 4rem;
+            }
+
+            .date-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .share-buttons {
+                flex-direction: column;
+            }
+        }
+
+        .copied-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00f0ff, #0077ff);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 0 30px var(--glow-cyan);
+            animation: slideInRight 0.5s ease, slideOutRight 0.5s ease 2.5s;
+            z-index: 1000;
+            display: none;
+        }
+
+        .copied-notification.show {
+            display: block;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation"></div>
+    
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Copied Notification -->
+    <div class="copied-notification" id="copiedNotification">✓ Link Copied!</div>
+
+    <div class="container">
+        <!-- Input Page -->
+        <div class="input-page" id="inputPage">
+            <div class="logo">🎂 Birthday ✨</div>
+            <div class="subtitle">Create a magical birthday celebration</div>
+            
+            <div class="input-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Enter name here..." autocomplete="off">
+                
+                <label>Date of Birth (Optional)</label>
+                <div class="date-inputs">
+                    <input type="number" id="day" placeholder="Day" min="1" max="31">
+                    <input type="number" id="month" placeholder="Month" min="1" max="12">
+                    <input type="number" id="year" placeholder="Year" min="1900" max="2100">
+                </div>
+                
+                <label for="photo">Photo (Optional)</label>
+                <div class="photo-upload">
+                    <input type="file" id="photo" accept="image/*" onchange="handlePhotoUpload(event)">
+                    <div class="photo-preview" id="photoPreview">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">Click to upload photo</div>
+                        <img id="previewImage" style="display: none;">
+                    </div>
+                </div>
+                
+                <label for="customMessage">Custom Message (Optional)</label>
+                <textarea id="customMessage" placeholder="Write your special birthday message here... 💝" rows="4"></textarea>
+            </div>
+
+            <button class="btn" onclick="createCelebration()">
+                ✨ Create Magic ✨
+            </button>
+        </div>
+
+        <!-- Celebration Page -->
+        <div class="celebration-page" id="celebrationPage">
+            <div class="celebration-title">Happy Birthday!</div>
+            
+            <div class="emoji-container">
+                <span class="emoji">🎂</span>
+                <span class="emoji">🎉</span>
+                <span class="emoji">🎈</span>
+                <span class="emoji">🎁</span>
+                <span class="emoji">✨</span>
+                <span class="emoji">💝</span>
+                <span class="emoji">🎊</span>
+                <span class="emoji">🥳</span>
+            </div>
+
+            <div class="name-display" id="displayName"></div>
+            <div class="date-display" id="displayDate"></div>
+
+            <div class="photo-display" id="photoDisplay" style="display: none;">
+                <div class="photo-frame">
+                    <img id="celebrationPhoto" alt="Birthday Photo">
+                </div>
+            </div>
+
+            <div class="message" id="birthdayMessage">
+                🌟 Wishing you a day filled with love, laughter, and all the things that make you smile! 💖<br>
+                May this year bring you endless joy, amazing adventures, and beautiful memories! 🎊<br>
+                Celebrate big because you deserve it! 🥳🎉
+            </div>
+
+            <div class="share-section">
+                <div class="share-title">📤 Share this celebration:</div>
+                <div class="share-buttons">
+                    <a class="share-btn whatsapp" id="whatsappBtn" target="_blank">
+                        💬 WhatsApp
+                    </a>
+                    <a class="share-btn facebook" id="facebookBtn" target="_blank">
+                        📘 Facebook
+                    </a>
+                    <a class="share-btn instagram" id="instagramBtn" onclick="copyLink(); return false;">
+                        📷 Copy Link
+                    </a>
+                    <button class="share-btn copy" onclick="copyLink()">
+                        📋 Copy Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variable to store photo data
+        let photoData = null;
+
+        // Handle photo upload with compression
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Check file size (warn if > 1MB)
+            if (file.size > 1024 * 1024) {
+                alert('Photo is large! Compressing it for sharing... 📸');
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Compress image
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    // Resize if too large (max 800px width/height)
+                    const maxSize = 800;
+                    if (width > maxSize || height > maxSize) {
+                        if (width > height) {
+                            height = (height / width) * maxSize;
+                            width = maxSize;
+                        } else {
+                            width = (width / height) * maxSize;
+                            height = maxSize;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Convert to base64 with compression (0.7 quality for JPEG)
+                    photoData = canvas.toDataURL('image/jpeg', 0.7);
+                    
+                    // Show preview
+                    const previewImg = document.getElementById('previewImage');
+                    previewImg.src = photoData;
+                    previewImg.style.display = 'block';
+                    document.querySelector('.upload-icon').style.display = 'none';
+                    document.querySelector('.upload-text').style.display = 'none';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            
+            // Create light particles
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Create floating emojis
+            const backgroundEmojis = ['🎈', '🎉', '🎁', '🎊', '💝', '✨', '⭐', '🌟', '💫', '🎀', '🎪', '🎨', '🎭', '🎯', '🎸', '🎺', '🎵', '🎶', '💖', '💗', '💓', '💞', '🌈', '🦋', '🌺', '🌸', '🎆', '🎇'];
+            const styles = ['style1', 'style2', 'style3', 'style4'];
+            
+            for (let i = 0; i < 25; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'floating-emoji ' + styles[Math.floor(Math.random() * styles.length)];
+                emoji.textContent = backgroundEmojis[Math.floor(Math.random() * backgroundEmojis.length)];
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.top = Math.random() * 100 + '%';
+                emoji.style.animationDelay = Math.random() * 5 + 's';
+                emoji.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                emoji.style.opacity = Math.random() * 0.2 + 0.05;
+                particlesContainer.appendChild(emoji);
+            }
+        }
+
+        // Default birthday messages
+        const birthdayMessages = [
+            "🌟 Today is YOUR day! May it be filled with endless smiles, warm hugs, and unforgettable moments! 💖<br>You deserve all the happiness in the world! Let's make this year absolutely AMAZING! 🎊✨<br>Cheers to another year of incredible adventures! 🥳🎉",
+            
+            "💝 Wishing you a birthday as beautiful and special as you are! 🌈<br>May every moment of your day sparkle with joy and laughter! ✨💫<br>Here's to celebrating YOU and all the wonderful things you bring to this world! 🎂🎈",
+            
+            "🎉 Happy Birthday to someone who makes the world brighter! 🌟<br>May this year bring you closer to your dreams and fill your life with magical moments! 💖<br>Celebrate big, laugh loud, and make beautiful memories! 🥳🎊",
+            
+            "✨ Another year older, another year BOLDER! 💪😊<br>May your birthday be filled with love, laughter, and all your favorite things! 🎁💝<br>Here's to amazing adventures, sweet surprises, and endless joy! 🎂🎈",
+            
+            "🎊 Today we celebrate YOU - your kindness, your smile, your amazing heart! 💖<br>May your birthday be the start of the best year yet! 🌟✨<br>Wishing you happiness, success, and all the cake you can eat! 🎂🥳",
+            
+            "💫 Happy Birthday to someone truly special! 🎉<br>May your day be filled with love, your year with joy, and your life with endless blessings! 💝<br>Keep shining bright - the world needs your light! ✨🌟",
+            
+            "🌈 Sending you the biggest birthday wishes wrapped in love and sparkles! 💖✨<br>May this year overflow with beautiful moments, sweet memories, and dreams coming true! 🎊<br>You're amazing - never forget that! 🥳💝",
+            
+            "🎂 It's time to PARTY! Today is all about celebrating the wonderful person you are! 🎉<br>May your birthday be as fantastic as you've made everyone else's lives! 💖<br>Cheers to love, laughter, and happily ever after! 🥂✨"
+        ];
+
+        // Get random birthday message
+        function getRandomMessage() {
+            return birthdayMessages[Math.floor(Math.random() * birthdayMessages.length)];
+        }
+
+        // Create confetti
+        function createConfetti() {
+            const colors = ['#ff2e97', '#00f0ff', '#ffd700', '#ff6b9d', '#00d4ff'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.body.appendChild(confetti);
+            }
+        }
+
+        // Create floating hearts
+        function createFloatingHearts() {
+            const hearts = ['💖', '💗', '💓', '💕', '💝', '❤️', '💞'];
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 6 + 's';
+                heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+                document.body.appendChild(heart);
+            }
+        }
+
+        // Create twinkling stars
+        function createTwinklingStars() {
+            const stars = ['⭐', '🌟', '✨', '💫', '🌠'];
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'twinkling-star';
+                star.textContent = stars[Math.floor(Math.random() * stars.length)];
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.fontSize = (Math.random() * 1 + 0.8) + 'rem';
+                document.body.appendChild(star);
+            }
+        }
+
+        // Check URL parameters on load
+        function checkURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name');
+            const day = urlParams.get('day');
+            const month = urlParams.get('month');
+            const year = urlParams.get('year');
+            const customMessage = urlParams.get('msg');
+            const photo = urlParams.get('photo');
+
+            if (name) {
+                showCelebration(name, day, month, year, customMessage, photo);
+            }
+        }
+
+        // Create celebration
+        function createCelebration() {
+            const name = document.getElementById('name').value.trim();
+            const day = document.getElementById('day').value;
+            const month = document.getElementById('month').value;
+            const year = document.getElementById('year').value;
+            const customMessage = document.getElementById('customMessage').value.trim();
+
+            if (!name) {
+                alert('Please enter a name! 🎈');
+                return;
+            }
+
+            // Check if photo data is too large for URL
+            if (photoData && photoData.length > 50000) {
+                const confirmed = confirm('⚠️ Photo is quite large! It might not work in all browsers.\n\n✅ For best results, we recommend using Supabase storage.\n\nDo you want to continue anyway?');
+                if (!confirmed) {
+                    alert('💡 Tip: Upload a smaller photo or we can set up Supabase for better photo sharing!');
+                    return;
+                }
+            }
+
+            showCelebration(name, day, month, year, customMessage, photoData);
+            updateURL(name, day, month, year, customMessage, photoData);
+        }
+
+        // Show celebration page
+        function showCelebration(name, day, month, year, customMessage, photo) {
+            document.getElementById('inputPage').classList.add('hidden');
+            document.getElementById('celebrationPage').classList.add('active');
+            
+            document.getElementById('displayName').textContent = name;
+            
+            let dateText = '';
+            if (day || month || year) {
+                const parts = [];
+                if (day) parts.push(day);
+                if (month) {
+                    const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                    'July', 'August', 'September', 'October', 'November', 'December'];
+                    parts.push(months[parseInt(month) - 1] || month);
+                }
+                if (year) parts.push(year);
+                dateText = '🎂 ' + parts.join(' ') + ' 🎂';
+            }
+            document.getElementById('displayDate').textContent = dateText;
+            
+            // Display photo if available
+            if (photo) {
+                document.getElementById('celebrationPhoto').src = photo;
+                document.getElementById('photoDisplay').style.display = 'block';
+            } else {
+                document.getElementById('photoDisplay').style.display = 'none';
+            }
+            
+            // Use custom message if provided, otherwise use random default message
+            if (customMessage) {
+                // Convert line breaks to <br> tags
+                const formattedMessage = customMessage.replace(/\n/g, '<br>');
+                document.getElementById('birthdayMessage').innerHTML = formattedMessage;
+            } else {
+                document.getElementById('birthdayMessage').innerHTML = getRandomMessage();
+            }
+
+            createConfetti();
+            createFloatingHearts();
+            createTwinklingStars();
+            setupShareButtons(name, day, month, year, customMessage, photo);
+            
+            // Auto-scroll after a short delay to show content below
+            setTimeout(() => {
+                const messageElement = document.getElementById('birthdayMessage');
+                messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1500);
+        }
+
+        // Update URL
+        function updateURL(name, day, month, year, customMessage, photo) {
+            const params = new URLSearchParams();
+            params.set('name', name);
+            if (day) params.set('day', day);
+            if (month) params.set('month', month);
+            if (year) params.set('year', year);
+            if (customMessage) params.set('msg', customMessage);
+            if (photo) params.set('photo', photo);
+            
+            const newURL = window.location.pathname + '?' + params.toString();
+            window.history.pushState({}, '', newURL);
+        }
+
+        // Setup share buttons
+        function setupShareButtons(name, day, month, year, customMessage, photo) {
+            const baseURL = window.location.origin + window.location.pathname;
+            const params = new URLSearchParams();
+            params.set('name', name);
+            if (day) params.set('day', day);
+            if (month) params.set('month', month);
+            if (year) params.set('year', year);
+            if (customMessage) params.set('msg', customMessage);
+            if (photo) params.set('photo', photo);
+            
+            const shareURL = baseURL + '?' + params.toString();
+            
+            // Check URL length and warn user
+            if (shareURL.length > 8000) {
+                console.warn('⚠️ URL is very long (' + shareURL.length + ' chars). May not work in all apps.');
+            }
+            
+            const message = `🎉 Happy Birthday ${name}! 🎂 Check out this special celebration: ${shareURL}`;
+            
+            // WhatsApp
+            document.getElementById('whatsappBtn').href = 
+                `https://wa.me/?text=${encodeURIComponent(message)}`;
+            
+            // Facebook
+            document.getElementById('facebookBtn').href = 
+                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareURL)}`;
+        }
+
+        // Copy link to clipboard
+        function copyLink() {
+            const shareURL = window.location.href;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareURL).then(() => {
+                    showCopiedNotification();
+                });
+            } else {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = shareURL;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showCopiedNotification();
+            }
+        }
+
+        // Show copied notification
+        function showCopiedNotification() {
+            const notification = document.getElementById('copiedNotification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize
+        createParticles();
+        checkURLParams();
+    </script>
+</body>
+</html>
