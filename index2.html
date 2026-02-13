@@ -39,61 +39,80 @@
         .cake-anim { font-size: 3.5rem; margin-bottom: 5px; animation: cake-bounce 1s infinite; }
         @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
         
-        /* Dedicated Photo Section */
+        /* Enhanced Photo Section with Beautiful Circular Frame */
         .photo-section {
-            margin: 20px auto;
-            width: 200px;
-            height: 200px;
+            margin: 25px auto;
+            width: 220px;
+            height: 220px;
             position: relative;
             display: none; /* Hidden if no photo */
         }
+        
+        /* Beautiful Blue Glow Effect */
         .photo-glow {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 220px; height: 220px;
-            background: radial-gradient(circle, rgba(0, 150, 255, 0.8) 0%, rgba(0, 200, 255, 0.4) 40%, transparent 70%);
-            filter: blur(30px);
+            width: 260px; 
+            height: 260px;
+            background: radial-gradient(circle, 
+                rgba(0, 150, 255, 0.9) 0%, 
+                rgba(0, 200, 255, 0.6) 30%, 
+                rgba(100, 200, 255, 0.4) 50%,
+                transparent 75%);
+            filter: blur(40px);
             border-radius: 50%;
             z-index: 1;
-            animation: pulse-glow 3s infinite alternate;
+            animation: pulse-glow 3s ease-in-out infinite alternate;
         }
+        
         @keyframes pulse-glow {
             0% { 
-                opacity: 0.6; 
-                transform: translate(-50%, -50%) scale(0.95);
-                filter: blur(25px);
+                opacity: 0.7; 
+                transform: translate(-50%, -50%) scale(0.9);
+                filter: blur(35px);
             }
             100% { 
                 opacity: 1; 
-                transform: translate(-50%, -50%) scale(1.1);
-                filter: blur(35px);
+                transform: translate(-50%, -50%) scale(1.15);
+                filter: blur(45px);
             }
         }
+        
+        /* Circular Photo Container */
         .photo-container {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 5px solid rgba(0, 150, 255, 0.6);
+            border: 6px solid rgba(0, 180, 255, 0.7);
             overflow: hidden;
             position: relative;
             z-index: 2;
             box-shadow: 
-                0 0 30px rgba(0, 150, 255, 0.8),
-                0 0 60px rgba(0, 150, 255, 0.4),
-                inset 0 0 20px rgba(0, 150, 255, 0.2);
-            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+                0 0 40px rgba(0, 150, 255, 0.9),
+                0 0 80px rgba(0, 150, 255, 0.5),
+                0 0 120px rgba(0, 200, 255, 0.3),
+                inset 0 0 30px rgba(0, 150, 255, 0.3);
+            background: #16213e;
         }
+        
+        /* Photo Images */
         .birthday-photo {
             width: 100%;
             height: 100%;
             object-fit: cover;
             position: absolute;
             top: 0; left: 0;
-            transition: opacity 1.2s ease-in-out;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
         }
+        
+        .birthday-photo.visible { 
+            opacity: 1;
+        }
+        
         .birthday-photo.hidden { 
-            opacity: 0 !important; 
+            opacity: 0;
         }
 
         .birthday-name {
@@ -150,12 +169,12 @@
             <div class="cake-anim">🎂</div>
             <h2 style="font-size: 0.9rem; letter-spacing: 3px; opacity: 0.7; font-weight: 400;">HAPPY BIRTHDAY</h2>
             
-            <!-- Dedicated Photo Frame -->
+            <!-- Beautiful Circular Photo Frame with Blue Glow -->
             <div class="photo-section" id="photoSection">
                 <div class="photo-glow"></div>
                 <div class="photo-container">
-                    <img id="p1" class="birthday-photo" alt="Birthday Photo">
-                    <img id="p2" class="birthday-photo hidden" alt="Birthday Photo">
+                    <img id="p1" class="birthday-photo" alt="Birthday Photo" crossorigin="anonymous">
+                    <img id="p2" class="birthday-photo" alt="Birthday Photo" crossorigin="anonymous">
                 </div>
             </div>
 
@@ -196,10 +215,14 @@
             document.getElementById('dispDate').textContent = (d||m||y) ? `📅 ${d||''}/${m||''}/${y||''}` : '';
             document.getElementById('dispMsg').textContent = msg || "Wishing you a year full of happiness and success! 🎂";
 
-            // Handle Photos with proper loading
+            // Enhanced Photo Handling with Better Loading
             if (photosParam) {
-                const photoList = photosParam.split(',').filter(url => url.trim() !== "");
+                const photoList = photosParam.split(',')
+                    .map(url => url.trim())
+                    .filter(url => url !== "");
+                
                 if (photoList.length > 0) {
+                    console.log("Loading photos:", photoList);
                     const section = document.getElementById('photoSection');
                     const p1 = document.getElementById('p1');
                     const p2 = document.getElementById('p2');
@@ -207,38 +230,44 @@
                     // Show photo section
                     section.style.display = 'block';
                     
+                    let photosLoaded = 0;
+                    
                     // Load first photo
                     p1.onload = function() {
-                        p1.style.opacity = '1';
+                        console.log("Photo 1 loaded successfully");
+                        p1.classList.add('visible');
+                        p1.classList.remove('hidden');
+                        photosLoaded++;
+                        
+                        // If we have 2 photos and both are loaded, start transition
+                        if (photoList.length > 1 && photosLoaded === 2) {
+                            startPhotoTransition(p1, p2);
+                        }
                     };
+                    
                     p1.onerror = function() {
-                        console.error('Failed to load photo 1');
-                        p1.style.opacity = '0';
+                        console.error('Failed to load photo 1:', photoList[0]);
                     };
+                    
                     p1.src = photoList[0];
                     
-                    // If there's a second photo, set up transition
+                    // If there's a second photo, load it
                     if (photoList.length > 1) {
                         p2.onload = function() {
-                            // Start transition after second photo loads
-                            let showingP1 = true;
-                            setInterval(() => {
-                                if (showingP1) {
-                                    p1.classList.add('hidden');
-                                    p2.classList.remove('hidden');
-                                } else {
-                                    p1.classList.remove('hidden');
-                                    p2.classList.add('hidden');
-                                }
-                                showingP1 = !showingP1;
-                            }, 4000);
+                            console.log("Photo 2 loaded successfully");
+                            photosLoaded++;
+                            
+                            // Start transition when both photos are loaded
+                            if (photosLoaded === 2) {
+                                startPhotoTransition(p1, p2);
+                            }
                         };
+                        
                         p2.onerror = function() {
-                            console.error('Failed to load photo 2');
+                            console.error('Failed to load photo 2:', photoList[1]);
                         };
+                        
                         p2.src = photoList[1];
-                        p2.classList.remove('hidden');
-                        p2.style.opacity = '0';
                     }
                 }
             }
@@ -251,9 +280,29 @@
             initAnimations();
         };
 
+        function startPhotoTransition(p1, p2) {
+            console.log("Starting photo transition");
+            let showingP1 = true;
+            
+            setInterval(() => {
+                if (showingP1) {
+                    p1.classList.remove('visible');
+                    p1.classList.add('hidden');
+                    p2.classList.add('visible');
+                    p2.classList.remove('hidden');
+                } else {
+                    p1.classList.add('visible');
+                    p1.classList.remove('hidden');
+                    p2.classList.remove('visible');
+                    p2.classList.add('hidden');
+                }
+                showingP1 = !showingP1;
+            }, 4000);
+        }
+
         function copyLink() {
             navigator.clipboard.writeText(window.location.href).then(() => {
-                alert("Surprise link copied! Share it now! 💝");
+                alert("Surprise link copied! Share it now! 👍");
             });
         }
 
@@ -296,7 +345,7 @@
             draw();
 
             // Floating Emojis
-            const emojis = ['💖', '🎈', '✨', '🎁', '🌸', '🎉', '💝', '🎂'];
+            const emojis = ['💖', '🎈', '✨', '🎁', '🌸', '🎉', '👑', '🎂'];
             setInterval(() => {
                 const e = document.createElement('div');
                 e.className = 'floating-item';
