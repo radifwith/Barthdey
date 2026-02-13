@@ -29,47 +29,54 @@
             0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
             100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
         }
-        .container { width: 100%; max-width: 500px; padding: 20px; }
+        .container { width: 100%; max-width: 450px; padding: 20px; }
         .input-page {
             text-align: center; background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px); border-radius: 30px; padding: 40px;
+            backdrop-filter: blur(15px); border-radius: 30px; padding: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         .logo {
-            font-family: 'Righteous', cursive; font-size: 2.5rem;
+            font-family: 'Righteous', cursive; font-size: 2.2rem;
             background: linear-gradient(135deg, #ff2e97, #00f0ff, #ffd700);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px;
         }
-        .subtitle { font-size: 1rem; color: #00f0ff; margin-bottom: 30px; }
-        .input-group { text-align: left; margin-bottom: 20px; }
-        label { display: block; font-size: 0.85rem; color: #ffd700; margin-bottom: 8px; font-weight: 600; }
+        .subtitle { font-size: 0.9rem; color: #00f0ff; margin-bottom: 25px; opacity: 0.8; }
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; font-size: 0.8rem; color: #ffd700; margin-bottom: 5px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         input, textarea {
-            width: 100%; padding: 12px 15px; font-size: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.3);
-            color: white; border-radius: 12px; margin-bottom: 15px; outline: none;
+            width: 100%; padding: 10px 15px; font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.2);
+            color: white; border-radius: 12px; margin-bottom: 12px; outline: none;
+            transition: border-color 0.3s;
         }
-        .date-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        input:focus, textarea:focus { border-color: #ff2e97; }
+        .date-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .gallery-btn {
-            width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(255, 46, 151, 0.2), rgba(0, 240, 255, 0.2));
-            border: 2px dashed rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; color: white; margin-bottom: 15px;
+            width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 12px; cursor: pointer; color: white; margin-bottom: 10px;
+            transition: all 0.3s;
         }
-        .photo-preview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .photo-preview-item { position: relative; height: 100px; border-radius: 10px; overflow: hidden; border: 2px solid #ff2e97; }
+        .gallery-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: #ff2e97; }
+        .photo-preview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .photo-preview-item { position: relative; height: 80px; border-radius: 10px; overflow: hidden; border: 2px solid #ff2e97; }
         .photo-preview-item img { width: 100%; height: 100%; object-fit: cover; }
         .btn {
             width: 100%; background: linear-gradient(135deg, #ff2e97, #ff6b9d);
-            color: white; padding: 15px; font-size: 1.1rem; border: none; border-radius: 50px;
+            color: white; padding: 12px; font-size: 1rem; border: none; border-radius: 50px;
             cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(255, 46, 151, 0.3);
+            transition: transform 0.2s;
         }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        #status { margin-top: 15px; font-size: 0.9rem; color: #00f0ff; font-weight: bold; }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        #status { margin-top: 10px; font-size: 0.85rem; color: #00f0ff; font-weight: 500; }
     </style>
 </head>
 <body>
     <div class="bg-animation">
-        <span style="left: 25%; width: 80px; height: 80px; background: rgba(255, 107, 107, 0.2);"></span>
-        <span style="left: 10%; width: 20px; height: 20px; animation-delay: 2s; background: rgba(78, 205, 196, 0.2);"></span>
-        <span style="left: 70%; width: 20px; height: 20px; animation-delay: 4s; background: rgba(255, 230, 109, 0.2);"></span>
+        <span style="left: 25%; width: 80px; height: 80px; background: rgba(255, 107, 107, 0.1);"></span>
+        <span style="left: 10%; width: 20px; height: 20px; animation-delay: 2s; background: rgba(78, 205, 196, 0.1);"></span>
+        <span style="left: 70%; width: 20px; height: 20px; animation-delay: 4s; background: rgba(255, 230, 109, 0.1);"></span>
     </div>
 
     <div class="container">
@@ -79,9 +86,9 @@
             
             <div class="input-group">
                 <label>Name</label>
-                <input type="text" id="nameInput" placeholder="Enter name...">
+                <input type="text" id="nameInput" placeholder="Friend's Name">
                 
-                <label>Date (Optional)</label>
+                <label>Birth Date (Optional)</label>
                 <div class="date-inputs">
                     <input type="number" id="dayInput" placeholder="DD">
                     <input type="number" id="monthInput" placeholder="MM">
@@ -89,7 +96,7 @@
                 </div>
                 
                 <label>Message (Optional)</label>
-                <textarea id="messageInput" placeholder="Your special message..."></textarea>
+                <textarea id="messageInput" placeholder="Your special message..." rows="3"></textarea>
                 
                 <label>Photos (Max 2)</label>
                 <input type="file" id="fileInput" accept="image/*" multiple style="display: none;" onchange="handleFiles(event)">
@@ -122,8 +129,7 @@
             });
         }
 
-        // --- STRICT COMPRESSION ALGORITHM (Guarantees < 50KB) ---
-        async function compressToLimit(file, limitKB) {
+        async function compressImage(file) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -132,38 +138,21 @@
                     img.src = e.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        
-                        // Step 1: Start with a reasonable resolution
                         let width = img.width;
                         let height = img.height;
-                        const maxDim = 500; 
+                        const maxDim = 600;
                         if (width > height) {
                             if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                         } else {
                             if (height > maxDim) { width *= maxDim / height; height = maxDim; }
                         }
-                        
                         canvas.width = width;
                         canvas.height = height;
-                        
-                        // Step 2: Iterative quality reduction until size is within limit
-                        let quality = 0.7;
-                        let resultBlob = null;
-                        
-                        function attempt() {
-                            canvas.toBlob((blob) => {
-                                if (blob.size <= limitKB * 1024 || quality <= 0.1) {
-                                    resolve(new File([blob], "photo.jpg", { type: "image/jpeg" }));
-                                } else {
-                                    quality -= 0.1;
-                                    attempt();
-                                }
-                            }, "image/jpeg", quality);
-                        }
-                        
+                        const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        attempt();
+                        canvas.toBlob((blob) => {
+                            resolve(new File([blob], "photo.jpg", { type: "image/jpeg" }));
+                        }, "image/jpeg", 0.7);
                     };
                 };
             });
@@ -179,38 +168,28 @@
             btn.textContent = "Processing...";
 
             let photoUrls = [];
-            if (selectedFiles.length > 0) {
-                // Divide 48KB by number of photos to stay safely under 50KB total
-                const limitPerPhoto = Math.floor(48 / selectedFiles.length);
-                
-                for (let i = 0; i < selectedFiles.length; i++) {
-                    status.textContent = `Compressing photo ${i+1}...`;
-                    const compressedFile = await compressToLimit(selectedFiles[i], limitPerPhoto);
-                    
-                    status.textContent = `Uploading photo ${i+1} (${Math.round(compressedFile.size/1024)}KB)...`;
-                    
+            for (let i = 0; i < selectedFiles.length; i++) {
+                status.textContent = `Uploading photo ${i+1}...`;
+                try {
+                    const compressed = await compressImage(selectedFiles[i]);
                     const fd = new FormData();
-                    fd.append("file", compressedFile);
+                    fd.append("file", compressed);
                     fd.append("text", "Birthday Surprise");
 
-                    try {
-                        const res = await fetch(WORKER_URL, { method: "POST", body: fd });
-                        const txt = await res.text();
-                        if (res.ok) {
-                            try {
-                                const data = JSON.parse(txt);
-                                photoUrls.push(data.photo_url || data.url || txt.trim());
-                            } catch { photoUrls.push(txt.trim()); }
-                        } else {
-                            console.error("Upload failed:", txt);
-                        }
-                    } catch (err) {
-                        console.error("Network error:", err);
+                    const res = await fetch(WORKER_URL, { method: "POST", body: fd });
+                    const txt = await res.text();
+                    if (res.ok) {
+                        try {
+                            const data = JSON.parse(txt);
+                            photoUrls.push(data.photo_url || data.url || txt.trim());
+                        } catch { photoUrls.push(txt.trim()); }
                     }
+                } catch (err) {
+                    console.error("Upload error:", err);
                 }
             }
 
-            status.textContent = "Finalizing...";
+            status.textContent = "Redirecting...";
             const day = document.getElementById('dayInput').value;
             const month = document.getElementById('monthInput').value;
             const year = document.getElementById('yearInput').value;
@@ -224,7 +203,6 @@
             if (msg) p.set('t', msg);
             if (photoUrls.length > 0) p.set('p', photoUrls.join(','));
 
-            // Redirect to index2.html
             window.location.href = "index2.html?" + p.toString();
         }
     </script>

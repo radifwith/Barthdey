@@ -29,85 +29,96 @@
             0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
             100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
         }
-        .container { width: 100%; max-width: 600px; padding: 20px; }
+        .container { width: 100%; max-width: 600px; padding: 20px; z-index: 10; }
         .glass-card {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px);
             border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px; width: 100%; text-align: center; position: relative;
+            padding: 30px 20px; width: 100%; text-align: center; position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .cake-anim { font-size: 4rem; margin-bottom: 10px; animation: cake-bounce 1s infinite; }
+        .cake-anim { font-size: 3.5rem; margin-bottom: 5px; animation: cake-bounce 1s infinite; }
         @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
         
-        /* Circular Glowing Frame for Photo */
-        .photo-frame {
-            position: relative; 
-            display: none; /* Hidden by default, shown if photo exists */
-            margin: 20px auto;
-            width: 220px; 
-            height: 220px;
+        /* Dedicated Photo Section */
+        .photo-section {
+            margin: 15px auto;
+            width: 180px;
+            height: 180px;
+            position: relative;
+            display: none; /* Hidden if no photo */
         }
         .photo-glow {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
+            width: 190px; height: 190px;
             background: radial-gradient(circle, #ff2e97 0%, transparent 70%);
-            filter: blur(30px);
+            filter: blur(25px);
             border-radius: 50%;
-            z-index: 0;
+            z-index: 1;
             animation: pulse-glow 2s infinite alternate;
         }
         @keyframes pulse-glow {
-            0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.9); }
+            100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
         }
-
+        .photo-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid #ff2e97;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 20px rgba(255, 46, 151, 0.6);
+            background: #000;
+        }
         .birthday-photo {
-            width: 200px; 
-            height: 200px; 
-            border-radius: 50%; 
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border: 5px solid #ff2e97; 
-            box-shadow: 0 0 30px rgba(255, 46, 151, 0.5);
-            position: absolute; 
-            left: 10px; 
-            top: 10px; 
-            transition: opacity 1s;
-            z-index: 1;
-            background: #222; /* Placeholder background */
+            position: absolute;
+            top: 0; left: 0;
+            transition: opacity 1s ease-in-out;
         }
-        .hidden { display: none !important; }
+        .hidden { opacity: 0 !important; }
+
         .birthday-name {
-            font-size: 2.8rem; font-weight: 800; margin: 15px 0;
+            font-size: 2.5rem; font-weight: 800; margin: 10px 0;
             background: linear-gradient(45deg, #ff6b6b, #feca57, #ff9ff3, #54a0ff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: float 3s infinite;
         }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        
         .birthday-date {
-            font-size: 1.2rem; color: #ffd700;
+            font-size: 1.1rem; color: #ffd700;
             background: rgba(255, 255, 255, 0.1); display: inline-block;
-            padding: 6px 20px; border-radius: 50px; margin-bottom: 15px;
+            padding: 5px 15px; border-radius: 50px; margin-bottom: 10px;
         }
         .message-box {
-            background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 20px;
-            margin: 15px 0; font-size: 1.1rem; line-height: 1.6; white-space: pre-line;
+            background: rgba(255, 255, 255, 0.08); padding: 20px; border-radius: 20px;
+            margin: 10px 0; font-size: 1rem; line-height: 1.5; white-space: pre-line;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .emoji-row { margin-top: 20px; font-size: 2rem; letter-spacing: 10px; }
+        .emoji-row { margin-top: 15px; font-size: 1.8rem; letter-spacing: 8px; }
         .heartbeat { animation: heartbeat 1.5s ease-in-out infinite; display: inline-block; }
         @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
-        .share-section { margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 15px; }
-        .share-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .share-btn { padding: 8px 20px; border-radius: 50px; text-decoration: none; color: white; font-size: 0.9rem; font-weight: 600; border: none; cursor: pointer; }
+        
+        .share-section { margin-top: 15px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 15px; }
+        .share-buttons { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .share-btn { padding: 8px 15px; border-radius: 50px; text-decoration: none; color: white; font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer; }
         .share-btn.whatsapp { background: #25D366; }
         .share-btn.facebook { background: #1877F2; }
-        .share-btn.copy { background: #00f0ff; }
+        .share-btn.copy { background: #00f0ff; color: #000; }
+        
         .btn-new {
-            margin-top: 20px; width: 100%; background: rgba(255,255,255,0.1); color: white;
-            padding: 15px; font-size: 1rem; border: none; border-radius: 50px; cursor: pointer;
+            margin-top: 15px; width: 100%; background: rgba(255,255,255,0.1); color: white;
+            padding: 12px; font-size: 0.9rem; border: none; border-radius: 50px; cursor: pointer;
+            transition: background 0.3s;
         }
+        .btn-new:hover { background: rgba(255,255,255,0.2); }
+        
         #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; }
         .floating-item { position: fixed; pointer-events: none; z-index: 5; font-size: 1.5rem; animation: floatUp 6s linear forwards; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
@@ -115,21 +126,24 @@
 </head>
 <body>
     <div class="bg-animation">
-        <span style="left: 25%; width: 80px; height: 80px; background: rgba(255, 107, 107, 0.2);"></span>
-        <span style="left: 10%; width: 20px; height: 20px; animation-delay: 2s; background: rgba(78, 205, 196, 0.2);"></span>
-        <span style="left: 70%; width: 20px; height: 20px; animation-delay: 4s; background: rgba(255, 230, 109, 0.2);"></span>
+        <span style="left: 25%; width: 80px; height: 80px; background: rgba(255, 107, 107, 0.15);"></span>
+        <span style="left: 10%; width: 20px; height: 20px; animation-delay: 2s; background: rgba(78, 205, 196, 0.15);"></span>
+        <span style="left: 70%; width: 20px; height: 20px; animation-delay: 4s; background: rgba(255, 230, 109, 0.15);"></span>
     </div>
     <canvas id="confetti-canvas"></canvas>
 
     <div class="container">
         <div id="celebrationPage" class="glass-card">
             <div class="cake-anim">🎂</div>
-            <h2 style="font-size: 1.1rem; letter-spacing: 3px; opacity: 0.8;">HAPPY BIRTHDAY</h2>
+            <h2 style="font-size: 0.9rem; letter-spacing: 3px; opacity: 0.7; font-weight: 400;">HAPPY BIRTHDAY</h2>
             
-            <div class="photo-frame" id="photoFrame">
+            <!-- Dedicated Photo Frame -->
+            <div class="photo-section" id="photoSection">
                 <div class="photo-glow"></div>
-                <img id="p1" class="birthday-photo">
-                <img id="p2" class="birthday-photo hidden">
+                <div class="photo-container">
+                    <img id="p1" class="birthday-photo">
+                    <img id="p2" class="birthday-photo hidden">
+                </div>
             </div>
 
             <div class="birthday-name" id="dispName"></div>
@@ -145,7 +159,7 @@
             </div>
 
             <div class="share-section">
-                <p style="font-size: 0.9rem; opacity: 0.7;">Share this link:</p>
+                <p style="font-size: 0.8rem; opacity: 0.6;">Share this surprise:</p>
                 <div class="share-buttons">
                     <a href="#" id="wa" class="share-btn whatsapp" target="_blank">WhatsApp</a>
                     <a href="#" id="fb" class="share-btn facebook" target="_blank">Facebook</a>
@@ -153,92 +167,116 @@
                 </div>
             </div>
 
-            <button class="btn-new" onclick="location.href='index.html'">Create New</button>
+            <button class="btn-new" onclick="location.href='index.html'">Create New Surprise</button>
         </div>
     </div>
 
     <script>
         window.onload = () => {
-            const p = new URLSearchParams(window.location.search);
-            const name = p.get('n');
-            if (!name && !p.get('p')) {
-                // For preview/testing if no params
-                document.getElementById('dispName').textContent = "Friend";
-            } else {
-                document.getElementById('dispName').textContent = name || "Friend";
-            }
-
-            const d = p.get('d'), m = p.get('m'), y = p.get('y'), msg = p.get('t'), photos = p.get('p') ? p.get('p').split(',') : [];
-
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('n') || "Friend";
+            const d = params.get('d'), m = params.get('m'), y = params.get('y');
+            const msg = params.get('t');
+            const photosParam = params.get('p');
+            
+            document.getElementById('dispName').textContent = name;
             document.getElementById('dispDate').textContent = (d||m||y) ? `📅 ${d||''}/${m||''}/${y||''}` : '';
             document.getElementById('dispMsg').textContent = msg || "Wishing you a year full of happiness and success! 🎂";
 
-            const p1 = document.getElementById('p1'), p2 = document.getElementById('p2'), frame = document.getElementById('photoFrame');
-            
-            if (photos.length > 0) {
-                frame.style.display = 'block'; // Show frame if photos exist
-                p1.src = photos[0];
-                if (photos.length > 1) {
-                    p2.src = photos[1];
-                    p2.classList.remove('hidden');
-                    p2.style.opacity = '0';
-                    let toggle = true;
-                    setInterval(() => {
-                        if (toggle) { p1.style.opacity = '0'; p2.style.opacity = '1'; }
-                        else { p1.style.opacity = '1'; p2.style.opacity = '0'; }
-                        toggle = !toggle;
-                    }, 4000);
+            // Handle Photos correctly
+            if (photosParam) {
+                const photoList = photosParam.split(',').filter(url => url.trim() !== "");
+                if (photoList.length > 0) {
+                    const section = document.getElementById('photoSection');
+                    const p1 = document.getElementById('p1');
+                    const p2 = document.getElementById('p2');
+                    
+                    section.style.display = 'block';
+                    p1.src = photoList[0];
+                    
+                    if (photoList.length > 1) {
+                        p2.src = photoList[1];
+                        p2.classList.remove('hidden');
+                        p2.style.opacity = '0';
+                        
+                        let showingP1 = true;
+                        setInterval(() => {
+                            if (showingP1) {
+                                p1.style.opacity = '0';
+                                p2.style.opacity = '1';
+                            } else {
+                                p1.style.opacity = '1';
+                                p2.style.opacity = '0';
+                            }
+                            showingP1 = !showingP1;
+                        }, 3500);
+                    }
                 }
-            } else {
-                frame.style.display = 'none'; // Hide frame if no photos
             }
 
-            const shareUrl = window.location.href;
-            document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent("I have a surprise for you! 🎂 " + shareUrl)}`;
-            document.getElementById('fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+            // Share functionality
+            const currentUrl = window.location.href;
+            document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent("I have a surprise for you! 🎂 " + currentUrl)}`;
+            document.getElementById('fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
             
-            startAllAnims();
+            initAnimations();
         };
 
         function copyLink() {
             navigator.clipboard.writeText(window.location.href).then(() => {
-                alert("Link Copied! Share it with your friend! 💝");
+                alert("Surprise link copied! Share it now! 💝");
             });
         }
 
-        function startAllAnims() {
+        function initAnimations() {
+            // Confetti
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            const parts = [];
-            for (let i = 0; i < 100; i++) {
-                parts.push({
-                    x: Math.random() * canvas.width, y: -20,
-                    w: Math.random() * 12 + 6, h: Math.random() * 12 + 6,
-                    c: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                    s: Math.random() * 3 + 2
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const pieces = [];
+            for (let i = 0; i < 80; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 10 + 5,
+                    color: `hsl(${Math.random() * 360}, 80%, 60%)`,
+                    speed: Math.random() * 3 + 2,
+                    rot: Math.random() * 360
                 });
             }
-            function loop() {
+
+            function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                parts.forEach(p => {
-                    ctx.fillStyle = p.c; p.y += p.s;
-                    ctx.fillRect(p.x, p.y, p.w, p.h);
+                pieces.forEach(p => {
+                    ctx.save();
+                    ctx.fillStyle = p.color;
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot * Math.PI / 180);
+                    ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+                    ctx.restore();
+                    
+                    p.y += p.speed;
+                    p.rot += 2;
                     if (p.y > canvas.height) p.y = -20;
                 });
-                requestAnimationFrame(loop);
+                requestAnimationFrame(draw);
             }
-            loop();
+            draw();
+
+            // Floating Emojis
             const emojis = ['💖', '🎈', '✨', '🎁', '🌸', '🎉', '💝', '🎂'];
             setInterval(() => {
                 const e = document.createElement('div');
                 e.className = 'floating-item';
                 e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-                e.style.left = Math.random() * 100 + '%';
+                e.style.left = Math.random() * 90 + 5 + '%';
                 e.style.bottom = '-50px';
                 document.body.appendChild(e);
                 setTimeout(() => e.remove(), 6000);
-            }, 800);
+            }, 1000);
         }
     </script>
 </body>
