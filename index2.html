@@ -39,22 +39,22 @@
         .cake-anim { font-size: 3.5rem; margin-bottom: 5px; animation: cake-bounce 1s infinite; }
         @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
         
-        /* Enhanced Photo Section - ALWAYS VISIBLE */
+        /* PHOTO SECTION - ALWAYS VISIBLE ✨ */
         .photo-section {
             margin: 20px auto 25px;
             width: 200px;
             height: 200px;
             position: relative;
-            display: block; /* ALWAYS VISIBLE */
+            display: block; /* সবসময় দেখাবে */
         }
         
-        /* Beautiful Blue Glow Effect */
+        /* Beautiful Blue Glow Effect - ALWAYS ACTIVE 💙 */
         .photo-glow {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 240px; 
-            height: 240px;
+            width: 260px; 
+            height: 260px;
             background: radial-gradient(circle, 
                 rgba(0, 150, 255, 0.9) 0%, 
                 rgba(0, 200, 255, 0.6) 30%, 
@@ -79,7 +79,7 @@
             }
         }
         
-        /* Circular Photo Container */
+        /* Circular Photo Container with Border ⭐ */
         .photo-container {
             width: 100%;
             height: 100%;
@@ -99,40 +99,44 @@
             justify-content: center;
         }
         
-        /* Placeholder when no photo */
+        /* Placeholder - Beautiful Floating Emoji 🎂 */
         .photo-placeholder {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 4rem;
+            font-size: 4.5rem;
             z-index: 1;
             animation: float-placeholder 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(0, 200, 255, 0.6));
-            transition: opacity 0.3s ease-in-out;
+            filter: drop-shadow(0 0 25px rgba(0, 200, 255, 0.7));
+            transition: opacity 0.5s ease-in-out;
         }
         
         @keyframes float-placeholder {
             0%, 100% { 
-                transform: translate(-50%, -50%) scale(1);
-                filter: drop-shadow(0 0 20px rgba(0, 200, 255, 0.6));
+                transform: translate(-50%, -50%) scale(1) rotate(-5deg);
+                filter: drop-shadow(0 0 25px rgba(0, 200, 255, 0.7));
             }
             50% { 
-                transform: translate(-50%, -50%) scale(1.1);
-                filter: drop-shadow(0 0 30px rgba(0, 200, 255, 0.9));
+                transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
+                filter: drop-shadow(0 0 40px rgba(0, 200, 255, 1));
             }
         }
         
-        /* Photo Images - Start invisible, become visible when loaded */
+        /* Photo Images 📸 */
         .birthday-photo {
             width: 100%;
             height: 100%;
             object-fit: cover;
             position: absolute;
             top: 0; left: 0;
-            opacity: 0; /* Start invisible */
+            opacity: 0;
             transition: opacity 1.5s ease-in-out;
-            z-index: 3; /* Above placeholder */
+            z-index: 3;
+        }
+        
+        .birthday-photo.visible {
+            opacity: 1;
         }
         
         .birthday-photo.fade-out { 
@@ -163,7 +167,8 @@
         
         .share-section { margin-top: 15px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 15px; }
         .share-buttons { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-        .share-btn { padding: 8px 15px; border-radius: 50px; text-decoration: none; color: white; font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer; }
+        .share-btn { padding: 8px 15px; border-radius: 50px; text-decoration: none; color: white; font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; }
+        .share-btn:hover { transform: scale(1.05); }
         .share-btn.whatsapp { background: #25D366; }
         .share-btn.facebook { background: #1877F2; }
         .share-btn.copy { background: #00f0ff; color: #000; }
@@ -171,9 +176,9 @@
         .btn-new {
             margin-top: 15px; width: 100%; background: rgba(255,255,255,0.1); color: white;
             padding: 12px; font-size: 0.9rem; border: none; border-radius: 50px; cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
         }
-        .btn-new:hover { background: rgba(255,255,255,0.2); }
+        .btn-new:hover { background: rgba(255,255,255,0.2); transform: scale(1.02); }
         
         #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; }
         .floating-item { position: fixed; pointer-events: none; z-index: 5; font-size: 1.5rem; animation: floatUp 6s linear forwards; }
@@ -193,8 +198,8 @@
             <div class="cake-anim">🎂</div>
             <h2 style="font-size: 0.9rem; letter-spacing: 3px; opacity: 0.7; font-weight: 400;">HAPPY BIRTHDAY</h2>
             
-            <!-- Beautiful Circular Photo Frame with Blue Glow - ALWAYS VISIBLE -->
-            <div class="photo-section" id="photoSection">
+            <!-- PHOTO SECTION - সবসময় দেখাবে 🎨 -->
+            <div class="photo-section">
                 <div class="photo-glow"></div>
                 <div class="photo-container">
                     <div class="photo-placeholder" id="photoPlaceholder">🎂</div>
@@ -229,30 +234,38 @@
     </div>
 
     <script>
-        // ULTRA STABLE PHOTO LOADING SYSTEM 🔥
+        // SYSTEM: index2.html শুধু URL parameter থেকে photo দেখায়
+        // Upload logic index.html এ আছে
+        
         let photoTransitionInterval = null;
         
         window.onload = () => {
+            // Read URL parameters
             const params = new URLSearchParams(window.location.search);
             const name = params.get('n') || "Friend";
             const d = params.get('d'), m = params.get('m'), y = params.get('y');
             const msg = params.get('t');
-            const photosParam = params.get('p');
+            const photosParam = params.get('p'); // Photo URL(s) from Supabase
             
+            // Display text content
             document.getElementById('dispName').textContent = name;
             document.getElementById('dispDate').textContent = (d||m||y) ? `📅 ${d||''}/${m||''}/${y||''}` : '';
             document.getElementById('dispMsg').textContent = msg || "Wishing you a year full of happiness and success! 🎂";
 
-            // ULTRA STABLE Photo Handling
-            if (photosParam) {
+            // Handle Photos from URL parameter
+            if (photosParam && photosParam.trim() !== "") {
                 const photoList = photosParam.split(',')
                     .map(url => url.trim())
                     .filter(url => url !== "");
                 
                 if (photoList.length > 0) {
-                    console.log("📸 Loading photos:", photoList);
-                    initPhotoSystem(photoList);
+                    console.log("📸 Loading photos from Supabase:", photoList);
+                    loadPhotos(photoList);
+                } else {
+                    console.log("🎂 No photos - showing placeholder");
                 }
+            } else {
+                console.log("🎂 No photos in URL - showing placeholder");
             }
 
             // Share functionality
@@ -263,52 +276,40 @@
             initAnimations();
         };
 
-        function initPhotoSystem(photoList) {
-            const section = document.getElementById('photoSection');
+        function loadPhotos(photoList) {
             const placeholder = document.getElementById('photoPlaceholder');
             const p1 = document.getElementById('p1');
             const p2 = document.getElementById('p2');
             
-            // Photo section is ALWAYS visible (no need to toggle)
-            
-            // Load Photo 1 - IMMEDIATE with fallback
+            // Load first photo
             p1.src = photoList[0];
             
-            // Hide placeholder and show photo
-            const showPhoto = () => {
-                placeholder.style.opacity = '0';
-                p1.style.opacity = '1';
-                setTimeout(() => {
-                    placeholder.style.display = 'none';
-                }, 300);
-                console.log("✅ Photo 1 visible, placeholder hidden");
-            };
-            
-            // Fallback: Force visible after 100ms even if onload doesn't fire
-            setTimeout(showPhoto, 100);
-            
-            // Track if photo loaded successfully
+            // When photo loads successfully
             p1.onload = function() {
-                console.log("✅ Photo 1 loaded successfully");
-                showPhoto();
+                console.log("✅ Photo 1 loaded from Supabase");
+                // Hide placeholder, show photo
+                placeholder.style.opacity = '0';
+                setTimeout(() => placeholder.style.display = 'none', 500);
+                p1.classList.add('visible');
             };
             
             p1.onerror = function() {
                 console.error('❌ Failed to load photo 1:', photoList[0]);
-                // Keep showing placeholder
-                placeholder.style.opacity = '1';
-                p1.style.opacity = '0';
+                console.log("🎂 Keeping placeholder visible");
+                // Keep placeholder visible if photo fails
             };
             
-            // If there's a second photo, set up transition
+            // If there are 2 photos, load second one
             if (photoList.length > 1) {
-                // Preload Photo 2
                 p2.src = photoList[1];
                 
-                // Set up transition after a delay (give time to load)
-                setTimeout(() => {
-                    startPhotoTransition(p1, p2);
-                }, 2000); // Wait 2 seconds before starting transition
+                p2.onload = function() {
+                    console.log("✅ Photo 2 loaded from Supabase");
+                    // Start transition after both loaded
+                    setTimeout(() => {
+                        startPhotoTransition(p1, p2);
+                    }, 2000);
+                };
                 
                 p2.onerror = function() {
                     console.error('❌ Failed to load photo 2:', photoList[1]);
@@ -317,7 +318,7 @@
         }
 
         function startPhotoTransition(p1, p2) {
-            console.log("🔄 Starting photo transition");
+            console.log("🔄 Starting photo transition (every 4 seconds)");
             let showingP1 = true;
             
             // Clear any existing interval
@@ -327,28 +328,30 @@
             
             photoTransitionInterval = setInterval(() => {
                 if (showingP1) {
-                    // Fade out Photo 1, Fade in Photo 2
+                    // Show Photo 2
                     p1.classList.add('fade-out');
-                    p2.style.opacity = '1';
-                    console.log("→ Showing Photo 2");
+                    p2.classList.add('visible');
+                    console.log("→ Photo 2");
                 } else {
-                    // Fade in Photo 1, Fade out Photo 2
+                    // Show Photo 1
                     p1.classList.remove('fade-out');
-                    p2.style.opacity = '0';
-                    console.log("→ Showing Photo 1");
+                    p2.classList.remove('visible');
+                    console.log("→ Photo 1");
                 }
                 showingP1 = !showingP1;
-            }, 4000); // Switch every 4 seconds
+            }, 4000);
         }
 
         function copyLink() {
             navigator.clipboard.writeText(window.location.href).then(() => {
                 alert("Surprise link copied! Share it now! 👍");
+            }).catch(() => {
+                alert("Please copy the link manually!");
             });
         }
 
         function initAnimations() {
-            // Confetti
+            // Confetti Animation
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
@@ -398,7 +401,7 @@
             }, 1000);
         }
         
-        // Clean up on page unload
+        // Cleanup
         window.addEventListener('beforeunload', () => {
             if (photoTransitionInterval) {
                 clearInterval(photoTransitionInterval);
