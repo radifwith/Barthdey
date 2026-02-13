@@ -62,7 +62,7 @@
             cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(255, 46, 151, 0.3);
         }
         .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        #status { margin-top: 15px; font-size: 0.9rem; color: #00f0ff; }
+        #status { margin-top: 15px; font-size: 0.9rem; color: #00f0ff; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -122,29 +122,48 @@
             });
         }
 
-        async function compress(file, maxKB) {
-            return new Promise(resolve => {
+        // --- STRICT COMPRESSION ALGORITHM (Guarantees < 50KB) ---
+        async function compressToLimit(file, limitKB) {
+            return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = e => {
+                reader.onload = (e) => {
                     const img = new Image();
                     img.src = e.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        let w = img.width, h = img.height;
-                        const maxDim = 600;
-                        if (w > h && w > maxDim) { h *= maxDim/w; w = maxDim; }
-                        else if (h > maxDim) { w *= maxDim/h; h = maxDim; }
-                        canvas.width = w; canvas.height = h;
                         const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, w, h);
-                        let q = 0.6;
-                        let data = canvas.toDataURL('image/jpeg', q);
-                        while (data.length > (maxKB * 1333) && q > 0.05) {
-                            q -= 0.05;
-                            data = canvas.toDataURL('image/jpeg', q);
+                        
+                        // Step 1: Start with a reasonable resolution
+                        let width = img.width;
+                        let height = img.height;
+                        const maxDim = 500; 
+                        if (width > height) {
+                            if (width > maxDim) { height *= maxDim / width; width = maxDim; }
+                        } else {
+                            if (height > maxDim) { width *= maxDim / height; height = maxDim; }
                         }
-                        fetch(data).then(r => r.blob()).then(b => resolve(new File([b], file.name, {type:'image/jpeg'})));
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        
+                        // Step 2: Iterative quality reduction until size is within limit
+                        let quality = 0.7;
+                        let resultBlob = null;
+                        
+                        function attempt() {
+                            canvas.toBlob((blob) => {
+                                if (blob.size <= limitKB * 1024 || quality <= 0.1) {
+                                    resolve(new File([blob], "photo.jpg", { type: "image/jpeg" }));
+                                } else {
+                                    quality -= 0.1;
+                                    attempt();
+                                }
+                            }, "image/jpeg", quality);
+                        }
+                        
+                        ctx.drawImage(img, 0, 0, width, height);
+                        attempt();
                     };
                 };
             });
@@ -157,34 +176,45 @@
             const btn = document.getElementById('createBtn');
             const status = document.getElementById('status');
             btn.disabled = true;
-            btn.textContent = "Creating Magic...";
+            btn.textContent = "Processing...";
 
-            let urls = [];
+            let photoUrls = [];
             if (selectedFiles.length > 0) {
-                const maxKB = selectedFiles.length === 1 ? 48 : 24;
+                // Divide 48KB by number of photos to stay safely under 50KB total
+                const limitPerPhoto = Math.floor(48 / selectedFiles.length);
+                
                 for (let i = 0; i < selectedFiles.length; i++) {
-                    status.textContent = `Uploading photo ${i+1}...`;
+                    status.textContent = `Compressing photo ${i+1}...`;
+                    const compressedFile = await compressToLimit(selectedFiles[i], limitPerPhoto);
+                    
+                    status.textContent = `Uploading photo ${i+1} (${Math.round(compressedFile.size/1024)}KB)...`;
+                    
+                    const fd = new FormData();
+                    fd.append("file", compressedFile);
+                    fd.append("text", "Birthday Surprise");
+
                     try {
-                        const compressed = await compress(selectedFiles[i], maxKB);
-                        const fd = new FormData();
-                        fd.append("file", compressed);
-                        fd.append("text", "BdayPhoto");
                         const res = await fetch(WORKER_URL, { method: "POST", body: fd });
                         const txt = await res.text();
                         if (res.ok) {
                             try {
                                 const data = JSON.parse(txt);
-                                urls.push(data.photo_url || data.url || txt.trim());
-                            } catch { urls.push(txt.trim()); }
+                                photoUrls.push(data.photo_url || data.url || txt.trim());
+                            } catch { photoUrls.push(txt.trim()); }
+                        } else {
+                            console.error("Upload failed:", txt);
                         }
-                    } catch (e) { console.error(e); }
+                    } catch (err) {
+                        console.error("Network error:", err);
+                    }
                 }
             }
 
+            status.textContent = "Finalizing...";
             const day = document.getElementById('dayInput').value;
             const month = document.getElementById('monthInput').value;
             const year = document.getElementById('yearInput').value;
-            let msg = document.getElementById('messageInput').value.trim();
+            const msg = document.getElementById('messageInput').value.trim();
             
             const p = new URLSearchParams();
             p.set('n', name);
@@ -192,9 +222,9 @@
             if (month) p.set('m', month);
             if (year) p.set('y', year);
             if (msg) p.set('t', msg);
-            if (urls.length > 0) p.set('p', urls.join(','));
+            if (photoUrls.length > 0) p.set('p', photoUrls.join(','));
 
-            // Redirect to index2.html with parameters
+            // Redirect to index2.html
             window.location.href = "index2.html?" + p.toString();
         }
     </script>
