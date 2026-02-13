@@ -39,13 +39,13 @@
         .cake-anim { font-size: 3.5rem; margin-bottom: 5px; animation: cake-bounce 1s infinite; }
         @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
         
-        /* Enhanced Photo Section - ULTRA STABLE */
+        /* Enhanced Photo Section - ALWAYS VISIBLE */
         .photo-section {
             margin: 20px auto 25px;
             width: 200px;
             height: 200px;
             position: relative;
-            display: none; /* Hidden if no photo */
+            display: block; /* ALWAYS VISIBLE */
         }
         
         /* Beautiful Blue Glow Effect */
@@ -93,26 +93,49 @@
                 0 0 80px rgba(0, 150, 255, 0.5),
                 0 0 120px rgba(0, 200, 255, 0.3),
                 inset 0 0 30px rgba(0, 150, 255, 0.3);
-            background: #16213e;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        /* Photo Images - DEFAULT VISIBLE NOW! */
+        /* Placeholder when no photo */
+        .photo-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            z-index: 1;
+            animation: float-placeholder 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(0, 200, 255, 0.6));
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        @keyframes float-placeholder {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1);
+                filter: drop-shadow(0 0 20px rgba(0, 200, 255, 0.6));
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.1);
+                filter: drop-shadow(0 0 30px rgba(0, 200, 255, 0.9));
+            }
+        }
+        
+        /* Photo Images - Start invisible, become visible when loaded */
         .birthday-photo {
             width: 100%;
             height: 100%;
             object-fit: cover;
             position: absolute;
             top: 0; left: 0;
-            opacity: 1; /* CHANGED: Now visible by default */
+            opacity: 0; /* Start invisible */
             transition: opacity 1.5s ease-in-out;
+            z-index: 3; /* Above placeholder */
         }
         
         .birthday-photo.fade-out { 
-            opacity: 0;
-        }
-        
-        /* Photo 2 starts hidden */
-        #p2 {
             opacity: 0;
         }
 
@@ -170,10 +193,11 @@
             <div class="cake-anim">🎂</div>
             <h2 style="font-size: 0.9rem; letter-spacing: 3px; opacity: 0.7; font-weight: 400;">HAPPY BIRTHDAY</h2>
             
-            <!-- Beautiful Circular Photo Frame with Blue Glow - ULTRA STABLE -->
+            <!-- Beautiful Circular Photo Frame with Blue Glow - ALWAYS VISIBLE -->
             <div class="photo-section" id="photoSection">
                 <div class="photo-glow"></div>
                 <div class="photo-container">
+                    <div class="photo-placeholder" id="photoPlaceholder">🎂</div>
                     <img id="p1" class="birthday-photo" alt="Birthday Photo" crossorigin="anonymous">
                     <img id="p2" class="birthday-photo" alt="Birthday Photo" crossorigin="anonymous">
                 </div>
@@ -241,30 +265,39 @@
 
         function initPhotoSystem(photoList) {
             const section = document.getElementById('photoSection');
+            const placeholder = document.getElementById('photoPlaceholder');
             const p1 = document.getElementById('p1');
             const p2 = document.getElementById('p2');
             
-            // IMMEDIATELY show photo section (don't wait for load)
-            section.style.display = 'block';
+            // Photo section is ALWAYS visible (no need to toggle)
             
             // Load Photo 1 - IMMEDIATE with fallback
             p1.src = photoList[0];
             
-            // Fallback: Force visible after 100ms even if onload doesn't fire
-            setTimeout(() => {
+            // Hide placeholder and show photo
+            const showPhoto = () => {
+                placeholder.style.opacity = '0';
                 p1.style.opacity = '1';
-                console.log("✅ Photo 1 forced visible (fallback)");
-            }, 100);
+                setTimeout(() => {
+                    placeholder.style.display = 'none';
+                }, 300);
+                console.log("✅ Photo 1 visible, placeholder hidden");
+            };
+            
+            // Fallback: Force visible after 100ms even if onload doesn't fire
+            setTimeout(showPhoto, 100);
             
             // Track if photo loaded successfully
             p1.onload = function() {
                 console.log("✅ Photo 1 loaded successfully");
-                p1.style.opacity = '1';
+                showPhoto();
             };
             
             p1.onerror = function() {
                 console.error('❌ Failed to load photo 1:', photoList[0]);
-                // Keep showing placeholder background
+                // Keep showing placeholder
+                placeholder.style.opacity = '1';
+                p1.style.opacity = '0';
             };
             
             // If there's a second photo, set up transition
