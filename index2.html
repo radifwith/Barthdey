@@ -38,10 +38,13 @@
         .cake-anim { font-size: 4rem; margin-bottom: 10px; animation: cake-bounce 1s infinite; }
         @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
         
-        /* Glow Effect for Photo */
+        /* Circular Glowing Frame for Photo */
         .photo-frame {
-            position: relative; display: inline-block; margin: 20px 0;
-            width: 220px; height: 220px;
+            position: relative; 
+            display: none; /* Hidden by default, shown if photo exists */
+            margin: 20px auto;
+            width: 220px; 
+            height: 220px;
         }
         .photo-glow {
             position: absolute;
@@ -62,10 +65,18 @@
         }
 
         .birthday-photo {
-            width: 200px; height: 200px; border-radius: 50%; object-fit: cover;
-            border: 5px solid #ff2e97; box-shadow: 0 0 30px #ff2e97;
-            position: absolute; left: 10px; top: 10px; transition: opacity 1s;
+            width: 200px; 
+            height: 200px; 
+            border-radius: 50%; 
+            object-fit: cover;
+            border: 5px solid #ff2e97; 
+            box-shadow: 0 0 30px rgba(255, 46, 151, 0.5);
+            position: absolute; 
+            left: 10px; 
+            top: 10px; 
+            transition: opacity 1s;
             z-index: 1;
+            background: #222; /* Placeholder background */
         }
         .hidden { display: none !important; }
         .birthday-name {
@@ -150,11 +161,11 @@
         window.onload = () => {
             const p = new URLSearchParams(window.location.search);
             const name = p.get('n');
-            if (!name) {
-                // If no name, just show some default values instead of redirecting for preview
+            if (!name && !p.get('p')) {
+                // For preview/testing if no params
                 document.getElementById('dispName').textContent = "Friend";
             } else {
-                document.getElementById('dispName').textContent = name;
+                document.getElementById('dispName').textContent = name || "Friend";
             }
 
             const d = p.get('d'), m = p.get('m'), y = p.get('y'), msg = p.get('t'), photos = p.get('p') ? p.get('p').split(',') : [];
@@ -162,12 +173,10 @@
             document.getElementById('dispDate').textContent = (d||m||y) ? `📅 ${d||''}/${m||''}/${y||''}` : '';
             document.getElementById('dispMsg').textContent = msg || "Wishing you a year full of happiness and success! 🎂";
 
-            const p1 = document.getElementById('p1'), p2 = document.getElementById('p2');
+            const p1 = document.getElementById('p1'), p2 = document.getElementById('p2'), frame = document.getElementById('photoFrame');
             
-            // Default glowing cycle image if no photos provided
-            const defaultCycle = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663212501573/EqHIvLfOdNLvyTSn.jpg";
-
             if (photos.length > 0) {
+                frame.style.display = 'block'; // Show frame if photos exist
                 p1.src = photos[0];
                 if (photos.length > 1) {
                     p2.src = photos[1];
@@ -181,8 +190,7 @@
                     }, 4000);
                 }
             } else {
-                // Set default cycle image
-                p1.src = defaultCycle;
+                frame.style.display = 'none'; // Hide frame if no photos
             }
 
             const shareUrl = window.location.href;
