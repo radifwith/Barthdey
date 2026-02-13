@@ -3,784 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday 🎂</title>
+    <title>Birthday Magic ✨ - Create</title>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #ff2e97;
-            --secondary: #00f0ff;
-            --accent: #ffd700;
-            --dark: #0a0118;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
-            background: #0a0118;
-            color: white;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
-        }
-
-        /* INPUT PAGE STYLES */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(45deg, #0a0118, #1a0a2e, #16213e);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .input-page {
-            text-align: center;
-            animation: fadeIn 1s ease;
-        }
-
-        .input-page.hidden {
-            display: none;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .logo {
-            font-family: 'Righteous', cursive;
-            font-size: 4rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--secondary);
-            margin-bottom: 50px;
-            font-weight: 300;
-        }
-
-        .input-group {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        label {
-            display: block;
-            font-size: 0.9rem;
-            color: var(--accent);
-            margin-bottom: 10px;
-            text-align: left;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.3);
             color: white;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(255, 46, 151, 0.6);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .date-inputs {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        .date-inputs input {
-            margin-bottom: 0;
-        }
-
-        .gallery-btn {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(255, 46, 151, 0.2), rgba(0, 240, 255, 0.2));
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: white;
-            font-size: 1.1rem;
+            overflow-x: hidden;
         }
-
-        .gallery-btn:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(255, 46, 151, 0.6);
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
         }
-
-        #photoInput {
-            display: none;
+        .bg-animation span {
+            position: absolute; display: block; width: 20px; height: 20px;
+            background: rgba(255, 255, 255, 0.1); animation: move 25s linear infinite;
+            bottom: -150px; border-radius: 50%;
         }
-
-        .photo-preview-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+        @keyframes move {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
         }
-
-        .photo-preview-item {
-            position: relative;
-            height: 150px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid var(--primary);
-        }
-
-        .photo-preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-remove-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(255, 0, 0, 0.8);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, var(--primary), #ff6b9d);
-            color: white;
-            padding: 18px 50px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            box-shadow: 0 0 30px rgba(255, 46, 151, 0.6);
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px) scale(1.05);
-        }
-
-        /* CELEBRATION PAGE STYLES - From uploaded file */
-        .celebration-page {
-            display: none;
-            min-height: 100vh;
-        }
-
-        .celebration-page.active {
-            display: block;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            border-radius: 30px;
+        .container { width: 100%; max-width: 500px; padding: 20px; }
+        .input-page {
+            text-align: center; background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px); border-radius: 30px; padding: 40px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            padding: 40px;
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
         }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
+        .logo {
+            font-family: 'Righteous', cursive; font-size: 2.5rem;
+            background: linear-gradient(135deg, #ff2e97, #00f0ff, #ffd700);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px;
         }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        .subtitle { font-size: 1rem; color: #00f0ff; margin-bottom: 30px; }
+        .input-group { text-align: left; margin-bottom: 20px; }
+        label { display: block; font-size: 0.85rem; color: #ffd700; margin-bottom: 8px; font-weight: 600; }
+        input, textarea {
+            width: 100%; padding: 12px 15px; font-size: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.3);
+            color: white; border-radius: 12px; margin-bottom: 15px; outline: none;
         }
-
-        .cake-anim {
-            display: inline-block;
-            font-size: 4rem;
-            margin-bottom: 10px;
-            animation: cake-bounce 1s ease-in-out infinite;
+        .date-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .gallery-btn {
+            width: 100%; padding: 15px; background: linear-gradient(135deg, rgba(255, 46, 151, 0.2), rgba(0, 240, 255, 0.2));
+            border: 2px dashed rgba(255, 255, 255, 0.3); border-radius: 12px; cursor: pointer; color: white; margin-bottom: 15px;
         }
-
-        @keyframes cake-bounce {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-10px) scale(1.1); }
+        .photo-preview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .photo-preview-item { position: relative; height: 100px; border-radius: 10px; overflow: hidden; border: 2px solid #ff2e97; }
+        .photo-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .btn {
+            width: 100%; background: linear-gradient(135deg, #ff2e97, #ff6b9d);
+            color: white; padding: 15px; font-size: 1.1rem; border: none; border-radius: 50px;
+            cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(255, 46, 151, 0.3);
         }
-
-        .celebration-title {
-            font-size: 1.3rem;
-            color: rgba(255,255,255,0.9);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-
-        .photo-frame {
-            position: relative;
-            display: inline-block;
-            margin: 20px 0;
-        }
-
-        .birthday-photo {
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 40px rgba(255, 107, 107, 0.6),
-                        0 0 80px rgba(255, 107, 107, 0.3),
-                        0 0 120px rgba(255, 215, 0, 0.2);
-            animation: photo-glow 3s ease-in-out infinite, float-photo 4s ease-in-out infinite;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: opacity 1s ease-in-out;
-        }
-
-        .birthday-photo.hidden {
-            opacity: 0;
-        }
-
-        @keyframes photo-glow {
-            0%, 100% { box-shadow: 0 0 40px rgba(255, 107, 107, 0.6), 0 0 80px rgba(255, 107, 107, 0.3), 0 0 120px rgba(255, 215, 0, 0.2); }
-            50% { box-shadow: 0 0 60px rgba(255, 107, 107, 0.8), 0 0 100px rgba(255, 107, 107, 0.5), 0 0 140px rgba(255, 215, 0, 0.4); }
-        }
-
-        @keyframes float-photo {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-15px) scale(1.02); }
-        }
-
-        .photo-frame::before {
-            content: '✨';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            font-size: 2rem;
-            animation: sparkle-rotate 3s linear infinite;
-            z-index: 20;
-        }
-
-        .photo-frame::after {
-            content: '✨';
-            position: absolute;
-            bottom: -10px;
-            right: -10px;
-            font-size: 2rem;
-            animation: sparkle-rotate 3s linear infinite reverse;
-            z-index: 20;
-        }
-
-        @keyframes sparkle-rotate {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.2); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-
-        .birthday-name {
-            font-size: 3rem;
-            font-weight: 800;
-            margin: 20px 0;
-            background: linear-gradient(45deg, #ff6b6b, #feca57, #ff9ff3, #54a0ff);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient 3s ease infinite, float 3s ease-in-out infinite;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .birthday-date {
-            font-size: 1.2rem;
-            color: #feca57;
-            margin-bottom: 20px;
-        }
-
-        .birthday-message {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin: 20px 0;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .share-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 15px;
-        }
-
-        .share-title {
-            font-size: 1rem;
-            color: var(--accent);
-            margin-bottom: 15px;
-        }
-
-        .share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .share-btn {
-            padding: 10px 25px;
-            border-radius: 50px;
-            border: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .share-btn.whatsapp {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-        }
-
-        .share-btn.facebook {
-            background: linear-gradient(135deg, #1877F2, #4267B2);
-            color: white;
-        }
-
-        .share-btn.copy {
-            background: linear-gradient(135deg, var(--secondary), #0077ff);
-            color: white;
-        }
-
-        .share-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        .copied-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #00f0ff, #0077ff);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            z-index: 1000;
-            display: none;
-        }
-
-        .copied-notification.show {
-            display: block;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(400px); }
-            to { transform: translateX(0); }
-        }
-
-        @media (max-width: 768px) {
-            .logo { font-size: 3rem; }
-            .birthday-name { font-size: 2rem; }
-            .birthday-photo { width: 180px; height: 180px; }
-        }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        #status { margin-top: 15px; font-size: 0.9rem; color: #00f0ff; }
     </style>
 </head>
 <body>
-    <div class="bg-animation"></div>
-    <div class="copied-notification" id="copiedNotification">✓ Link Copied!</div>
+    <div class="bg-animation">
+        <span style="left: 25%; width: 80px; height: 80px; background: rgba(255, 107, 107, 0.2);"></span>
+        <span style="left: 10%; width: 20px; height: 20px; animation-delay: 2s; background: rgba(78, 205, 196, 0.2);"></span>
+        <span style="left: 70%; width: 20px; height: 20px; animation-delay: 4s; background: rgba(255, 230, 109, 0.2);"></span>
+    </div>
 
     <div class="container">
-        <!-- INPUT PAGE -->
-        <div class="input-page" id="inputPage">
-            <div class="logo">🎂 Birthday ✨</div>
-            <div class="subtitle">Create magical celebration!</div>
+        <div class="input-page">
+            <div class="logo">Birthday Magic ✨</div>
+            <p class="subtitle">Create a magical surprise link</p>
             
             <div class="input-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" placeholder="Enter name...">
+                <label>Name</label>
+                <input type="text" id="nameInput" placeholder="Enter name...">
                 
-                <label>Date of Birth (Optional)</label>
+                <label>Date (Optional)</label>
                 <div class="date-inputs">
-                    <input type="number" id="day" placeholder="Day" min="1" max="31">
-                    <input type="number" id="month" placeholder="Month" min="1" max="12">
-                    <input type="number" id="year" placeholder="Year" min="1900" max="2100">
+                    <input type="number" id="dayInput" placeholder="DD">
+                    <input type="number" id="monthInput" placeholder="MM">
+                    <input type="number" id="yearInput" placeholder="YYYY">
                 </div>
                 
-                <label for="customMessage">Message (Optional)</label>
-                <textarea id="customMessage" placeholder="Birthday message... 💝"></textarea>
+                <label>Message (Optional)</label>
+                <textarea id="messageInput" placeholder="Your special message..."></textarea>
                 
                 <label>Photos (Max 2)</label>
-                <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(event)">
-                <button class="gallery-btn" onclick="document.getElementById('photoInput').click()">
-                    <span style="font-size: 2rem;">📷</span>
-                    <span>Select from Gallery</span>
-                </button>
-                
-                <div class="photo-preview-grid" id="photoPreviewGrid"></div>
+                <input type="file" id="fileInput" accept="image/*" multiple style="display: none;" onchange="handleFiles(event)">
+                <button class="gallery-btn" onclick="document.getElementById('fileInput').click()">📷 Select Photos</button>
+                <div class="photo-preview-grid" id="previewGrid"></div>
             </div>
 
-            <button class="btn" onclick="createCelebration()">✨ Create Magic ✨</button>
-        </div>
-
-        <!-- CELEBRATION PAGE -->
-        <div class="celebration-page" id="celebrationPage">
-            <div class="glass-card">
-                <div class="cake-anim">🎂</div>
-                <h2 class="celebration-title">Happy Birthday</h2>
-                
-                <div class="photo-frame" id="photoContainer" style="display: none; width: 220px; height: 220px; position: relative; margin: 20px auto;">
-                    <img id="photo1" class="birthday-photo hidden">
-                    <img id="photo2" class="birthday-photo hidden">
-                </div>
-
-                <div class="birthday-name" id="displayName"></div>
-                <div class="birthday-date" id="displayDate"></div>
-                <div class="birthday-message" id="birthdayMessage"></div>
-
-                <div class="share-section">
-                    <div class="share-title">📤 Share:</div>
-                    <div class="share-buttons">
-                        <a class="share-btn whatsapp" id="whatsappBtn" target="_blank">💬 WhatsApp</a>
-                        <a class="share-btn facebook" id="facebookBtn" target="_blank">📘 Facebook</a>
-                        <button class="share-btn copy" onclick="copyLink()">📋 Copy</button>
-                    </div>
-                </div>
-            </div>
+            <button class="btn" id="createBtn" onclick="createMagic()">✨ Create Magic ✨</button>
+            <p id="status"></p>
         </div>
     </div>
 
     <script>
-        const SUPABASE_API = 'https://supabasestorageapikey.radidmondal.workers.dev/';
-        const SUPABASE_KEY = 'sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K';
-        const MAX_PHOTO_SIZE = 50 * 1024; // 50KB
-        const MAX_PHOTOS = 2;
-        
-        let compressedPhotos = [];
-        let uploadedPhotoURLs = [];
+        const WORKER_URL = "https://supabasestorageapikey.radidmondal.workers.dev/";
+        let selectedFiles = [];
 
-        const defaultMessages = [
-            "✨ Happy Birthday! 🎉 May your time be filled with happiness and beautiful moments 😊🎂",
-            "✨ Wishing you a lovely day and a year full of smiles 🌸🎈 Stay happy always 💖",
-            "✨ Happy Birthday 🎂✨ Stay blessed, stay happy, and keep shining 🌟😊",
-            "✨ May your new year bring peace, joy, and success 🎉💫 Take care always 🤍",
-            "✨ Enjoy your special day 🎈🎂 Wishing you lots of happiness and good vibes 🌼✨"
-        ];
-
-        function getRandomMessage() {
-            return defaultMessages[Math.floor(Math.random() * defaultMessages.length)];
-        }
-
-        // STEP 1: Compress photos FIRST
-        async function handlePhotoUpload(event) {
-            const files = Array.from(event.target.files);
-            
-            if (compressedPhotos.length + files.length > MAX_PHOTOS) {
-                alert(`⚠️ Maximum ${MAX_PHOTOS} photos!`);
-                return;
-            }
-
-            for (let file of files) {
-                if (compressedPhotos.length >= MAX_PHOTOS) break;
-                
-                // Compress immediately
-                const compressed = await compressImage(file);
-                
-                // Check size AFTER compression
-                if (compressed.length > MAX_PHOTO_SIZE) {
-                    alert('⚠️ Photo too large even after compression! Try a smaller photo.');
-                    continue;
-                }
-                
-                compressedPhotos.push(compressed);
-                showPhotoPreview(compressed);
-            }
-        }
-
-        function compressImage(file) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                const reader = new FileReader();
-
-                reader.onload = (e) => { img.src = e.target.result; };
-
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-
-                    let maxWidth = 300;
-                    let scale = maxWidth / img.width;
-
-                    canvas.width = maxWidth;
-                    canvas.height = img.height * scale;
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                    let quality = 0.3;
-                    let data;
-
-                    // Keep compressing until under 50KB
-                    do {
-                        data = canvas.toDataURL('image/jpeg', quality);
-                        if (data.length > MAX_PHOTO_SIZE && quality > 0.1) {
-                            quality -= 0.05;
-                        } else {
-                            break;
-                        }
-                    } while (quality > 0.1);
-
-                    resolve(data);
+        function handleFiles(e) {
+            selectedFiles = Array.from(e.target.files).slice(0, 2);
+            const grid = document.getElementById('previewGrid');
+            grid.innerHTML = '';
+            selectedFiles.forEach(f => {
+                const r = new FileReader();
+                r.onload = ev => {
+                    const d = document.createElement('div');
+                    d.className = 'photo-preview-item';
+                    d.innerHTML = `<img src="${ev.target.result}">`;
+                    grid.appendChild(d);
                 };
-
-                reader.readAsDataURL(file);
+                r.readAsDataURL(f);
             });
         }
 
-        function showPhotoPreview(photoData) {
-            const grid = document.getElementById('photoPreviewGrid');
-            const index = compressedPhotos.length - 1;
-
-            const item = document.createElement('div');
-            item.className = 'photo-preview-item';
-            item.innerHTML = `
-                <img src="${photoData}">
-                <button class="photo-remove-btn" onclick="removePhoto(${index})">×</button>
-            `;
-            grid.appendChild(item);
-        }
-
-        function removePhoto(index) {
-            compressedPhotos.splice(index, 1);
-            const grid = document.getElementById('photoPreviewGrid');
-            grid.innerHTML = '';
-            compressedPhotos.forEach(p => showPhotoPreview(p));
-        }
-
-        // STEP 2: Upload to Supabase (only AFTER compression check)
-        async function uploadPhotos() {
-            if (compressedPhotos.length === 0) return [];
-
-            const urls = [];
-
-            try {
-                for (let photo of compressedPhotos) {
-                    const res = await fetch(SUPABASE_API, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${SUPABASE_KEY}`
-                        },
-                        body: JSON.stringify({
-                            image: photo,
-                            max_size_kb: 49
-                        })
-                    });
-
-                    if (res.ok) {
-                        const data = await res.json();
-                        urls.push(data.url || data.publicUrl);
-                    } else {
-                        throw new Error('Upload failed');
-                    }
-                }
-
-                return urls;
-            } catch (err) {
-                alert('❌ Upload failed! Storage limit (7MB) may be exceeded');
-                return [];
-            }
-        }
-
-        async function createCelebration() {
-            const name = document.getElementById('name').value.trim();
-            const day = document.getElementById('day').value;
-            const month = document.getElementById('month').value;
-            const year = document.getElementById('year').value;
-            const customMessage = document.getElementById('customMessage').value.trim();
-
-            if (!name) {
-                alert('Please enter name! 🎈');
-                return;
-            }
-
-            // Upload photos if any
-            if (compressedPhotos.length > 0) {
-                uploadedPhotoURLs = await uploadPhotos();
-                if (uploadedPhotoURLs.length === 0 && compressedPhotos.length > 0) {
-                    return; // Upload failed
-                }
-            }
-
-            showCelebration(name, day, month, year, customMessage, uploadedPhotoURLs);
-            updateURL(name, day, month, year, customMessage, uploadedPhotoURLs);
-        }
-
-        function showCelebration(name, day, month, year, msg, photos) {
-            document.getElementById('inputPage').classList.add('hidden');
-            document.getElementById('celebrationPage').classList.add('active');
-            
-            document.getElementById('displayName').textContent = name;
-            
-            let dateText = '';
-            if (day || month || year) {
-                const parts = [];
-                if (day) parts.push(day);
-                if (month) parts.push(month);
-                if (year) parts.push(year);
-                dateText = '🎂 ' + parts.join('/') + ' 🎂';
-            }
-            document.getElementById('displayDate').textContent = dateText;
-
-            // Display photos
-            if (photos && photos.length > 0) {
-                document.getElementById('photoContainer').style.display = 'block';
-                
-                if (photos.length === 1) {
-                    document.getElementById('photo1').src = photos[0];
-                    document.getElementById('photo1').classList.remove('hidden');
-                } else if (photos.length === 2) {
-                    document.getElementById('photo1').src = photos[0];
-                    document.getElementById('photo2').src = photos[1];
-                    document.getElementById('photo1').classList.remove('hidden');
-                    
-                    // Auto swap
-                    let current = 0;
-                    setInterval(() => {
-                        if (current === 0) {
-                            document.getElementById('photo1').classList.add('hidden');
-                            document.getElementById('photo2').classList.remove('hidden');
-                            current = 1;
-                        } else {
-                            document.getElementById('photo2').classList.add('hidden');
-                            document.getElementById('photo1').classList.remove('hidden');
-                            current = 0;
+        async function compress(file, maxKB) {
+            return new Promise(resolve => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = e => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width, h = img.height;
+                        const maxDim = 600;
+                        if (w > h && w > maxDim) { h *= maxDim/w; w = maxDim; }
+                        else if (h > maxDim) { w *= maxDim/h; h = maxDim; }
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        let q = 0.6;
+                        let data = canvas.toDataURL('image/jpeg', q);
+                        while (data.length > (maxKB * 1333) && q > 0.05) {
+                            q -= 0.05;
+                            data = canvas.toDataURL('image/jpeg', q);
                         }
-                    }, 4000);
+                        fetch(data).then(r => r.blob()).then(b => resolve(new File([b], file.name, {type:'image/jpeg'})));
+                    };
+                };
+            });
+        }
+
+        async function createMagic() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (!name) return alert("Please enter a name! 🎈");
+
+            const btn = document.getElementById('createBtn');
+            const status = document.getElementById('status');
+            btn.disabled = true;
+            btn.textContent = "Creating Magic...";
+
+            let urls = [];
+            if (selectedFiles.length > 0) {
+                const maxKB = selectedFiles.length === 1 ? 48 : 24;
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    status.textContent = `Uploading photo ${i+1}...`;
+                    try {
+                        const compressed = await compress(selectedFiles[i], maxKB);
+                        const fd = new FormData();
+                        fd.append("file", compressed);
+                        fd.append("text", "BdayPhoto");
+                        const res = await fetch(WORKER_URL, { method: "POST", body: fd });
+                        const txt = await res.text();
+                        if (res.ok) {
+                            try {
+                                const data = JSON.parse(txt);
+                                urls.push(data.photo_url || data.url || txt.trim());
+                            } catch { urls.push(txt.trim()); }
+                        }
+                    } catch (e) { console.error(e); }
                 }
             }
 
-            document.getElementById('birthdayMessage').textContent = msg || getRandomMessage();
-
-            setupShareButtons();
-        }
-
-        function updateURL(name, day, month, year, msg, photos) {
-            const params = new URLSearchParams();
-            params.set('n', name);
-            if (day) params.set('d', day);
-            if (month) params.set('m', month);
-            if (year) params.set('y', year);
-            if (msg) params.set('t', msg);
-            if (photos && photos.length > 0) params.set('p', photos.join(','));
+            const day = document.getElementById('dayInput').value;
+            const month = document.getElementById('monthInput').value;
+            const year = document.getElementById('yearInput').value;
+            let msg = document.getElementById('messageInput').value.trim();
             
-            window.history.pushState({}, '', '?' + params.toString());
-        }
+            const p = new URLSearchParams();
+            p.set('n', name);
+            if (day) p.set('d', day);
+            if (month) p.set('m', month);
+            if (year) p.set('y', year);
+            if (msg) p.set('t', msg);
+            if (urls.length > 0) p.set('p', urls.join(','));
 
-        function checkURLParams() {
-            const p = new URLSearchParams(window.location.search);
-            const name = p.get('n');
-            if (name) {
-                const photos = p.get('p') ? p.get('p').split(',') : [];
-                showCelebration(name, p.get('d'), p.get('m'), p.get('y'), p.get('t'), photos);
-            }
+            // Redirect to index2.html with parameters
+            window.location.href = "index2.html?" + p.toString();
         }
-
-        function setupShareButtons() {
-            const url = window.location.href;
-            
-            // WhatsApp - ONLY link, no message text
-            document.getElementById('whatsappBtn').href = `https://wa.me/?text=${encodeURIComponent(url)}`;
-            document.getElementById('facebookBtn').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-        }
-
-        function copyLink() {
-            const url = window.location.href;
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(url).then(() => showNotification());
-            } else {
-                const t = document.createElement('textarea');
-                t.value = url;
-                t.style.position = 'fixed';
-                t.style.opacity = '0';
-                document.body.appendChild(t);
-                t.select();
-                document.execCommand('copy');
-                document.body.removeChild(t);
-                showNotification();
-            }
-        }
-
-        function showNotification() {
-            const n = document.getElementById('copiedNotification');
-            n.classList.add('show');
-            setTimeout(() => n.classList.remove('show'), 3000);
-        }
-
-        checkURLParams();
     </script>
 </body>
 </html>
