@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
+        }
+        .bg-animation span {
+            position: absolute; display: block; width: 20px; height: 20px;
+            background: rgba(255, 255, 255, 0.1); animation: move 25s linear infinite;
+            bottom: -150px; border-radius: 50%;
+        }
+        @keyframes move {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        }
+        .container { width: 100%; max-width: 600px; padding: 20px; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px);
+            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px; width: 100%; text-align: center; position: relative;
+        }
+        .cake-anim { font-size: 4rem; margin-bottom: 10px; animation: cake-bounce 1s infinite; }
+        @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
+        .photo-frame {
+            position: relative; display: inline-block; margin: 20px 0;
+            width: 200px; height: 200px;
+        }
+        .birthday-photo {
+            width: 200px; height: 200px; border-radius: 50%; object-fit: cover;
+            border: 5px solid #ff2e97; box-shadow: 0 0 30px #ff2e97;
+            position: absolute; left: 0; top: 0; transition: opacity 1s;
+        }
+        .hidden { display: none !important; }
+        .birthday-name {
+            font-size: 2.8rem; font-weight: 800; margin: 15px 0;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #ff9ff3, #54a0ff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: float 3s infinite;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .birthday-date {
+            font-size: 1.2rem; color: #ffd700;
+            background: rgba(255, 255, 255, 0.1); display: inline-block;
+            padding: 6px 20px; border-radius: 50px; margin-bottom: 15px;
+        }
+        .message-box {
+            background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 20px;
+            margin: 15px 0; font-size: 1.1rem; line-height: 1.6; white-space: pre-line;
+        }
+        .emoji-row { margin-top: 20px; font-size: 2rem; letter-spacing: 10px; }
+        .heartbeat { animation: heartbeat 1.5s ease-in-out infinite; display: inline-block; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .share-section { margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 15px; }
+        .share-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .share-btn { padding: 8px 20px; border-radius: 50px; text-decoration: none; color: white; font-size: 0.9rem; font-weight: 600; border: none; cursor: pointer; }
+        .share-btn.whatsapp { background: #25D366; }
+        .share-btn.facebook { background: #1877F2; }
+        .share-btn.copy { background: #00f0ff; }
+        .btn-new {
+            margin-top: 20px; width: 100%; background: rgba(255,255,255,0.1); color: white;
+            padding: 15px; font-size: 1rem; border: none; border-radius: 50px; cursor: pointer;
+        }
+        #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; }
+        .floating-item { position: fixed; pointer-events: none; z-index: 5; font-size: 1.5rem; animation: floatUp 6s linear forwards; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <span style="left: 25%; width: 80px; height: 80px; background: rgba(255, 107, 107, 0.2);"></span>
+        <span style="left: 10%; width: 20px; height: 20px; animation-delay: 2s; background: rgba(78, 205, 196, 0.2);"></span>
+        <span style="left: 70%; width: 20px; height: 20px; animation-delay: 4s; background: rgba(255, 230, 109, 0.2);"></span>
+    </div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="container">
+        <div id="celebrationPage" class="glass-card">
+            <div class="cake-anim">🎂</div>
+            <h2 style="font-size: 1.1rem; letter-spacing: 3px; opacity: 0.8;">HAPPY BIRTHDAY</h2>
+            
+            <div class="photo-frame" id="photoFrame" style="display: none;">
+                <img id="p1" class="birthday-photo">
+                <img id="p2" class="birthday-photo hidden">
+            </div>
+
+            <div class="birthday-name" id="dispName"></div>
+            <div class="birthday-date" id="dispDate"></div>
+            <div class="message-box" id="dispMsg"></div>
+            
+            <div class="emoji-row">
+                <span class="heartbeat">🎈</span>
+                <span class="heartbeat" style="animation-delay: 0.2s;">🎉</span>
+                <span class="heartbeat" style="animation-delay: 0.4s;">🎁</span>
+                <span class="heartbeat" style="animation-delay: 0.6s;">🎊</span>
+                <span class="heartbeat" style="animation-delay: 0.8s;">💖</span>
+            </div>
+
+            <div class="share-section">
+                <p style="font-size: 0.9rem; opacity: 0.7;">Share this link:</p>
+                <div class="share-buttons">
+                    <a href="#" id="wa" class="share-btn whatsapp" target="_blank">WhatsApp</a>
+                    <a href="#" id="fb" class="share-btn facebook" target="_blank">Facebook</a>
+                    <button onclick="copyLink()" class="share-btn copy">Copy Link</button>
+                </div>
+            </div>
+
+            <button class="btn-new" onclick="location.href='index.html'">Create New</button>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            const p = new URLSearchParams(window.location.search);
+            const name = p.get('n');
+            if (!name) {
+                location.href = 'index.html';
+                return;
+            }
+
+            const d = p.get('d'), m = p.get('m'), y = p.get('y'), msg = p.get('t'), photos = p.get('p') ? p.get('p').split(',') : [];
+
+            document.getElementById('dispName').textContent = name;
+            document.getElementById('dispDate').textContent = (d||m||y) ? `📅 ${d||''}/${m||''}/${y||''}` : '';
+            document.getElementById('dispMsg').textContent = msg || "Wishing you a year full of happiness and success! 🎂";
+
+            if (photos.length > 0) {
+                document.getElementById('photoFrame').style.display = 'inline-block';
+                const p1 = document.getElementById('p1'), p2 = document.getElementById('p2');
+                p1.src = photos[0];
+                if (photos.length > 1) {
+                    p2.src = photos[1];
+                    p2.classList.remove('hidden');
+                    p2.style.opacity = '0';
+                    let toggle = true;
+                    setInterval(() => {
+                        if (toggle) { p1.style.opacity = '0'; p2.style.opacity = '1'; }
+                        else { p1.style.opacity = '1'; p2.style.opacity = '0'; }
+                        toggle = !toggle;
+                    }, 4000);
+                }
+            }
+
+            const shareUrl = window.location.href;
+            document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent("I have a surprise for you! 🎂 " + shareUrl)}`;
+            document.getElementById('fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+            
+            startAllAnims();
+        };
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert("Link Copied! Share it with your friend! 💝");
+            });
+        }
+
+        function startAllAnims() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            const parts = [];
+            for (let i = 0; i < 100; i++) {
+                parts.push({
+                    x: Math.random() * canvas.width, y: -20,
+                    w: Math.random() * 12 + 6, h: Math.random() * 12 + 6,
+                    c: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    s: Math.random() * 3 + 2
+                });
+            }
+            function loop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                parts.forEach(p => {
+                    ctx.fillStyle = p.c; p.y += p.s;
+                    ctx.fillRect(p.x, p.y, p.w, p.h);
+                    if (p.y > canvas.height) p.y = -20;
+                });
+                requestAnimationFrame(loop);
+            }
+            loop();
+            const emojis = ['💖', '🎈', '✨', '🎁', '🌸', '🎉', '💝', '🎂'];
+            setInterval(() => {
+                const e = document.createElement('div');
+                e.className = 'floating-item';
+                e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                e.style.left = Math.random() * 100 + '%';
+                e.style.bottom = '-50px';
+                document.body.appendChild(e);
+                setTimeout(() => e.remove(), 6000);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
