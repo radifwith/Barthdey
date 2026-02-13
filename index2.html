@@ -37,14 +37,35 @@
         }
         .cake-anim { font-size: 4rem; margin-bottom: 10px; animation: cake-bounce 1s infinite; }
         @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
+        
+        /* Glow Effect for Photo */
         .photo-frame {
             position: relative; display: inline-block; margin: 20px 0;
-            width: 200px; height: 200px;
+            width: 220px; height: 220px;
         }
+        .photo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #ff2e97 0%, transparent 70%);
+            filter: blur(30px);
+            border-radius: 50%;
+            z-index: 0;
+            animation: pulse-glow 2s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+        }
+
         .birthday-photo {
             width: 200px; height: 200px; border-radius: 50%; object-fit: cover;
             border: 5px solid #ff2e97; box-shadow: 0 0 30px #ff2e97;
-            position: absolute; left: 0; top: 0; transition: opacity 1s;
+            position: absolute; left: 10px; top: 10px; transition: opacity 1s;
+            z-index: 1;
         }
         .hidden { display: none !important; }
         .birthday-name {
@@ -94,7 +115,8 @@
             <div class="cake-anim">🎂</div>
             <h2 style="font-size: 1.1rem; letter-spacing: 3px; opacity: 0.8;">HAPPY BIRTHDAY</h2>
             
-            <div class="photo-frame" id="photoFrame" style="display: none;">
+            <div class="photo-frame" id="photoFrame">
+                <div class="photo-glow"></div>
                 <img id="p1" class="birthday-photo">
                 <img id="p2" class="birthday-photo hidden">
             </div>
@@ -129,19 +151,23 @@
             const p = new URLSearchParams(window.location.search);
             const name = p.get('n');
             if (!name) {
-                location.href = 'index.html';
-                return;
+                // If no name, just show some default values instead of redirecting for preview
+                document.getElementById('dispName').textContent = "Friend";
+            } else {
+                document.getElementById('dispName').textContent = name;
             }
 
             const d = p.get('d'), m = p.get('m'), y = p.get('y'), msg = p.get('t'), photos = p.get('p') ? p.get('p').split(',') : [];
 
-            document.getElementById('dispName').textContent = name;
             document.getElementById('dispDate').textContent = (d||m||y) ? `📅 ${d||''}/${m||''}/${y||''}` : '';
             document.getElementById('dispMsg').textContent = msg || "Wishing you a year full of happiness and success! 🎂";
 
+            const p1 = document.getElementById('p1'), p2 = document.getElementById('p2');
+            
+            // Default glowing cycle image if no photos provided
+            const defaultCycle = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663212501573/EqHIvLfOdNLvyTSn.jpg";
+
             if (photos.length > 0) {
-                document.getElementById('photoFrame').style.display = 'inline-block';
-                const p1 = document.getElementById('p1'), p2 = document.getElementById('p2');
                 p1.src = photos[0];
                 if (photos.length > 1) {
                     p2.src = photos[1];
@@ -154,6 +180,9 @@
                         toggle = !toggle;
                     }, 4000);
                 }
+            } else {
+                // Set default cycle image
+                p1.src = defaultCycle;
             }
 
             const shareUrl = window.location.href;
