@@ -55,7 +55,7 @@
         .gallery-btn {
             width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05);
             border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 12px; cursor: pointer; color: white; margin-bottom: 10px;
-            transition: all 0.3s;
+            transition: all 0.3s; font-size: 0.95rem;
         }
         .gallery-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: #ff2e97; }
         .photo-preview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
@@ -70,6 +70,9 @@
         .btn:active { transform: scale(0.98); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         #status { margin-top: 10px; font-size: 0.85rem; color: #00f0ff; font-weight: 500; }
+        
+        /* Posts hidden in background */
+        #postsContainer { display: none; }
     </style>
 </head>
 <body>
@@ -109,8 +112,15 @@
         </div>
     </div>
 
+    <!-- Posts container hidden in background -->
+    <div id="postsContainer"></div>
+
     <script>
+        // SUPABASE CONFIGURATION
         const WORKER_URL = "https://supabasestorageapikey.radidmondal.workers.dev/";
+        const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts?select=photo_url,message,created_at&order=created_at.desc";
+        const API_KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
+        
         let selectedFiles = [];
 
         function handleFiles(e) {
@@ -168,6 +178,8 @@
             btn.textContent = "Processing...";
 
             let photoUrls = [];
+            
+            // Upload photos to Supabase via Worker
             for (let i = 0; i < selectedFiles.length; i++) {
                 status.textContent = `Uploading photo ${i+1}...`;
                 try {
@@ -178,11 +190,14 @@
 
                     const res = await fetch(WORKER_URL, { method: "POST", body: fd });
                     const txt = await res.text();
+                    
                     if (res.ok) {
                         try {
                             const data = JSON.parse(txt);
                             photoUrls.push(data.photo_url || data.url || txt.trim());
-                        } catch { photoUrls.push(txt.trim()); }
+                        } catch { 
+                            photoUrls.push(txt.trim()); 
+                        }
                     }
                 } catch (err) {
                     console.error("Upload error:", err);
@@ -190,6 +205,8 @@
             }
 
             status.textContent = "Redirecting...";
+            
+            // Build URL parameters for index2.html
             const day = document.getElementById('dayInput').value;
             const month = document.getElementById('monthInput').value;
             const year = document.getElementById('yearInput').value;
@@ -203,8 +220,28 @@
             if (msg) p.set('t', msg);
             if (photoUrls.length > 0) p.set('p', photoUrls.join(','));
 
+            // Redirect to index2.html with data
             window.location.href = "index2.html?" + p.toString();
         }
+
+        // Load posts in background (hidden from user)
+        async function loadPostsBackground() {
+            try {
+                const res = await fetch(API_URL, {
+                    headers: {
+                        "apikey": API_KEY,
+                        "Authorization": "Bearer " + API_KEY
+                    }
+                });
+                const data = await res.json();
+                console.log("📦 Loaded", data.length, "posts from Supabase (hidden)");
+            } catch (err) {
+                console.error("Failed to load posts:", err);
+            }
+        }
+
+        // Load posts on page load (background only)
+        loadPostsBackground();
     </script>
 </body>
 </html>

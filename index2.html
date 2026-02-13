@@ -12,10 +12,8 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             overflow-x: hidden;
+            padding-bottom: 50px;
         }
         .bg-animation {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
@@ -29,26 +27,28 @@
             0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
             100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
         }
-        .container { width: 100%; max-width: 600px; padding: 20px; z-index: 10; }
+        
+        .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; }
+        
+        /* Main Birthday Card */
         .glass-card {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px);
             border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 30px 20px; width: 100%; text-align: center; position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 30px;
         }
         .cake-anim { font-size: 3.5rem; margin-bottom: 5px; animation: cake-bounce 1s infinite; }
         @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
         
-        /* PHOTO SECTION - ALWAYS VISIBLE ✨ */
+        /* PHOTO SECTION - সবসময় visible */
         .photo-section {
             margin: 20px auto 25px;
             width: 200px;
             height: 200px;
             position: relative;
-            display: block; /* সবসময় দেখাবে */
         }
         
-        /* Beautiful Blue Glow Effect - ALWAYS ACTIVE 💙 */
+        /* Blue Glow Effect */
         .photo-glow {
             position: absolute;
             top: 50%; left: 50%;
@@ -79,7 +79,7 @@
             }
         }
         
-        /* Circular Photo Container with Border ⭐ */
+        /* Circular Photo Container */
         .photo-container {
             width: 100%;
             height: 100%;
@@ -99,7 +99,7 @@
             justify-content: center;
         }
         
-        /* Placeholder - Beautiful Floating Emoji 🎂 */
+        /* Placeholder */
         .photo-placeholder {
             position: absolute;
             top: 50%;
@@ -115,15 +115,13 @@
         @keyframes float-placeholder {
             0%, 100% { 
                 transform: translate(-50%, -50%) scale(1) rotate(-5deg);
-                filter: drop-shadow(0 0 25px rgba(0, 200, 255, 0.7));
             }
             50% { 
                 transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
-                filter: drop-shadow(0 0 40px rgba(0, 200, 255, 1));
             }
         }
         
-        /* Photo Images 📸 */
+        /* Photos */
         .birthday-photo {
             width: 100%;
             height: 100%;
@@ -135,13 +133,8 @@
             z-index: 3;
         }
         
-        .birthday-photo.visible {
-            opacity: 1;
-        }
-        
-        .birthday-photo.fade-out { 
-            opacity: 0;
-        }
+        .birthday-photo.visible { opacity: 1; }
+        .birthday-photo.fade-out { opacity: 0; }
 
         .birthday-name {
             font-size: 2.5rem; font-weight: 800; margin: 10px 0;
@@ -180,9 +173,49 @@
         }
         .btn-new:hover { background: rgba(255,255,255,0.2); transform: scale(1.02); }
         
+        /* Posts Section from Database */
+        .posts-section {
+            margin-top: 40px;
+        }
+        .posts-title {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #54a0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .post-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .post-photo {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(0, 180, 255, 0.5);
+        }
+        .post-message {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .post-time {
+            font-size: 0.8rem;
+            color: #ffd700;
+            opacity: 0.7;
+        }
+        
         #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; }
         .floating-item { position: fixed; pointer-events: none; z-index: 5; font-size: 1.5rem; animation: floatUp 6s linear forwards; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
+        
+        /* Upload form hidden */
+        #uploadForm { display: none; }
     </style>
 </head>
 <body>
@@ -194,11 +227,12 @@
     <canvas id="confetti-canvas"></canvas>
 
     <div class="container">
-        <div id="celebrationPage" class="glass-card">
+        <!-- Main Birthday Card (from URL params) -->
+        <div class="glass-card">
             <div class="cake-anim">🎂</div>
             <h2 style="font-size: 0.9rem; letter-spacing: 3px; opacity: 0.7; font-weight: 400;">HAPPY BIRTHDAY</h2>
             
-            <!-- PHOTO SECTION - সবসময় দেখাবে 🎨 -->
+            <!-- Photo Section -->
             <div class="photo-section">
                 <div class="photo-glow"></div>
                 <div class="photo-container">
@@ -231,47 +265,58 @@
 
             <button class="btn-new" onclick="location.href='index.html'">Create New Surprise</button>
         </div>
+
+        <!-- All Posts from Supabase Database -->
+        <div class="posts-section">
+            <h2 class="posts-title">🎉 Recent Celebrations</h2>
+            <div id="postsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Upload form hidden in background -->
+    <div id="uploadForm">
+        <input type="file" id="file">
+        <textarea id="text"></textarea>
     </div>
 
     <script>
-        // SYSTEM: index2.html শুধু URL parameter থেকে photo দেখায়
-        // Upload logic index.html এ আছে
+        // SUPABASE CONFIGURATION
+        const WORKER_URL = "https://supabasestorageapikey.radidmondal.workers.dev/";
+        const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts?select=photo_url,message,created_at&order=created_at.desc";
+        const API_KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
         
         let photoTransitionInterval = null;
         
         window.onload = () => {
-            // Read URL parameters
+            // Load current birthday from URL params
             const params = new URLSearchParams(window.location.search);
             const name = params.get('n') || "Friend";
             const d = params.get('d'), m = params.get('m'), y = params.get('y');
             const msg = params.get('t');
-            const photosParam = params.get('p'); // Photo URL(s) from Supabase
+            const photosParam = params.get('p');
             
-            // Display text content
             document.getElementById('dispName').textContent = name;
             document.getElementById('dispDate').textContent = (d||m||y) ? `📅 ${d||''}/${m||''}/${y||''}` : '';
             document.getElementById('dispMsg').textContent = msg || "Wishing you a year full of happiness and success! 🎂";
 
-            // Handle Photos from URL parameter
+            // Load current photos
             if (photosParam && photosParam.trim() !== "") {
                 const photoList = photosParam.split(',')
                     .map(url => url.trim())
                     .filter(url => url !== "");
                 
                 if (photoList.length > 0) {
-                    console.log("📸 Loading photos from Supabase:", photoList);
                     loadPhotos(photoList);
-                } else {
-                    console.log("🎂 No photos - showing placeholder");
                 }
-            } else {
-                console.log("🎂 No photos in URL - showing placeholder");
             }
 
             // Share functionality
             const currentUrl = window.location.href;
             document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent("I have a surprise for you! 🎂 " + currentUrl)}`;
             document.getElementById('fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+            
+            // Load all posts from database
+            loadAllPosts();
             
             initAnimations();
         };
@@ -281,65 +326,85 @@
             const p1 = document.getElementById('p1');
             const p2 = document.getElementById('p2');
             
-            // Load first photo
             p1.src = photoList[0];
             
-            // When photo loads successfully
             p1.onload = function() {
-                console.log("✅ Photo 1 loaded from Supabase");
-                // Hide placeholder, show photo
                 placeholder.style.opacity = '0';
                 setTimeout(() => placeholder.style.display = 'none', 500);
                 p1.classList.add('visible');
             };
             
             p1.onerror = function() {
-                console.error('❌ Failed to load photo 1:', photoList[0]);
-                console.log("🎂 Keeping placeholder visible");
-                // Keep placeholder visible if photo fails
+                console.error('❌ Failed to load photo');
             };
             
-            // If there are 2 photos, load second one
             if (photoList.length > 1) {
                 p2.src = photoList[1];
-                
                 p2.onload = function() {
-                    console.log("✅ Photo 2 loaded from Supabase");
-                    // Start transition after both loaded
-                    setTimeout(() => {
-                        startPhotoTransition(p1, p2);
-                    }, 2000);
-                };
-                
-                p2.onerror = function() {
-                    console.error('❌ Failed to load photo 2:', photoList[1]);
+                    setTimeout(() => startPhotoTransition(p1, p2), 2000);
                 };
             }
         }
 
         function startPhotoTransition(p1, p2) {
-            console.log("🔄 Starting photo transition (every 4 seconds)");
             let showingP1 = true;
-            
-            // Clear any existing interval
-            if (photoTransitionInterval) {
-                clearInterval(photoTransitionInterval);
-            }
+            if (photoTransitionInterval) clearInterval(photoTransitionInterval);
             
             photoTransitionInterval = setInterval(() => {
                 if (showingP1) {
-                    // Show Photo 2
                     p1.classList.add('fade-out');
                     p2.classList.add('visible');
-                    console.log("→ Photo 2");
                 } else {
-                    // Show Photo 1
                     p1.classList.remove('fade-out');
                     p2.classList.remove('visible');
-                    console.log("→ Photo 1");
                 }
                 showingP1 = !showingP1;
             }, 4000);
+        }
+
+        // Load all posts from Supabase database
+        async function loadAllPosts() {
+            try {
+                const res = await fetch(API_URL, {
+                    headers: {
+                        "apikey": API_KEY,
+                        "Authorization": "Bearer " + API_KEY
+                    }
+                });
+                
+                const data = await res.json();
+                const container = document.getElementById('postsContainer');
+                container.innerHTML = "";
+                
+                console.log(`📦 Loaded ${data.length} posts from Supabase`);
+                
+                data.forEach(post => {
+                    const timeAgo = getTimeAgo(post.created_at);
+                    container.innerHTML += `
+                        <div class="post-card">
+                            <img src="${post.photo_url}" class="post-photo" alt="Birthday photo">
+                            <div class="post-message">${post.message || 'Happy Birthday! 🎉'}</div>
+                            <div class="post-time">🕒 ${timeAgo}</div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error("❌ Failed to load posts:", err);
+            }
+        }
+
+        function getTimeAgo(dateString) {
+            const now = new Date();
+            const past = new Date(dateString);
+            const diffMs = now - past;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+            if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
         }
 
         function copyLink() {
@@ -351,7 +416,6 @@
         }
 
         function initAnimations() {
-            // Confetti Animation
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
@@ -388,7 +452,6 @@
             }
             draw();
 
-            // Floating Emojis
             const emojis = ['💖', '🎈', '✨', '🎁', '🌸', '🎉', '👑', '🎂'];
             setInterval(() => {
                 const e = document.createElement('div');
@@ -401,11 +464,8 @@
             }, 1000);
         }
         
-        // Cleanup
         window.addEventListener('beforeunload', () => {
-            if (photoTransitionInterval) {
-                clearInterval(photoTransitionInterval);
-            }
+            if (photoTransitionInterval) clearInterval(photoTransitionInterval);
         });
     </script>
 </body>
