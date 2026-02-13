@@ -39,11 +39,11 @@
         .cake-anim { font-size: 3.5rem; margin-bottom: 5px; animation: cake-bounce 1s infinite; }
         @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
         
-        /* Enhanced Photo Section with Beautiful Circular Frame */
+        /* Enhanced Photo Section - ULTRA STABLE */
         .photo-section {
-            margin: 25px auto;
-            width: 220px;
-            height: 220px;
+            margin: 20px auto 25px;
+            width: 200px;
+            height: 200px;
             position: relative;
             display: none; /* Hidden if no photo */
         }
@@ -53,8 +53,8 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 260px; 
-            height: 260px;
+            width: 240px; 
+            height: 240px;
             background: radial-gradient(circle, 
                 rgba(0, 150, 255, 0.9) 0%, 
                 rgba(0, 200, 255, 0.6) 30%, 
@@ -84,7 +84,7 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 6px solid rgba(0, 180, 255, 0.7);
+            border: 5px solid rgba(0, 180, 255, 0.7);
             overflow: hidden;
             position: relative;
             z-index: 2;
@@ -96,22 +96,23 @@
             background: #16213e;
         }
         
-        /* Photo Images */
+        /* Photo Images - DEFAULT VISIBLE NOW! */
         .birthday-photo {
             width: 100%;
             height: 100%;
             object-fit: cover;
             position: absolute;
             top: 0; left: 0;
-            opacity: 0;
+            opacity: 1; /* CHANGED: Now visible by default */
             transition: opacity 1.5s ease-in-out;
         }
         
-        .birthday-photo.visible { 
-            opacity: 1;
+        .birthday-photo.fade-out { 
+            opacity: 0;
         }
         
-        .birthday-photo.hidden { 
+        /* Photo 2 starts hidden */
+        #p2 {
             opacity: 0;
         }
 
@@ -169,7 +170,7 @@
             <div class="cake-anim">🎂</div>
             <h2 style="font-size: 0.9rem; letter-spacing: 3px; opacity: 0.7; font-weight: 400;">HAPPY BIRTHDAY</h2>
             
-            <!-- Beautiful Circular Photo Frame with Blue Glow -->
+            <!-- Beautiful Circular Photo Frame with Blue Glow - ULTRA STABLE -->
             <div class="photo-section" id="photoSection">
                 <div class="photo-glow"></div>
                 <div class="photo-container">
@@ -204,6 +205,9 @@
     </div>
 
     <script>
+        // ULTRA STABLE PHOTO LOADING SYSTEM 🔥
+        let photoTransitionInterval = null;
+        
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
             const name = params.get('n') || "Friend";
@@ -215,60 +219,15 @@
             document.getElementById('dispDate').textContent = (d||m||y) ? `📅 ${d||''}/${m||''}/${y||''}` : '';
             document.getElementById('dispMsg').textContent = msg || "Wishing you a year full of happiness and success! 🎂";
 
-            // Enhanced Photo Handling with Better Loading
+            // ULTRA STABLE Photo Handling
             if (photosParam) {
                 const photoList = photosParam.split(',')
                     .map(url => url.trim())
                     .filter(url => url !== "");
                 
                 if (photoList.length > 0) {
-                    console.log("Loading photos:", photoList);
-                    const section = document.getElementById('photoSection');
-                    const p1 = document.getElementById('p1');
-                    const p2 = document.getElementById('p2');
-                    
-                    // Show photo section
-                    section.style.display = 'block';
-                    
-                    let photosLoaded = 0;
-                    
-                    // Load first photo
-                    p1.onload = function() {
-                        console.log("Photo 1 loaded successfully");
-                        p1.classList.add('visible');
-                        p1.classList.remove('hidden');
-                        photosLoaded++;
-                        
-                        // If we have 2 photos and both are loaded, start transition
-                        if (photoList.length > 1 && photosLoaded === 2) {
-                            startPhotoTransition(p1, p2);
-                        }
-                    };
-                    
-                    p1.onerror = function() {
-                        console.error('Failed to load photo 1:', photoList[0]);
-                    };
-                    
-                    p1.src = photoList[0];
-                    
-                    // If there's a second photo, load it
-                    if (photoList.length > 1) {
-                        p2.onload = function() {
-                            console.log("Photo 2 loaded successfully");
-                            photosLoaded++;
-                            
-                            // Start transition when both photos are loaded
-                            if (photosLoaded === 2) {
-                                startPhotoTransition(p1, p2);
-                            }
-                        };
-                        
-                        p2.onerror = function() {
-                            console.error('Failed to load photo 2:', photoList[1]);
-                        };
-                        
-                        p2.src = photoList[1];
-                    }
+                    console.log("📸 Loading photos:", photoList);
+                    initPhotoSystem(photoList);
                 }
             }
 
@@ -280,24 +239,73 @@
             initAnimations();
         };
 
+        function initPhotoSystem(photoList) {
+            const section = document.getElementById('photoSection');
+            const p1 = document.getElementById('p1');
+            const p2 = document.getElementById('p2');
+            
+            // IMMEDIATELY show photo section (don't wait for load)
+            section.style.display = 'block';
+            
+            // Load Photo 1 - IMMEDIATE with fallback
+            p1.src = photoList[0];
+            
+            // Fallback: Force visible after 100ms even if onload doesn't fire
+            setTimeout(() => {
+                p1.style.opacity = '1';
+                console.log("✅ Photo 1 forced visible (fallback)");
+            }, 100);
+            
+            // Track if photo loaded successfully
+            p1.onload = function() {
+                console.log("✅ Photo 1 loaded successfully");
+                p1.style.opacity = '1';
+            };
+            
+            p1.onerror = function() {
+                console.error('❌ Failed to load photo 1:', photoList[0]);
+                // Keep showing placeholder background
+            };
+            
+            // If there's a second photo, set up transition
+            if (photoList.length > 1) {
+                // Preload Photo 2
+                p2.src = photoList[1];
+                
+                // Set up transition after a delay (give time to load)
+                setTimeout(() => {
+                    startPhotoTransition(p1, p2);
+                }, 2000); // Wait 2 seconds before starting transition
+                
+                p2.onerror = function() {
+                    console.error('❌ Failed to load photo 2:', photoList[1]);
+                };
+            }
+        }
+
         function startPhotoTransition(p1, p2) {
-            console.log("Starting photo transition");
+            console.log("🔄 Starting photo transition");
             let showingP1 = true;
             
-            setInterval(() => {
+            // Clear any existing interval
+            if (photoTransitionInterval) {
+                clearInterval(photoTransitionInterval);
+            }
+            
+            photoTransitionInterval = setInterval(() => {
                 if (showingP1) {
-                    p1.classList.remove('visible');
-                    p1.classList.add('hidden');
-                    p2.classList.add('visible');
-                    p2.classList.remove('hidden');
+                    // Fade out Photo 1, Fade in Photo 2
+                    p1.classList.add('fade-out');
+                    p2.style.opacity = '1';
+                    console.log("→ Showing Photo 2");
                 } else {
-                    p1.classList.add('visible');
-                    p1.classList.remove('hidden');
-                    p2.classList.remove('visible');
-                    p2.classList.add('hidden');
+                    // Fade in Photo 1, Fade out Photo 2
+                    p1.classList.remove('fade-out');
+                    p2.style.opacity = '0';
+                    console.log("→ Showing Photo 1");
                 }
                 showingP1 = !showingP1;
-            }, 4000);
+            }, 4000); // Switch every 4 seconds
         }
 
         function copyLink() {
@@ -356,6 +364,13 @@
                 setTimeout(() => e.remove(), 6000);
             }, 1000);
         }
+        
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            if (photoTransitionInterval) {
+                clearInterval(photoTransitionInterval);
+            }
+        });
     </script>
 </body>
 </html>
