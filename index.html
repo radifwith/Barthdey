@@ -137,29 +137,48 @@
             const btn = event.target;
             const status = document.getElementById('status');
             btn.disabled = true;
-            btn.textContent = "Uploading...";
+            btn.textContent = "Processing...";
 
             try {
-                // Upload photos
                 let photoUrls = [];
-                for (let i = 0; i < selectedFiles.length; i++) {
-                    status.textContent = `Uploading photo ${i+1}/${selectedFiles.length}...`;
-                    const compressed = await compress(selectedFiles[i]);
-                    const fd = new FormData();
-                    fd.append("file", compressed);
-                    fd.append("text", name);
-
-                    const res = await fetch(WORKER_URL, { method: "POST", body: fd });
-                    const text = await res.text();
+                
+                // Upload photos only if selected
+                if (selectedFiles.length > 0) {
+                    console.log("📸 Uploading", selectedFiles.length, "photos...");
                     
-                    if (res.ok) {
+                    for (let i = 0; i < selectedFiles.length; i++) {
+                        status.textContent = `Uploading photo ${i+1}/${selectedFiles.length}...`;
+                        
                         try {
-                            const json = JSON.parse(text);
-                            photoUrls.push(json.photo_url || json.url || text.trim());
-                        } catch {
-                            photoUrls.push(text.trim());
+                            const compressed = await compress(selectedFiles[i]);
+                            const fd = new FormData();
+                            fd.append("file", compressed);
+                            fd.append("text", name);
+
+                            const res = await fetch(WORKER_URL, { method: "POST", body: fd });
+                            const text = await res.text();
+                            
+                            console.log(`Photo ${i+1} response:`, res.status, text);
+                            
+                            if (res.ok) {
+                                try {
+                                    const json = JSON.parse(text);
+                                    const url = json.photo_url || json.url || text.trim();
+                                    photoUrls.push(url);
+                                    console.log(`✅ Photo ${i+1} URL:`, url);
+                                } catch {
+                                    photoUrls.push(text.trim());
+                                    console.log(`✅ Photo ${i+1} URL (text):`, text.trim());
+                                }
+                            } else {
+                                console.error(`❌ Photo ${i+1} upload failed:`, text);
+                            }
+                        } catch (photoErr) {
+                            console.error(`❌ Photo ${i+1} error:`, photoErr);
                         }
                     }
+                } else {
+                    console.log("ℹ️ No photos selected");
                 }
 
                 // Prepare wish data
@@ -171,6 +190,7 @@
                 const birthDate = (day && month && year) ? `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}` : null;
                 
                 status.textContent = "Saving wish...";
+                console.log("💾 Saving to database...");
 
                 // Save to Supabase
                 const wishData = {
@@ -180,6 +200,8 @@
                     photo_url: photoUrls.length > 0 ? photoUrls[0] : null,
                     photo_url_2: photoUrls.length > 1 ? photoUrls[1] : null
                 };
+                
+                console.log("Data to save:", wishData);
 
                 const saveRes = await fetch(API_URL, {
                     method: "POST",
@@ -192,26 +214,31 @@
                     body: JSON.stringify(wishData)
                 });
 
+                const saveText = await saveRes.text();
+                console.log("Database response:", saveRes.status, saveText);
+
                 if (!saveRes.ok) {
-                    throw new Error("Failed to save wish");
+                    throw new Error(`Database error: ${saveText}`);
                 }
 
-                const saved = await saveRes.json();
+                const saved = JSON.parse(saveText);
                 const wishId = saved[0].id;
 
                 console.log("✅ Wish saved with ID:", wishId);
                 
-                status.textContent = "Redirecting...";
+                status.textContent = "Success! Redirecting...";
                 setTimeout(() => {
                     location.href = `index2.html?id=${wishId}`;
                 }, 500);
 
             } catch (error) {
-                console.error("Error:", error);
-                status.textContent = "Error! Please try again.";
+                console.error("❌ Full error:", error);
+                status.textContent = `Error: ${error.message}`;
                 btn.disabled = false;
                 btn.textContent = "✨ Create Wish";
-                alert("Upload failed. Please try again.");
+                
+                // Show detailed error
+                alert(`Failed: ${error.message}\n\nCheck console (F12) for details.`);
             }
         }
     </script>

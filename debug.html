@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a2e; color: white; }
+        input { padding: 10px; margin: 10px 0; width: 100%; background: #000; color: white; border: 1px solid #00f0ff; }
+        button { padding: 15px 30px; margin: 10px; background: #00f0ff; border: none; cursor: pointer; font-weight: bold; }
+        pre { background: #000; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; }
+        .step { margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Test - Database Only</h1>
+    <p>Test database without photos</p>
+    
+    <input type="text" id="name" placeholder="Enter name" value="Test User">
+    <button onclick="testSave()">💾 Test Save to Database</button>
+    
+    <div id="steps"></div>
+    <h3>Console Log:</h3>
+    <pre id="log"></pre>
+
+    <script>
+        const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
+        const API_KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
+        
+        function log(msg) {
+            const el = document.getElementById('log');
+            el.textContent += msg + '\n';
+            console.log(msg);
+        }
+        
+        function addStep(msg, status) {
+            const el = document.getElementById('steps');
+            const color = status === 'ok' ? '#00ff00' : status === 'error' ? '#ff0000' : '#ffaa00';
+            el.innerHTML += `<div class="step" style="border-left: 4px solid ${color};">${msg}</div>`;
+        }
+
+        async function testSave() {
+            document.getElementById('log').textContent = '';
+            document.getElementById('steps').innerHTML = '';
+            
+            const name = document.getElementById('name').value.trim();
+            if (!name) {
+                alert("Enter a name!");
+                return;
+            }
+
+            try {
+                addStep('Step 1: Preparing data...', 'ok');
+                log('Name: ' + name);
+                
+                const wishData = {
+                    name: name,
+                    birth_date: null,
+                    message: "Test message",
+                    photo_url: null,
+                    photo_url_2: null
+                };
+                
+                log('Data: ' + JSON.stringify(wishData, null, 2));
+                addStep('Step 2: Sending to database...', 'ok');
+
+                const res = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "apikey": API_KEY,
+                        "Authorization": `Bearer ${API_KEY}`,
+                        "Content-Type": "application/json",
+                        "Prefer": "return=representation"
+                    },
+                    body: JSON.stringify(wishData)
+                });
+
+                log('Response Status: ' + res.status);
+                const text = await res.text();
+                log('Response Body: ' + text);
+
+                if (!res.ok) {
+                    addStep(`Step 3: ❌ Database error (${res.status})`, 'error');
+                    log('ERROR: ' + text);
+                    alert('Database save failed!\n\nCheck:\n1. Is "posts" table created?\n2. Are RLS policies enabled?\n\nSee console for details.');
+                    return;
+                }
+
+                addStep('Step 3: ✅ Saved to database!', 'ok');
+                
+                const saved = JSON.parse(text);
+                const id = saved[0].id;
+                
+                log('Saved ID: ' + id);
+                addStep(`Step 4: ✅ Got ID: ${id}`, 'ok');
+                addStep(`Step 5: Would redirect to: index2.html?id=${id}`, 'ok');
+                
+                log('\n✅ SUCCESS! Database is working.');
+                alert(`✅ Database works!\n\nWish ID: ${id}\n\nNow test with photos in index.html`);
+
+            } catch (error) {
+                addStep('❌ Error: ' + error.message, 'error');
+                log('ERROR: ' + error.message);
+                log('Stack: ' + error.stack);
+                alert('Error! Check console for details.');
+            }
+        }
+    </script>
+</body>
+</html>
