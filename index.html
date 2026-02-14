@@ -3,245 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Magic ✨ - Create</title>
+    <title>Birthday Magic ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-        }
-        .bg-animation {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
-        }
-        .bg-animation span {
-            position: absolute; display: block; width: 20px; height: 20px;
-            background: rgba(255, 255, 255, 0.1); animation: move 25s linear infinite;
-            bottom: -150px; border-radius: 50%;
-        }
-        @keyframes move {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
-            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+            min-height: 100vh; color: white;
+            display: flex; justify-content: center; align-items: center;
         }
         .container { width: 100%; max-width: 450px; padding: 20px; }
-        .input-page {
-            text-align: center; background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px); border-radius: 30px; padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        .card {
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
+            border-radius: 30px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center;
         }
         .logo {
             font-family: 'Righteous', cursive; font-size: 2.2rem;
             background: linear-gradient(135deg, #ff2e97, #00f0ff, #ffd700);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
         }
         .subtitle { font-size: 0.9rem; color: #00f0ff; margin-bottom: 25px; opacity: 0.8; }
-        .input-group { text-align: left; margin-bottom: 15px; }
-        label { display: block; font-size: 0.8rem; color: #ffd700; margin-bottom: 5px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .group { text-align: left; margin-bottom: 15px; }
+        label {
+            display: block; font-size: 0.8rem; color: #ffd700;
+            margin-bottom: 5px; font-weight: 600; text-transform: uppercase;
+        }
         input, textarea {
             width: 100%; padding: 10px 15px; font-size: 0.95rem;
-            border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.2);
-            color: white; border-radius: 12px; margin-bottom: 12px; outline: none;
-            transition: border-color 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2); color: white;
+            border-radius: 12px; margin-bottom: 12px; outline: none;
         }
         input:focus, textarea:focus { border-color: #ff2e97; }
-        .date-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .gallery-btn {
+        .dates { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .file-btn {
             width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05);
-            border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 12px; cursor: pointer; color: white; margin-bottom: 10px;
-            transition: all 0.3s; font-size: 0.95rem;
+            border: 2px dashed rgba(255, 255, 255, 0.2); border-radius: 12px;
+            cursor: pointer; color: white; margin-bottom: 10px; font-size: 0.95rem;
         }
-        .gallery-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: #ff2e97; }
-        .photo-preview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .photo-preview-item { position: relative; height: 80px; border-radius: 10px; overflow: hidden; border: 2px solid #ff2e97; }
-        .photo-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .preview { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .preview div { height: 80px; border-radius: 10px; overflow: hidden; border: 2px solid #ff2e97; }
+        .preview img { width: 100%; height: 100%; object-fit: cover; }
         .btn {
             width: 100%; background: linear-gradient(135deg, #ff2e97, #ff6b9d);
-            color: white; padding: 12px; font-size: 1rem; border: none; border-radius: 50px;
-            cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(255, 46, 151, 0.3);
-            transition: transform 0.2s;
+            color: white; padding: 12px; font-size: 1rem; border: none;
+            border-radius: 50px; cursor: pointer; font-weight: 600;
         }
-        .btn:active { transform: scale(0.98); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        #status { margin-top: 10px; font-size: 0.85rem; color: #00f0ff; font-weight: 500; }
-        
-        /* Posts hidden in background */
-        #postsContainer { display: none; }
+        .btn:disabled { opacity: 0.5; }
+        #status { margin-top: 10px; font-size: 0.85rem; color: #00f0ff; }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <span style="left: 25%; width: 80px; height: 80px; background: rgba(255, 107, 107, 0.1);"></span>
-        <span style="left: 10%; width: 20px; height: 20px; animation-delay: 2s; background: rgba(78, 205, 196, 0.1);"></span>
-        <span style="left: 70%; width: 20px; height: 20px; animation-delay: 4s; background: rgba(255, 230, 109, 0.1);"></span>
-    </div>
-
     <div class="container">
-        <div class="input-page">
+        <div class="card">
             <div class="logo">Birthday Magic ✨</div>
-            <p class="subtitle">Create a magical surprise link</p>
+            <p class="subtitle">Create a surprise wish</p>
             
-            <div class="input-group">
-                <label>Name</label>
-                <input type="text" id="nameInput" placeholder="Friend's Name">
+            <div class="group">
+                <label>Name *</label>
+                <input type="text" id="name" placeholder="Friend's Name" required>
                 
                 <label>Birth Date (Optional)</label>
-                <div class="date-inputs">
-                    <input type="number" id="dayInput" placeholder="DD">
-                    <input type="number" id="monthInput" placeholder="MM">
-                    <input type="number" id="yearInput" placeholder="YYYY">
+                <div class="dates">
+                    <input type="number" id="day" placeholder="DD" min="1" max="31">
+                    <input type="number" id="month" placeholder="MM" min="1" max="12">
+                    <input type="number" id="year" placeholder="YYYY" min="1900" max="2100">
                 </div>
                 
                 <label>Message (Optional)</label>
-                <textarea id="messageInput" placeholder="Your special message..." rows="3"></textarea>
+                <textarea id="message" placeholder="Your birthday message..." rows="3"></textarea>
                 
-                <label>Photos (Max 2)</label>
-                <input type="file" id="fileInput" accept="image/*" multiple style="display: none;" onchange="handleFiles(event)">
-                <button class="gallery-btn" onclick="document.getElementById('fileInput').click()">📷 Select Photos</button>
-                <div class="photo-preview-grid" id="previewGrid"></div>
+                <label>Photo (Max 2)</label>
+                <input type="file" id="file" accept="image/*" multiple style="display:none" onchange="preview()">
+                <button class="file-btn" onclick="document.getElementById('file').click()">📷 Select Photos</button>
+                <div class="preview" id="pv"></div>
             </div>
 
-            <button class="btn" id="createBtn" onclick="createMagic()">✨ Create Magic ✨</button>
+            <button class="btn" onclick="create()">✨ Create Wish</button>
             <p id="status"></p>
         </div>
     </div>
 
-    <!-- Posts container hidden in background -->
-    <div id="postsContainer"></div>
-
     <script>
-        // SUPABASE CONFIGURATION
+        // Configuration
         const WORKER_URL = "https://supabasestorageapikey.radidmondal.workers.dev/";
-        const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts?select=photo_url,message,created_at&order=created_at.desc";
+        const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
         const API_KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
         
         let selectedFiles = [];
 
-        function handleFiles(e) {
-            selectedFiles = Array.from(e.target.files).slice(0, 2);
-            const grid = document.getElementById('previewGrid');
-            grid.innerHTML = '';
+        function preview() {
+            selectedFiles = Array.from(document.getElementById('file').files).slice(0, 2);
+            const pv = document.getElementById('pv');
+            pv.innerHTML = '';
             selectedFiles.forEach(f => {
                 const r = new FileReader();
-                r.onload = ev => {
-                    const d = document.createElement('div');
-                    d.className = 'photo-preview-item';
-                    d.innerHTML = `<img src="${ev.target.result}">`;
-                    grid.appendChild(d);
-                };
+                r.onload = e => pv.innerHTML += `<div><img src="${e.target.result}"></div>`;
                 r.readAsDataURL(f);
             });
         }
 
-        async function compressImage(file) {
-            return new Promise((resolve) => {
+        async function compress(file) {
+            return new Promise(resolve => {
                 const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (e) => {
+                reader.onload = e => {
                     const img = new Image();
-                    img.src = e.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-                        const maxDim = 600;
-                        if (width > height) {
-                            if (width > maxDim) { height *= maxDim / width; width = maxDim; }
-                        } else {
-                            if (height > maxDim) { width *= maxDim / height; height = maxDim; }
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        canvas.toBlob((blob) => {
+                        let w = img.width, h = img.height;
+                        const max = 600;
+                        if (w > h && w > max) { h *= max / w; w = max; }
+                        else if (h > max) { w *= max / h; h = max; }
+                        canvas.width = w;
+                        canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        canvas.toBlob(blob => {
                             resolve(new File([blob], "photo.jpg", { type: "image/jpeg" }));
                         }, "image/jpeg", 0.7);
                     };
+                    img.src = e.target.result;
                 };
+                reader.readAsDataURL(file);
             });
         }
 
-        async function createMagic() {
-            const name = document.getElementById('nameInput').value.trim();
+        async function create() {
+            const name = document.getElementById('name').value.trim();
             if (!name) return alert("Please enter a name! 🎈");
 
-            const btn = document.getElementById('createBtn');
+            const btn = event.target;
             const status = document.getElementById('status');
             btn.disabled = true;
-            btn.textContent = "Processing...";
+            btn.textContent = "Uploading...";
 
-            let photoUrls = [];
-            
-            // Upload photos to Supabase via Worker
-            for (let i = 0; i < selectedFiles.length; i++) {
-                status.textContent = `Uploading photo ${i+1}...`;
-                try {
-                    const compressed = await compressImage(selectedFiles[i]);
+            try {
+                // Upload photos
+                let photoUrls = [];
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    status.textContent = `Uploading photo ${i+1}/${selectedFiles.length}...`;
+                    const compressed = await compress(selectedFiles[i]);
                     const fd = new FormData();
                     fd.append("file", compressed);
-                    fd.append("text", "Birthday Surprise");
+                    fd.append("text", name);
 
                     const res = await fetch(WORKER_URL, { method: "POST", body: fd });
-                    const txt = await res.text();
+                    const text = await res.text();
                     
                     if (res.ok) {
                         try {
-                            const data = JSON.parse(txt);
-                            photoUrls.push(data.photo_url || data.url || txt.trim());
-                        } catch { 
-                            photoUrls.push(txt.trim()); 
+                            const json = JSON.parse(text);
+                            photoUrls.push(json.photo_url || json.url || text.trim());
+                        } catch {
+                            photoUrls.push(text.trim());
                         }
                     }
-                } catch (err) {
-                    console.error("Upload error:", err);
                 }
-            }
 
-            status.textContent = "Redirecting...";
-            
-            // Build URL parameters for index2.html
-            const day = document.getElementById('dayInput').value;
-            const month = document.getElementById('monthInput').value;
-            const year = document.getElementById('yearInput').value;
-            const msg = document.getElementById('messageInput').value.trim();
-            
-            const p = new URLSearchParams();
-            p.set('n', name);
-            if (day) p.set('d', day);
-            if (month) p.set('m', month);
-            if (year) p.set('y', year);
-            if (msg) p.set('t', msg);
-            if (photoUrls.length > 0) p.set('p', photoUrls.join(','));
+                // Prepare wish data
+                const day = document.getElementById('day').value;
+                const month = document.getElementById('month').value;
+                const year = document.getElementById('year').value;
+                const message = document.getElementById('message').value.trim();
+                
+                const birthDate = (day && month && year) ? `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}` : null;
+                
+                status.textContent = "Saving wish...";
 
-            // Redirect to index2.html with data
-            window.location.href = "index2.html?" + p.toString();
-        }
+                // Save to Supabase
+                const wishData = {
+                    name: name,
+                    birth_date: birthDate,
+                    message: message || "Wishing you a wonderful birthday! 🎂",
+                    photo_url: photoUrls.length > 0 ? photoUrls[0] : null,
+                    photo_url_2: photoUrls.length > 1 ? photoUrls[1] : null
+                };
 
-        // Load posts in background (hidden from user)
-        async function loadPostsBackground() {
-            try {
-                const res = await fetch(API_URL, {
+                const saveRes = await fetch(API_URL, {
+                    method: "POST",
                     headers: {
                         "apikey": API_KEY,
-                        "Authorization": "Bearer " + API_KEY
-                    }
+                        "Authorization": `Bearer ${API_KEY}`,
+                        "Content-Type": "application/json",
+                        "Prefer": "return=representation"
+                    },
+                    body: JSON.stringify(wishData)
                 });
-                const data = await res.json();
-                console.log("📦 Loaded", data.length, "posts from Supabase (hidden)");
-            } catch (err) {
-                console.error("Failed to load posts:", err);
+
+                if (!saveRes.ok) {
+                    throw new Error("Failed to save wish");
+                }
+
+                const saved = await saveRes.json();
+                const wishId = saved[0].id;
+
+                console.log("✅ Wish saved with ID:", wishId);
+                
+                status.textContent = "Redirecting...";
+                setTimeout(() => {
+                    location.href = `index2.html?id=${wishId}`;
+                }, 500);
+
+            } catch (error) {
+                console.error("Error:", error);
+                status.textContent = "Error! Please try again.";
+                btn.disabled = false;
+                btn.textContent = "✨ Create Wish";
+                alert("Upload failed. Please try again.");
             }
         }
-
-        // Load posts on page load (background only)
-        loadPostsBackground();
     </script>
 </body>
 </html>

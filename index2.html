@@ -10,463 +10,296 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: white;
-            overflow-x: hidden;
-            padding-bottom: 50px;
+            min-height: 100vh; color: white;
+            display: flex; justify-content: center; align-items: center;
         }
-        .bg-animation {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
-        }
-        .bg-animation span {
-            position: absolute; display: block; width: 20px; height: 20px;
-            background: rgba(255, 255, 255, 0.1); animation: move 25s linear infinite;
+        .bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .bg span {
+            position: absolute; width: 20px; height: 20px;
+            background: rgba(255, 255, 255, 0.1); animation: mv 25s linear infinite;
             bottom: -150px; border-radius: 50%;
         }
-        @keyframes move {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
-            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        @keyframes mv {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
         }
-        
-        .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; }
-        
-        /* Main Birthday Card */
-        .glass-card {
+        .box { width: 100%; max-width: 600px; padding: 20px; z-index: 10; }
+        .card {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px);
             border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px 20px; width: 100%; text-align: center; position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 30px;
+            padding: 30px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .cake-anim { font-size: 3.5rem; margin-bottom: 5px; animation: cake-bounce 1s infinite; }
-        @keyframes cake-bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
+        .cake { font-size: 3.5rem; margin-bottom: 5px; animation: bnc 1s infinite; }
+        @keyframes bnc { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.1); } }
         
-        /* PHOTO SECTION - সবসময় visible */
-        .photo-section {
-            margin: 20px auto 25px;
-            width: 200px;
-            height: 200px;
-            position: relative;
+        .pic { margin: 20px auto 25px; width: 200px; height: 200px; position: relative; }
+        .glow {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 260px; height: 260px;
+            background: radial-gradient(circle, rgba(0,150,255,0.9) 0%, rgba(0,200,255,0.6) 30%, rgba(100,200,255,0.4) 50%, transparent 75%);
+            filter: blur(40px); border-radius: 50%; z-index: 1; animation: pls 3s ease-in-out infinite alternate;
         }
-        
-        /* Blue Glow Effect */
-        .photo-glow {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 260px; 
-            height: 260px;
-            background: radial-gradient(circle, 
-                rgba(0, 150, 255, 0.9) 0%, 
-                rgba(0, 200, 255, 0.6) 30%, 
-                rgba(100, 200, 255, 0.4) 50%,
-                transparent 75%);
-            filter: blur(40px);
-            border-radius: 50%;
-            z-index: 1;
-            animation: pulse-glow 3s ease-in-out infinite alternate;
+        @keyframes pls {
+            0% { opacity: 0.7; transform: translate(-50%, -50%) scale(0.9); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
         }
-        
-        @keyframes pulse-glow {
-            0% { 
-                opacity: 0.7; 
-                transform: translate(-50%, -50%) scale(0.9);
-                filter: blur(35px);
-            }
-            100% { 
-                opacity: 1; 
-                transform: translate(-50%, -50%) scale(1.15);
-                filter: blur(45px);
-            }
-        }
-        
-        /* Circular Photo Container */
-        .photo-container {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 5px solid rgba(0, 180, 255, 0.7);
-            overflow: hidden;
-            position: relative;
-            z-index: 2;
-            box-shadow: 
-                0 0 40px rgba(0, 150, 255, 0.9),
-                0 0 80px rgba(0, 150, 255, 0.5),
-                0 0 120px rgba(0, 200, 255, 0.3),
-                inset 0 0 30px rgba(0, 150, 255, 0.3);
+        .frame {
+            width: 100%; height: 100%; border-radius: 50%; border: 5px solid rgba(0,180,255,0.7);
+            overflow: hidden; position: relative; z-index: 2;
+            box-shadow: 0 0 40px rgba(0,150,255,0.9), 0 0 80px rgba(0,150,255,0.5), inset 0 0 30px rgba(0,150,255,0.3);
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
         }
-        
-        /* Placeholder */
-        .photo-placeholder {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 4.5rem;
-            z-index: 1;
-            animation: float-placeholder 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 25px rgba(0, 200, 255, 0.7));
-            transition: opacity 0.5s ease-in-out;
+        .ph {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 4.5rem; z-index: 1; animation: flt 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 25px rgba(0,200,255,0.7)); transition: opacity 0.5s;
         }
-        
-        @keyframes float-placeholder {
-            0%, 100% { 
-                transform: translate(-50%, -50%) scale(1) rotate(-5deg);
-            }
-            50% { 
-                transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
-            }
+        @keyframes flt {
+            0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(-5deg); }
+            50% { transform: translate(-50%, -50%) scale(1.15) rotate(5deg); }
         }
-        
-        /* Photos */
-        .birthday-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0; left: 0;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            z-index: 3;
+        .img {
+            width: 100%; height: 100%; object-fit: cover;
+            position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1.5s; z-index: 3;
         }
-        
-        .birthday-photo.visible { opacity: 1; }
-        .birthday-photo.fade-out { opacity: 0; }
+        .img.on { opacity: 1; }
 
-        .birthday-name {
+        .nm {
             font-size: 2.5rem; font-weight: 800; margin: 10px 0;
             background: linear-gradient(45deg, #ff6b6b, #feca57, #ff9ff3, #54a0ff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: float 3s infinite;
+            animation: flt2 3s infinite;
         }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        
-        .birthday-date {
-            font-size: 1.1rem; color: #ffd700;
-            background: rgba(255, 255, 255, 0.1); display: inline-block;
-            padding: 5px 15px; border-radius: 50px; margin-bottom: 10px;
+        @keyframes flt2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .dt {
+            font-size: 1.1rem; color: #ffd700; background: rgba(255, 255, 255, 0.1);
+            display: inline-block; padding: 5px 15px; border-radius: 50px; margin-bottom: 10px;
         }
-        .message-box {
+        .msg {
             background: rgba(255, 255, 255, 0.08); padding: 20px; border-radius: 20px;
             margin: 10px 0; font-size: 1rem; line-height: 1.5; white-space: pre-line;
-            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .emoji-row { margin-top: 15px; font-size: 1.8rem; letter-spacing: 8px; }
-        .heartbeat { animation: heartbeat 1.5s ease-in-out infinite; display: inline-block; }
-        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .emo { margin-top: 15px; font-size: 1.8rem; letter-spacing: 8px; }
+        .e { animation: bt 1.5s ease-in-out infinite; display: inline-block; }
+        @keyframes bt { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
         
-        .share-section { margin-top: 15px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 15px; }
-        .share-buttons { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-        .share-btn { padding: 8px 15px; border-radius: 50px; text-decoration: none; color: white; font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; }
-        .share-btn:hover { transform: scale(1.05); }
-        .share-btn.whatsapp { background: #25D366; }
-        .share-btn.facebook { background: #1877F2; }
-        .share-btn.copy { background: #00f0ff; color: #000; }
-        
-        .btn-new {
-            margin-top: 15px; width: 100%; background: rgba(255,255,255,0.1); color: white;
-            padding: 12px; font-size: 0.9rem; border: none; border-radius: 50px; cursor: pointer;
-            transition: all 0.3s;
+        .sh { margin-top: 15px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: 15px; }
+        .shb { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .sb {
+            padding: 8px 15px; border-radius: 50px; text-decoration: none;
+            color: white; font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer;
         }
-        .btn-new:hover { background: rgba(255,255,255,0.2); transform: scale(1.02); }
-        
-        /* Posts Section from Database */
-        .posts-section {
-            margin-top: 40px;
+        .sb:hover { transform: scale(1.05); }
+        .wa { background: #25D366; }
+        .fb { background: #1877F2; }
+        .cp { background: #00f0ff; color: #000; }
+        .nb {
+            margin-top: 15px; width: 100%; background: rgba(255,255,255,0.1);
+            color: white; padding: 12px; font-size: 0.9rem; border: none;
+            border-radius: 50px; cursor: pointer;
         }
-        .posts-title {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #ff6b6b, #54a0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .post-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .post-photo {
-            width: 100%;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            border: 2px solid rgba(0, 180, 255, 0.5);
-        }
-        .post-message {
-            font-size: 1rem;
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-        .post-time {
-            font-size: 0.8rem;
-            color: #ffd700;
-            opacity: 0.7;
-        }
-        
-        #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; }
-        .floating-item { position: fixed; pointer-events: none; z-index: 5; font-size: 1.5rem; animation: floatUp 6s linear forwards; }
-        @keyframes floatUp { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
-        
-        /* Upload form hidden */
-        #uploadForm { display: none; }
+        #c { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; }
+        .loading { font-size: 1.2rem; margin-top: 50px; }
+        .error { color: #ff6b6b; }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <span style="left: 25%; width: 80px; height: 80px; background: rgba(255, 107, 107, 0.15);"></span>
-        <span style="left: 10%; width: 20px; height: 20px; animation-delay: 2s; background: rgba(78, 205, 196, 0.15);"></span>
-        <span style="left: 70%; width: 20px; height: 20px; animation-delay: 4s; background: rgba(255, 230, 109, 0.15);"></span>
+    <div class="bg">
+        <span style="left:25%; width:80px; height:80px; background:rgba(255,107,107,0.15);"></span>
+        <span style="left:10%; width:20px; height:20px; animation-delay:2s; background:rgba(78,205,196,0.15);"></span>
+        <span style="left:70%; width:20px; height:20px; animation-delay:4s; background:rgba(255,230,109,0.15);"></span>
     </div>
-    <canvas id="confetti-canvas"></canvas>
+    <canvas id="c"></canvas>
 
-    <div class="container">
-        <!-- Main Birthday Card (from URL params) -->
-        <div class="glass-card">
-            <div class="cake-anim">🎂</div>
-            <h2 style="font-size: 0.9rem; letter-spacing: 3px; opacity: 0.7; font-weight: 400;">HAPPY BIRTHDAY</h2>
-            
-            <!-- Photo Section -->
-            <div class="photo-section">
-                <div class="photo-glow"></div>
-                <div class="photo-container">
-                    <div class="photo-placeholder" id="photoPlaceholder">🎂</div>
-                    <img id="p1" class="birthday-photo" alt="Birthday Photo" crossorigin="anonymous">
-                    <img id="p2" class="birthday-photo" alt="Birthday Photo" crossorigin="anonymous">
-                </div>
-            </div>
-
-            <div class="birthday-name" id="dispName"></div>
-            <div class="birthday-date" id="dispDate"></div>
-            <div class="message-box" id="dispMsg"></div>
-            
-            <div class="emoji-row">
-                <span class="heartbeat">🎈</span>
-                <span class="heartbeat" style="animation-delay: 0.2s;">🎉</span>
-                <span class="heartbeat" style="animation-delay: 0.4s;">🎁</span>
-                <span class="heartbeat" style="animation-delay: 0.6s;">🎊</span>
-                <span class="heartbeat" style="animation-delay: 0.8s;">💖</span>
-            </div>
-
-            <div class="share-section">
-                <p style="font-size: 0.8rem; opacity: 0.6;">Share this surprise:</p>
-                <div class="share-buttons">
-                    <a href="#" id="wa" class="share-btn whatsapp" target="_blank">WhatsApp</a>
-                    <a href="#" id="fb" class="share-btn facebook" target="_blank">Facebook</a>
-                    <button onclick="copyLink()" class="share-btn copy">Copy Link</button>
-                </div>
-            </div>
-
-            <button class="btn-new" onclick="location.href='index.html'">Create New Surprise</button>
+    <div class="box">
+        <div class="card" id="content">
+            <p class="loading">Loading wish... 🎂</p>
         </div>
-
-        <!-- All Posts from Supabase Database -->
-        <div class="posts-section">
-            <h2 class="posts-title">🎉 Recent Celebrations</h2>
-            <div id="postsContainer"></div>
-        </div>
-    </div>
-
-    <!-- Upload form hidden in background -->
-    <div id="uploadForm">
-        <input type="file" id="file">
-        <textarea id="text"></textarea>
     </div>
 
     <script>
-        // SUPABASE CONFIGURATION
-        const WORKER_URL = "https://supabasestorageapikey.radidmondal.workers.dev/";
-        const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts?select=photo_url,message,created_at&order=created_at.desc";
+        // Configuration
+        const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
         const API_KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
         
-        let photoTransitionInterval = null;
+        let interval = null;
         
-        window.onload = () => {
-            // Load current birthday from URL params
-            const params = new URLSearchParams(window.location.search);
-            const name = params.get('n') || "Friend";
-            const d = params.get('d'), m = params.get('m'), y = params.get('y');
-            const msg = params.get('t');
-            const photosParam = params.get('p');
+        window.onload = async () => {
+            const params = new URLSearchParams(location.search);
+            const wishId = params.get('id');
             
-            document.getElementById('dispName').textContent = name;
-            document.getElementById('dispDate').textContent = (d||m||y) ? `📅 ${d||''}/${m||''}/${y||''}` : '';
-            document.getElementById('dispMsg').textContent = msg || "Wishing you a year full of happiness and success! 🎂";
-
-            // Load current photos
-            if (photosParam && photosParam.trim() !== "") {
-                const photoList = photosParam.split(',')
-                    .map(url => url.trim())
-                    .filter(url => url !== "");
-                
-                if (photoList.length > 0) {
-                    loadPhotos(photoList);
-                }
+            if (!wishId) {
+                showError("No wish ID provided");
+                return;
             }
 
-            // Share functionality
-            const currentUrl = window.location.href;
-            document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent("I have a surprise for you! 🎂 " + currentUrl)}`;
-            document.getElementById('fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
-            
-            // Load all posts from database
-            loadAllPosts();
-            
-            initAnimations();
+            try {
+                // Fetch wish from database
+                const res = await fetch(`${API_URL}?id=eq.${wishId}&select=*`, {
+                    headers: {
+                        "apikey": API_KEY,
+                        "Authorization": `Bearer ${API_KEY}`
+                    }
+                });
+
+                if (!res.ok) throw new Error("Failed to load wish");
+
+                const data = await res.json();
+                
+                if (data.length === 0) {
+                    showError("Wish not found");
+                    return;
+                }
+
+                const wish = data[0];
+                displayWish(wish);
+                anim();
+
+            } catch (error) {
+                console.error("Error loading wish:", error);
+                showError("Failed to load wish");
+            }
         };
 
-        function loadPhotos(photoList) {
-            const placeholder = document.getElementById('photoPlaceholder');
-            const p1 = document.getElementById('p1');
-            const p2 = document.getElementById('p2');
+        function displayWish(wish) {
+            const photos = [wish.photo_url, wish.photo_url_2].filter(p => p);
             
-            p1.src = photoList[0];
+            // Format date
+            let dateText = '';
+            if (wish.birth_date) {
+                const d = new Date(wish.birth_date);
+                dateText = `📅 ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+            }
+
+            document.getElementById('content').innerHTML = `
+                <div class="cake">🎂</div>
+                <h2 style="font-size:0.9rem; letter-spacing:3px; opacity:0.7; font-weight:400;">HAPPY BIRTHDAY</h2>
+                
+                <div class="pic">
+                    <div class="glow"></div>
+                    <div class="frame">
+                        <div class="ph" id="ph">🎂</div>
+                        <img id="i1" class="img" crossorigin="anonymous">
+                        <img id="i2" class="img" crossorigin="anonymous">
+                    </div>
+                </div>
+
+                <div class="nm">${wish.name}</div>
+                ${dateText ? `<div class="dt">${dateText}</div>` : ''}
+                <div class="msg">${wish.message}</div>
+                
+                <div class="emo">
+                    <span class="e">🎈</span>
+                    <span class="e" style="animation-delay:0.2s;">🎉</span>
+                    <span class="e" style="animation-delay:0.4s;">🎁</span>
+                    <span class="e" style="animation-delay:0.6s;">🎊</span>
+                    <span class="e" style="animation-delay:0.8s;">💖</span>
+                </div>
+
+                <div class="sh">
+                    <p style="font-size:0.8rem; opacity:0.6;">Share this wish:</p>
+                    <div class="shb">
+                        <a id="wa" class="sb wa" target="_blank">WhatsApp</a>
+                        <a id="fb" class="sb fb" target="_blank">Facebook</a>
+                        <button onclick="copy()" class="sb cp">Copy Link</button>
+                    </div>
+                </div>
+
+                <button class="nb" onclick="location.href='index.html'">Create New Wish</button>
+            `;
+
+            // Setup share buttons
+            const url = location.href;
+            document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent("Birthday surprise! 🎂 " + url)}`;
+            document.getElementById('fb').href = `https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+
+            // Load photos
+            if (photos.length > 0) {
+                loadPhotos(photos);
+            }
+        }
+
+        function loadPhotos(urls) {
+            const ph = document.getElementById('ph');
+            const i1 = document.getElementById('i1');
+            const i2 = document.getElementById('i2');
             
-            p1.onload = function() {
-                placeholder.style.opacity = '0';
-                setTimeout(() => placeholder.style.display = 'none', 500);
-                p1.classList.add('visible');
+            i1.src = urls[0];
+            i1.onload = () => {
+                ph.style.opacity = '0';
+                setTimeout(() => ph.style.display = 'none', 500);
+                i1.classList.add('on');
             };
             
-            p1.onerror = function() {
-                console.error('❌ Failed to load photo');
-            };
-            
-            if (photoList.length > 1) {
-                p2.src = photoList[1];
-                p2.onload = function() {
-                    setTimeout(() => startPhotoTransition(p1, p2), 2000);
+            if (urls.length > 1) {
+                i2.src = urls[1];
+                i2.onload = () => {
+                    setTimeout(() => swap(i1, i2), 2000);
                 };
             }
         }
 
-        function startPhotoTransition(p1, p2) {
-            let showingP1 = true;
-            if (photoTransitionInterval) clearInterval(photoTransitionInterval);
-            
-            photoTransitionInterval = setInterval(() => {
-                if (showingP1) {
-                    p1.classList.add('fade-out');
-                    p2.classList.add('visible');
-                } else {
-                    p1.classList.remove('fade-out');
-                    p2.classList.remove('visible');
-                }
-                showingP1 = !showingP1;
+        function swap(i1, i2) {
+            let s = true;
+            if (interval) clearInterval(interval);
+            interval = setInterval(() => {
+                i1.classList.toggle('on', s);
+                i2.classList.toggle('on', !s);
+                s = !s;
             }, 4000);
         }
 
-        // Load all posts from Supabase database
-        async function loadAllPosts() {
-            try {
-                const res = await fetch(API_URL, {
-                    headers: {
-                        "apikey": API_KEY,
-                        "Authorization": "Bearer " + API_KEY
-                    }
-                });
-                
-                const data = await res.json();
-                const container = document.getElementById('postsContainer');
-                container.innerHTML = "";
-                
-                console.log(`📦 Loaded ${data.length} posts from Supabase`);
-                
-                data.forEach(post => {
-                    const timeAgo = getTimeAgo(post.created_at);
-                    container.innerHTML += `
-                        <div class="post-card">
-                            <img src="${post.photo_url}" class="post-photo" alt="Birthday photo">
-                            <div class="post-message">${post.message || 'Happy Birthday! 🎉'}</div>
-                            <div class="post-time">🕒 ${timeAgo}</div>
-                        </div>
-                    `;
-                });
-            } catch (err) {
-                console.error("❌ Failed to load posts:", err);
-            }
+        function showError(msg) {
+            document.getElementById('content').innerHTML = `
+                <div class="cake">😢</div>
+                <h2 class="error">${msg}</h2>
+                <button class="nb" style="margin-top: 20px;" onclick="location.href='index.html'">Go Back</button>
+            `;
         }
 
-        function getTimeAgo(dateString) {
-            const now = new Date();
-            const past = new Date(dateString);
-            const diffMs = now - past;
-            const diffMins = Math.floor(diffMs / 60000);
-            const diffHours = Math.floor(diffMs / 3600000);
-            const diffDays = Math.floor(diffMs / 86400000);
+        function copy() {
+            navigator.clipboard.writeText(location.href)
+                .then(() => alert("Link copied! 👍"))
+                .catch(() => alert("Copy manually"));
+        }
+
+        function anim() {
+            const cv = document.getElementById('c');
+            const cx = cv.getContext('2d');
+            cv.width = innerWidth;
+            cv.height = innerHeight;
             
-            if (diffMins < 1) return 'Just now';
-            if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
-            if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-            return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-        }
-
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                alert("Surprise link copied! Share it now! 👍");
-            }).catch(() => {
-                alert("Please copy the link manually!");
-            });
-        }
-
-        function initAnimations() {
-            const canvas = document.getElementById('confetti-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            const pieces = [];
+            const bs = [];
             for (let i = 0; i < 80; i++) {
-                pieces.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height - canvas.height,
+                bs.push({
+                    x: Math.random() * cv.width,
+                    y: Math.random() * cv.height - cv.height,
                     w: Math.random() * 10 + 5,
                     h: Math.random() * 10 + 5,
-                    color: `hsl(${Math.random() * 360}, 80%, 60%)`,
-                    speed: Math.random() * 3 + 2,
-                    rot: Math.random() * 360
+                    c: `hsl(${Math.random() * 360}, 80%, 60%)`,
+                    s: Math.random() * 3 + 2,
+                    r: Math.random() * 360
                 });
             }
 
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                pieces.forEach(p => {
-                    ctx.save();
-                    ctx.fillStyle = p.color;
-                    ctx.translate(p.x, p.y);
-                    ctx.rotate(p.rot * Math.PI / 180);
-                    ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-                    ctx.restore();
-                    
-                    p.y += p.speed;
-                    p.rot += 2;
-                    if (p.y > canvas.height) p.y = -20;
+            function dr() {
+                cx.clearRect(0, 0, cv.width, cv.height);
+                bs.forEach(b => {
+                    cx.save();
+                    cx.fillStyle = b.c;
+                    cx.translate(b.x, b.y);
+                    cx.rotate(b.r * Math.PI / 180);
+                    cx.fillRect(-b.w/2, -b.h/2, b.w, b.h);
+                    cx.restore();
+                    b.y += b.s;
+                    b.r += 2;
+                    if (b.y > cv.height) b.y = -20;
                 });
-                requestAnimationFrame(draw);
+                requestAnimationFrame(dr);
             }
-            draw();
-
-            const emojis = ['💖', '🎈', '✨', '🎁', '🌸', '🎉', '👑', '🎂'];
-            setInterval(() => {
-                const e = document.createElement('div');
-                e.className = 'floating-item';
-                e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-                e.style.left = Math.random() * 90 + 5 + '%';
-                e.style.bottom = '-50px';
-                document.body.appendChild(e);
-                setTimeout(() => e.remove(), 6000);
-            }, 1000);
+            dr();
         }
-        
-        window.addEventListener('beforeunload', () => {
-            if (photoTransitionInterval) clearInterval(photoTransitionInterval);
-        });
     </script>
 </body>
 </html>

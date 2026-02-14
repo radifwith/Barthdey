@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a2e; color: white; }
+        button { padding: 10px 20px; margin: 10px; background: #00f0ff; border: none; cursor: pointer; }
+        pre { background: #000; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Database Test</h1>
+    
+    <button onclick="testInsert()">Test Insert</button>
+    <button onclick="testQuery()">Test Query (ID=1)</button>
+    
+    <h3>Result:</h3>
+    <pre id="result">Click a button to test...</pre>
+
+    <script>
+        const API = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
+        const KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
+
+        async function testInsert() {
+            try {
+                const res = await fetch(API, {
+                    method: "POST",
+                    headers: {
+                        "apikey": KEY,
+                        "Authorization": `Bearer ${KEY}`,
+                        "Content-Type": "application/json",
+                        "Prefer": "return=representation"
+                    },
+                    body: JSON.stringify({
+                        name: "Test User",
+                        message: "Test message from test.html",
+                        photo_url: "https://picsum.photos/200"
+                    })
+                });
+                
+                const data = await res.json();
+                document.getElementById('result').textContent = 
+                    `✅ INSERT SUCCESS!\n\n` + 
+                    `Response:\n${JSON.stringify(data, null, 2)}`;
+                
+            } catch (err) {
+                document.getElementById('result').textContent = 
+                    `❌ ERROR:\n${err.message}`;
+            }
+        }
+
+        async function testQuery() {
+            try {
+                const res = await fetch(`${API}?id=eq.1&select=*`, {
+                    headers: {
+                        "apikey": KEY,
+                        "Authorization": `Bearer ${KEY}`
+                    }
+                });
+                
+                const data = await res.json();
+                document.getElementById('result').textContent = 
+                    `✅ QUERY SUCCESS!\n\n` + 
+                    `Response:\n${JSON.stringify(data, null, 2)}`;
+                
+            } catch (err) {
+                document.getElementById('result').textContent = 
+                    `❌ ERROR:\n${err.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
