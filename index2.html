@@ -113,21 +113,56 @@
     <canvas id="c"></canvas>
 
     <div class="box">
-        <div class="card" id="content">
-            <p class="loading">Loading wish... 🎂</p>
+        <div class="card">
+            <div class="cake">🎂</div>
+            <h2 style="font-size:0.9rem; letter-spacing:3px; opacity:0.7; font-weight:400;">HAPPY BIRTHDAY</h2>
+            
+            <div class="pic">
+                <div class="glow"></div>
+                <div class="frame">
+                    <div class="ph" id="ph">🎂</div>
+                    <img id="i1" class="img" crossorigin="anonymous">
+                    <img id="i2" class="img" crossorigin="anonymous">
+                </div>
+            </div>
+
+            <div class="nm" id="nm">Loading...</div>
+            <div class="dt" id="dt"></div>
+            <div class="msg" id="msg"></div>
+            
+            <div class="emo">
+                <span class="e">🎈</span>
+                <span class="e" style="animation-delay:0.2s;">🎉</span>
+                <span class="e" style="animation-delay:0.4s;">🎁</span>
+                <span class="e" style="animation-delay:0.6s;">🎊</span>
+                <span class="e" style="animation-delay:0.8s;">💖</span>
+            </div>
+
+            <div class="sh">
+                <p style="font-size:0.8rem; opacity:0.6;">Share this wish:</p>
+                <div class="shb">
+                    <a id="wa" class="sb wa" target="_blank">WhatsApp</a>
+                    <a id="fb" class="sb fb" target="_blank">Facebook</a>
+                    <button onclick="copy()" class="sb cp">Copy Link</button>
+                </div>
+            </div>
+
+            <button class="nb" onclick="location.href='index.html'">Create New Wish</button>
         </div>
     </div>
 
     <script>
-        // Configuration
         const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
         const API_KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
         
         let interval = null;
         
         window.onload = async () => {
+            console.log("🎂 Page loaded");
             const params = new URLSearchParams(location.search);
             const wishId = params.get('id');
+            
+            console.log("📍 Wish ID:", wishId);
             
             if (!wishId) {
                 showError("No wish ID provided");
@@ -135,7 +170,7 @@
             }
 
             try {
-                // Fetch wish from database
+                console.log("📡 Fetching from database...");
                 const res = await fetch(`${API_URL}?id=eq.${wishId}&select=*`, {
                     headers: {
                         "apikey": API_KEY,
@@ -143,104 +178,119 @@
                     }
                 });
 
-                if (!res.ok) throw new Error("Failed to load wish");
+                console.log("📊 Response status:", res.status);
+
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    console.error("❌ API error:", errorText);
+                    throw new Error("Failed to load wish");
+                }
 
                 const data = await res.json();
+                console.log("📦 Data received:", data);
                 
                 if (data.length === 0) {
+                    console.error("❌ No wish found with ID:", wishId);
                     showError("Wish not found");
                     return;
                 }
 
                 const wish = data[0];
+                console.log("✅ Wish loaded:", wish);
+                
+                // Display content
                 displayWish(wish);
+                
+                // Load photos
+                const photos = [];
+                if (wish.photo_url && wish.photo_url.startsWith('http')) {
+                    photos.push(wish.photo_url);
+                    console.log("📸 Photo 1:", wish.photo_url);
+                }
+                if (wish.photo_url_2 && wish.photo_url_2.startsWith('http')) {
+                    photos.push(wish.photo_url_2);
+                    console.log("📸 Photo 2:", wish.photo_url_2);
+                }
+                
+                console.log("📸 Total photos to load:", photos.length);
+                
+                if (photos.length > 0) {
+                    loadPhotos(photos);
+                } else {
+                    console.log("🎂 No photos - showing placeholder");
+                }
+                
+                // Animations
                 anim();
 
             } catch (error) {
-                console.error("Error loading wish:", error);
+                console.error("❌ Error:", error);
                 showError("Failed to load wish");
             }
         };
 
         function displayWish(wish) {
-            const photos = [wish.photo_url, wish.photo_url_2].filter(p => p);
+            // Display name
+            document.getElementById('nm').textContent = wish.name;
             
-            // Format date
-            let dateText = '';
+            // Display date
             if (wish.birth_date) {
                 const d = new Date(wish.birth_date);
-                dateText = `📅 ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+                document.getElementById('dt').textContent = `📅 ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+            } else {
+                document.getElementById('dt').style.display = 'none';
             }
-
-            document.getElementById('content').innerHTML = `
-                <div class="cake">🎂</div>
-                <h2 style="font-size:0.9rem; letter-spacing:3px; opacity:0.7; font-weight:400;">HAPPY BIRTHDAY</h2>
-                
-                <div class="pic">
-                    <div class="glow"></div>
-                    <div class="frame">
-                        <div class="ph" id="ph">🎂</div>
-                        <img id="i1" class="img" crossorigin="anonymous">
-                        <img id="i2" class="img" crossorigin="anonymous">
-                    </div>
-                </div>
-
-                <div class="nm">${wish.name}</div>
-                ${dateText ? `<div class="dt">${dateText}</div>` : ''}
-                <div class="msg">${wish.message}</div>
-                
-                <div class="emo">
-                    <span class="e">🎈</span>
-                    <span class="e" style="animation-delay:0.2s;">🎉</span>
-                    <span class="e" style="animation-delay:0.4s;">🎁</span>
-                    <span class="e" style="animation-delay:0.6s;">🎊</span>
-                    <span class="e" style="animation-delay:0.8s;">💖</span>
-                </div>
-
-                <div class="sh">
-                    <p style="font-size:0.8rem; opacity:0.6;">Share this wish:</p>
-                    <div class="shb">
-                        <a id="wa" class="sb wa" target="_blank">WhatsApp</a>
-                        <a id="fb" class="sb fb" target="_blank">Facebook</a>
-                        <button onclick="copy()" class="sb cp">Copy Link</button>
-                    </div>
-                </div>
-
-                <button class="nb" onclick="location.href='index.html'">Create New Wish</button>
-            `;
-
-            // Setup share buttons
+            
+            // Display message
+            document.getElementById('msg').textContent = wish.message;
+            
+            // Setup share
             const url = location.href;
             document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent("Birthday surprise! 🎂 " + url)}`;
             document.getElementById('fb').href = `https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-
-            // Load photos
-            if (photos.length > 0) {
-                loadPhotos(photos);
-            }
         }
 
         function loadPhotos(urls) {
+            console.log("🖼️ Loading photos:", urls);
+            
             const ph = document.getElementById('ph');
             const i1 = document.getElementById('i1');
             const i2 = document.getElementById('i2');
             
+            // Load photo 1
+            console.log("📥 Setting photo 1 src:", urls[0]);
             i1.src = urls[0];
+            
             i1.onload = () => {
+                console.log("✅ Photo 1 loaded successfully!");
                 ph.style.opacity = '0';
                 setTimeout(() => ph.style.display = 'none', 500);
                 i1.classList.add('on');
             };
             
+            i1.onerror = () => {
+                console.error("❌ Photo 1 failed to load:", urls[0]);
+                console.log("🎂 Keeping placeholder");
+            };
+            
+            // Load photo 2 if exists
             if (urls.length > 1) {
+                console.log("📥 Setting photo 2 src:", urls[1]);
                 i2.src = urls[1];
+                
                 i2.onload = () => {
+                    console.log("✅ Photo 2 loaded successfully!");
                     setTimeout(() => swap(i1, i2), 2000);
+                };
+                
+                i2.onerror = () => {
+                    console.error("❌ Photo 2 failed to load:", urls[1]);
                 };
             }
         }
 
         function swap(i1, i2) {
+            console.log("🔄 Starting photo swap");
             let s = true;
             if (interval) clearInterval(interval);
             interval = setInterval(() => {
@@ -251,11 +301,8 @@
         }
 
         function showError(msg) {
-            document.getElementById('content').innerHTML = `
-                <div class="cake">😢</div>
-                <h2 class="error">${msg}</h2>
-                <button class="nb" style="margin-top: 20px;" onclick="location.href='index.html'">Go Back</button>
-            `;
+            document.getElementById('nm').textContent = msg;
+            document.getElementById('nm').className = 'nm error';
         }
 
         function copy() {
