@@ -60,203 +60,153 @@
     <div class="container">
         <div class="card">
             <div class="logo">Birthday Magic ✨</div>
-            <p class="subtitle">Create a surprise wish</p>
+            <p class="subtitle">Create surprise wish</p>
             
             <div class="group">
                 <label>Name *</label>
-                <input type="text" id="name" placeholder="Friend's Name" required>
+                <input type="text" id="name" placeholder="Friend's Name">
                 
                 <label>Birth Date (Optional)</label>
                 <div class="dates">
                     <input type="number" id="day" placeholder="DD" min="1" max="31">
                     <input type="number" id="month" placeholder="MM" min="1" max="12">
-                    <input type="number" id="year" placeholder="YYYY" min="1900" max="2100">
+                    <input type="number" id="year" placeholder="YYYY">
                 </div>
                 
                 <label>Message (Optional)</label>
-                <textarea id="message" placeholder="Your birthday message..." rows="3"></textarea>
+                <textarea id="msg" placeholder="Your message..." rows="3"></textarea>
                 
-                <label>Photo (Max 2)</label>
+                <label>Photos (Max 2)</label>
                 <input type="file" id="file" accept="image/*" multiple style="display:none" onchange="preview()">
-                <button class="file-btn" onclick="document.getElementById('file').click()">📷 Select Photos</button>
+                <button class="file-btn" onclick="document.getElementById('file').click()">📷 Select</button>
                 <div class="preview" id="pv"></div>
             </div>
 
-            <button class="btn" onclick="create()">✨ Create Wish</button>
+            <button class="btn" onclick="create()">✨ Create</button>
             <p id="status"></p>
         </div>
     </div>
 
     <script>
-        // Configuration
-        const WORKER_URL = "https://supabasestorageapikey.radidmondal.workers.dev/";
-        const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
-        const API_KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
+        const API = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
+        const KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
         
-        let selectedFiles = [];
+        let files = [];
 
         function preview() {
-            selectedFiles = Array.from(document.getElementById('file').files).slice(0, 2);
+            files = Array.from(document.getElementById('file').files).slice(0, 2);
             const pv = document.getElementById('pv');
             pv.innerHTML = '';
-            selectedFiles.forEach(f => {
+            files.forEach(f => {
                 const r = new FileReader();
                 r.onload = e => pv.innerHTML += `<div><img src="${e.target.result}"></div>`;
                 r.readAsDataURL(f);
             });
         }
 
-        async function compress(file) {
-            return new Promise(resolve => {
-                const reader = new FileReader();
-                reader.onload = e => {
+        // Convert to base64 with compression
+        async function toBase64(file) {
+            return new Promise((ok, err) => {
+                const r = new FileReader();
+                r.onload = e => {
                     const img = new Image();
                     img.onload = () => {
-                        const canvas = document.createElement('canvas');
+                        const c = document.createElement('canvas');
                         let w = img.width, h = img.height;
-                        const max = 600;
-                        if (w > h && w > max) { h *= max / w; w = max; }
-                        else if (h > max) { w *= max / h; h = max; }
-                        canvas.width = w;
-                        canvas.height = h;
-                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                        canvas.toBlob(blob => {
-                            resolve(new File([blob], "photo.jpg", { type: "image/jpeg" }));
-                        }, "image/jpeg", 0.7);
+                        const max = 400;
+                        if (w > h && w > max) { h *= max/w; w = max; }
+                        else if (h > max) { w *= max/h; h = max; }
+                        c.width = w; c.height = h;
+                        c.getContext('2d').drawImage(img, 0, 0, w, h);
+                        // Get base64 without prefix
+                        const base64 = c.toDataURL('image/jpeg', 0.6).split(',')[1];
+                        ok(base64);
                     };
+                    img.onerror = err;
                     img.src = e.target.result;
                 };
-                reader.readAsDataURL(file);
+                r.onerror = err;
+                r.readAsDataURL(file);
             });
         }
 
         async function create() {
             const name = document.getElementById('name').value.trim();
-            if (!name) return alert("Please enter a name! 🎈");
+            if (!name) return alert("Name required!");
 
             const btn = event.target;
-            const status = document.getElementById('status');
+            const st = document.getElementById('status');
             btn.disabled = true;
             btn.textContent = "Processing...";
 
             try {
-                let photoUrls = [];
+                // Convert photos to base64
+                let code1 = null, code2 = null;
                 
-                // Upload photos only if selected
-                if (selectedFiles.length > 0) {
-                    console.log("📸 Uploading", selectedFiles.length, "photos...");
-                    
-                    for (let i = 0; i < selectedFiles.length; i++) {
-                        status.textContent = `Uploading photo ${i+1}/${selectedFiles.length}...`;
-                        
-                        try {
-                            const compressed = await compress(selectedFiles[i]);
-                            const fd = new FormData();
-                            fd.append("file", compressed);
-                            fd.append("text", name);
-
-                            const res = await fetch(WORKER_URL, { method: "POST", body: fd });
-                            const text = await res.text();
-                            
-                            console.log(`📡 Photo ${i+1} response (${res.status}):`, text);
-                            
-                            if (res.ok) {
-                                let url = null;
-                                
-                                // Try parse as JSON
-                                try {
-                                    const json = JSON.parse(text);
-                                    url = json.photo_url || json.url || null;
-                                    console.log(`📋 Parsed JSON, URL:`, url);
-                                } catch {
-                                    // Not JSON, check if it's a URL
-                                    if (text.trim().startsWith('http')) {
-                                        url = text.trim();
-                                        console.log(`📋 Plain text URL:`, url);
-                                    } else {
-                                        console.log(`⚠️ Not a URL:`, text);
-                                    }
-                                }
-                                
-                                // Validate URL
-                                if (url && url.startsWith('http')) {
-                                    photoUrls.push(url);
-                                    console.log(`✅ Photo ${i+1} saved:`, url);
-                                } else {
-                                    console.error(`❌ Invalid URL from worker:`, text);
-                                    console.error(`⚠️ Photo uploaded but URL not received`);
-                                }
-                            } else {
-                                console.error(`❌ Photo ${i+1} upload failed (${res.status}):`, text);
-                            }
-                        } catch (photoErr) {
-                            console.error(`❌ Photo ${i+1} error:`, photoErr);
-                        }
-                    }
-                    
-                    console.log(`📸 Total valid URLs collected:`, photoUrls.length, photoUrls);
-                } else {
-                    console.log("ℹ️ No photos selected");
+                if (files.length > 0) {
+                    st.textContent = "Converting photo 1...";
+                    code1 = await toBase64(files[0]);
+                    console.log("Photo 1 base64 length:", code1.length);
+                }
+                
+                if (files.length > 1) {
+                    st.textContent = "Converting photo 2...";
+                    code2 = await toBase64(files[1]);
+                    console.log("Photo 2 base64 length:", code2.length);
                 }
 
-                // Prepare wish data
-                const day = document.getElementById('day').value;
-                const month = document.getElementById('month').value;
-                const year = document.getElementById('year').value;
-                const message = document.getElementById('message').value.trim();
-                
-                const birthDate = (day && month && year) ? `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}` : null;
-                
-                status.textContent = "Saving wish...";
-                console.log("💾 Saving to database...");
+                st.textContent = "Saving...";
 
-                // Save to Supabase
-                const wishData = {
+                // Prepare data
+                const d = document.getElementById('day').value;
+                const m = document.getElementById('month').value;
+                const y = document.getElementById('year').value;
+                const msg = document.getElementById('msg').value.trim();
+                
+                const date = (d && m && y) ? `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}` : null;
+                
+                const data = {
                     name: name,
-                    birth_date: birthDate,
-                    message: message || "Wishing you a wonderful birthday! 🎂",
-                    photo_url: photoUrls.length > 0 ? photoUrls[0] : null,
-                    photo_url_2: photoUrls.length > 1 ? photoUrls[1] : null
+                    birth_date: date,
+                    message: msg || "Wishing you a wonderful birthday! 🎂",
+                    photo_code: code1,
+                    photo_code_2: code2
                 };
-                
-                console.log("Data to save:", wishData);
 
-                const saveRes = await fetch(API_URL, {
+                // Save to database
+                const res = await fetch(API, {
                     method: "POST",
                     headers: {
-                        "apikey": API_KEY,
-                        "Authorization": `Bearer ${API_KEY}`,
+                        "apikey": KEY,
+                        "Authorization": `Bearer ${KEY}`,
                         "Content-Type": "application/json",
                         "Prefer": "return=representation"
                     },
-                    body: JSON.stringify(wishData)
+                    body: JSON.stringify(data)
                 });
 
-                const saveText = await saveRes.text();
-                console.log("Database response:", saveRes.status, saveText);
-
-                if (!saveRes.ok) {
-                    throw new Error(`Database error: ${saveText}`);
+                if (!res.ok) {
+                    const err = await res.text();
+                    console.error("Save error:", err);
+                    throw new Error("Save failed");
                 }
 
-                const saved = JSON.parse(saveText);
-                const wishId = saved[0].id;
-
-                console.log("✅ Wish saved with ID:", wishId);
+                const saved = await res.json();
+                const id = saved[0].id;
                 
-                status.textContent = "Success! Redirecting...";
+                console.log("Saved with ID:", id);
+                st.textContent = "Success!";
+                
                 setTimeout(() => {
-                    location.href = `index2.html?id=${wishId}`;
+                    location.href = `index2.html?id=${id}`;
                 }, 500);
 
-            } catch (error) {
-                console.error("❌ Full error:", error);
-                status.textContent = `Error: ${error.message}`;
+            } catch (e) {
+                console.error(e);
+                st.textContent = "Error!";
                 btn.disabled = false;
-                btn.textContent = "✨ Create Wish";
-                
-                // Show detailed error
-                alert(`Failed: ${error.message}\n\nCheck console (F12) for details.`);
+                btn.textContent = "✨ Create";
+                alert("Failed! Check console (F12)");
             }
         }
     </script>

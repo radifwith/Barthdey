@@ -90,7 +90,6 @@
             padding: 8px 15px; border-radius: 50px; text-decoration: none;
             color: white; font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer;
         }
-        .sb:hover { transform: scale(1.05); }
         .wa { background: #25D366; }
         .fb { background: #1877F2; }
         .cp { background: #00f0ff; color: #000; }
@@ -100,8 +99,6 @@
             border-radius: 50px; cursor: pointer;
         }
         #c { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100; }
-        .loading { font-size: 1.2rem; margin-top: 50px; }
-        .error { color: #ff6b6b; }
     </style>
 </head>
 <body>
@@ -121,8 +118,8 @@
                 <div class="glow"></div>
                 <div class="frame">
                     <div class="ph" id="ph">🎂</div>
-                    <img id="i1" class="img" crossorigin="anonymous">
-                    <img id="i2" class="img" crossorigin="anonymous">
+                    <img id="i1" class="img">
+                    <img id="i2" class="img">
                 </div>
             </div>
 
@@ -139,175 +136,120 @@
             </div>
 
             <div class="sh">
-                <p style="font-size:0.8rem; opacity:0.6;">Share this wish:</p>
+                <p style="font-size:0.8rem; opacity:0.6;">Share:</p>
                 <div class="shb">
                     <a id="wa" class="sb wa" target="_blank">WhatsApp</a>
                     <a id="fb" class="sb fb" target="_blank">Facebook</a>
-                    <button onclick="copy()" class="sb cp">Copy Link</button>
+                    <button onclick="copy()" class="sb cp">Copy</button>
                 </div>
             </div>
 
-            <button class="nb" onclick="location.href='index.html'">Create New Wish</button>
+            <button class="nb" onclick="location.href='index.html'">Create New</button>
         </div>
     </div>
 
     <script>
-        const API_URL = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
-        const API_KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
+        const API = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
+        const KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
         
-        let interval = null;
+        let iv = null;
         
         window.onload = async () => {
-            console.log("🎂 Page loaded");
-            const params = new URLSearchParams(location.search);
-            const wishId = params.get('id');
+            const p = new URLSearchParams(location.search);
+            const id = p.get('id');
             
-            console.log("📍 Wish ID:", wishId);
-            
-            if (!wishId) {
-                showError("No wish ID provided");
+            if (!id) {
+                document.getElementById('nm').textContent = "No ID";
                 return;
             }
 
             try {
-                console.log("📡 Fetching from database...");
-                const res = await fetch(`${API_URL}?id=eq.${wishId}&select=*`, {
+                const res = await fetch(`${API}?id=eq.${id}&select=*`, {
                     headers: {
-                        "apikey": API_KEY,
-                        "Authorization": `Bearer ${API_KEY}`
+                        "apikey": KEY,
+                        "Authorization": `Bearer ${KEY}`
                     }
                 });
 
-                console.log("📊 Response status:", res.status);
-
-                if (!res.ok) {
-                    const errorText = await res.text();
-                    console.error("❌ API error:", errorText);
-                    throw new Error("Failed to load wish");
-                }
+                if (!res.ok) throw new Error("Load failed");
 
                 const data = await res.json();
-                console.log("📦 Data received:", data);
-                
                 if (data.length === 0) {
-                    console.error("❌ No wish found with ID:", wishId);
-                    showError("Wish not found");
+                    document.getElementById('nm').textContent = "Not found";
                     return;
                 }
 
-                const wish = data[0];
-                console.log("✅ Wish loaded:", wish);
+                const w = data[0];
                 
                 // Display content
-                displayWish(wish);
+                document.getElementById('nm').textContent = w.name;
                 
-                // Load photos
-                const photos = [];
-                if (wish.photo_url && wish.photo_url.startsWith('http')) {
-                    photos.push(wish.photo_url);
-                    console.log("📸 Photo 1:", wish.photo_url);
-                }
-                if (wish.photo_url_2 && wish.photo_url_2.startsWith('http')) {
-                    photos.push(wish.photo_url_2);
-                    console.log("📸 Photo 2:", wish.photo_url_2);
-                }
-                
-                console.log("📸 Total photos to load:", photos.length);
-                
-                if (photos.length > 0) {
-                    loadPhotos(photos);
+                if (w.birth_date) {
+                    const d = new Date(w.birth_date);
+                    document.getElementById('dt').textContent = `📅 ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
                 } else {
-                    console.log("🎂 No photos - showing placeholder");
+                    document.getElementById('dt').style.display = 'none';
                 }
                 
-                // Animations
+                document.getElementById('msg').textContent = w.message;
+                
+                // Load photos from base64
+                const codes = [];
+                if (w.photo_code) codes.push(w.photo_code);
+                if (w.photo_code_2) codes.push(w.photo_code_2);
+                
+                if (codes.length > 0) {
+                    load(codes);
+                }
+                
+                // Share
+                const url = location.href;
+                document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent("Surprise! 🎂 " + url)}`;
+                document.getElementById('fb').href = `https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+                
                 anim();
 
-            } catch (error) {
-                console.error("❌ Error:", error);
-                showError("Failed to load wish");
+            } catch (e) {
+                console.error(e);
+                document.getElementById('nm').textContent = "Error";
             }
         };
 
-        function displayWish(wish) {
-            // Display name
-            document.getElementById('nm').textContent = wish.name;
-            
-            // Display date
-            if (wish.birth_date) {
-                const d = new Date(wish.birth_date);
-                document.getElementById('dt').textContent = `📅 ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-            } else {
-                document.getElementById('dt').style.display = 'none';
-            }
-            
-            // Display message
-            document.getElementById('msg').textContent = wish.message;
-            
-            // Setup share
-            const url = location.href;
-            document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent("Birthday surprise! 🎂 " + url)}`;
-            document.getElementById('fb').href = `https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-        }
-
-        function loadPhotos(urls) {
-            console.log("🖼️ Loading photos:", urls);
-            
+        function load(codes) {
             const ph = document.getElementById('ph');
             const i1 = document.getElementById('i1');
             const i2 = document.getElementById('i2');
             
-            // Load photo 1
-            console.log("📥 Setting photo 1 src:", urls[0]);
-            i1.src = urls[0];
-            
+            // Set photo 1 from base64
+            i1.src = `data:image/jpeg;base64,${codes[0]}`;
             i1.onload = () => {
-                console.log("✅ Photo 1 loaded successfully!");
                 ph.style.opacity = '0';
                 setTimeout(() => ph.style.display = 'none', 500);
                 i1.classList.add('on');
             };
             
-            i1.onerror = () => {
-                console.error("❌ Photo 1 failed to load:", urls[0]);
-                console.log("🎂 Keeping placeholder");
-            };
-            
-            // Load photo 2 if exists
-            if (urls.length > 1) {
-                console.log("📥 Setting photo 2 src:", urls[1]);
-                i2.src = urls[1];
-                
+            // Set photo 2 if exists
+            if (codes.length > 1) {
+                i2.src = `data:image/jpeg;base64,${codes[1]}`;
                 i2.onload = () => {
-                    console.log("✅ Photo 2 loaded successfully!");
                     setTimeout(() => swap(i1, i2), 2000);
-                };
-                
-                i2.onerror = () => {
-                    console.error("❌ Photo 2 failed to load:", urls[1]);
                 };
             }
         }
 
         function swap(i1, i2) {
-            console.log("🔄 Starting photo swap");
             let s = true;
-            if (interval) clearInterval(interval);
-            interval = setInterval(() => {
+            if (iv) clearInterval(iv);
+            iv = setInterval(() => {
                 i1.classList.toggle('on', s);
                 i2.classList.toggle('on', !s);
                 s = !s;
             }, 4000);
         }
 
-        function showError(msg) {
-            document.getElementById('nm').textContent = msg;
-            document.getElementById('nm').className = 'nm error';
-        }
-
         function copy() {
             navigator.clipboard.writeText(location.href)
-                .then(() => alert("Link copied! 👍"))
+                .then(() => alert("Copied!"))
                 .catch(() => alert("Copy manually"));
         }
 
