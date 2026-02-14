@@ -158,25 +158,43 @@
                             const res = await fetch(WORKER_URL, { method: "POST", body: fd });
                             const text = await res.text();
                             
-                            console.log(`Photo ${i+1} response:`, res.status, text);
+                            console.log(`📡 Photo ${i+1} response (${res.status}):`, text);
                             
                             if (res.ok) {
+                                let url = null;
+                                
+                                // Try parse as JSON
                                 try {
                                     const json = JSON.parse(text);
-                                    const url = json.photo_url || json.url || text.trim();
-                                    photoUrls.push(url);
-                                    console.log(`✅ Photo ${i+1} URL:`, url);
+                                    url = json.photo_url || json.url || null;
+                                    console.log(`📋 Parsed JSON, URL:`, url);
                                 } catch {
-                                    photoUrls.push(text.trim());
-                                    console.log(`✅ Photo ${i+1} URL (text):`, text.trim());
+                                    // Not JSON, check if it's a URL
+                                    if (text.trim().startsWith('http')) {
+                                        url = text.trim();
+                                        console.log(`📋 Plain text URL:`, url);
+                                    } else {
+                                        console.log(`⚠️ Not a URL:`, text);
+                                    }
+                                }
+                                
+                                // Validate URL
+                                if (url && url.startsWith('http')) {
+                                    photoUrls.push(url);
+                                    console.log(`✅ Photo ${i+1} saved:`, url);
+                                } else {
+                                    console.error(`❌ Invalid URL from worker:`, text);
+                                    console.error(`⚠️ Photo uploaded but URL not received`);
                                 }
                             } else {
-                                console.error(`❌ Photo ${i+1} upload failed:`, text);
+                                console.error(`❌ Photo ${i+1} upload failed (${res.status}):`, text);
                             }
                         } catch (photoErr) {
                             console.error(`❌ Photo ${i+1} error:`, photoErr);
                         }
                     }
+                    
+                    console.log(`📸 Total valid URLs collected:`, photoUrls.length, photoUrls);
                 } else {
                     console.log("ℹ️ No photos selected");
                 }

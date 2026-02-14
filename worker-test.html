@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Worker Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a2e; color: white; }
+        input[type="file"] { padding: 10px; margin: 10px 0; background: #000; color: white; }
+        button { padding: 15px 30px; margin: 10px; background: #00f0ff; border: none; cursor: pointer; font-weight: bold; }
+        pre { background: #000; padding: 15px; border-radius: 5px; overflow-x: auto; white-space: pre-wrap; }
+        .box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Worker Response Test</h1>
+    <p>Test ONLY Worker upload, see exact response</p>
+    
+    <input type="file" id="file" accept="image/*">
+    <button onclick="testWorker()">📤 Upload to Worker</button>
+    
+    <div id="steps"></div>
+    <h3>Worker Response:</h3>
+    <pre id="response"></pre>
+
+    <script>
+        const WORKER_URL = "https://supabasestorageapikey.radidmondal.workers.dev/";
+        
+        function log(msg, color = 'white') {
+            const el = document.getElementById('steps');
+            el.innerHTML += `<div class="box" style="border-left: 4px solid ${color};">${msg}</div>`;
+        }
+
+        async function testWorker() {
+            document.getElementById('steps').innerHTML = '';
+            document.getElementById('response').textContent = '';
+            
+            const file = document.getElementById('file').files[0];
+            if (!file) {
+                alert("Select a photo!");
+                return;
+            }
+
+            try {
+                log('Step 1: Compressing image...', '#00ff00');
+                
+                // Simple compress
+                const compressed = await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            let w = img.width, h = img.height;
+                            if (w > 600) { h *= 600/w; w = 600; }
+                            else if (h > 600) { w *= 600/h; h = 600; }
+                            canvas.width = w;
+                            canvas.height = h;
+                            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                            canvas.toBlob(blob => {
+                                resolve(new File([blob], "photo.jpg", {type: "image/jpeg"}));
+                            }, "image/jpeg", 0.7);
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                log(`Compressed: ${compressed.size} bytes`, '#00ff00');
+                log('Step 2: Uploading to Worker...', '#ffaa00');
+
+                const fd = new FormData();
+                fd.append("file", compressed);
+                fd.append("text", "Test Upload");
+
+                const res = await fetch(WORKER_URL, {
+                    method: "POST",
+                    body: fd
+                });
+
+                log(`Step 3: Response received (Status: ${res.status})`, res.ok ? '#00ff00' : '#ff0000');
+                
+                const text = await res.text();
+                
+                document.getElementById('response').textContent = 
+                    `Status: ${res.status}\n` +
+                    `OK: ${res.ok}\n\n` +
+                    `Response Body:\n${text}\n\n`;
+
+                // Try parse
+                let parsed = null;
+                try {
+                    parsed = JSON.parse(text);
+                    document.getElementById('response').textContent += 
+                        `Parsed JSON:\n${JSON.stringify(parsed, null, 2)}\n\n`;
+                    
+                    const url = parsed.photo_url || parsed.url || null;
+                    if (url) {
+                        log(`✅ Photo URL found: ${url}`, '#00ff00');
+                        document.getElementById('response').textContent += `\nExtracted URL:\n${url}`;
+                    } else {
+                        log('⚠️ No photo_url or url field in JSON', '#ffaa00');
+                    }
+                } catch {
+                    log('Not JSON format', '#ffaa00');
+                    
+                    if (text.startsWith('http')) {
+                        log(`✅ Plain text URL: ${text}`, '#00ff00');
+                    } else {
+                        log(`❌ Response is NOT a URL: "${text}"`, '#ff0000');
+                        log('⚠️ Worker might be returning status message instead of URL', '#ffaa00');
+                    }
+                }
+
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, '#ff0000');
+                document.getElementById('response').textContent = `ERROR:\n${error.stack}`;
+            }
+        }
+    </script>
+</body>
+</html>
