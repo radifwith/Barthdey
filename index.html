@@ -8,6 +8,8 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
+            padding-bottom:60px;
+overflow-x:hidden;
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh; color: white;
@@ -88,8 +90,8 @@
     </div>
 
     <script>
-        const API = "https://urneinbrxacnwojhuvut.supabase.co/rest/v1/posts";
-        const KEY = "sb_publishable_xLnFSAUTtuwpcdBjL2mu7w_k-zekj1K";
+        // 🔒 SECURE: Only Worker URL
+        const WORKER_URL = "https://supabasestorageapikey.radidmondal.workers.dev";
         
         let files = [];
 
@@ -178,15 +180,10 @@
                 console.log("- photo_url length:", data.photo_url ? data.photo_url.length : 0);
                 console.log("- photo_url_2 length:", data.photo_url_2 ? data.photo_url_2.length : 0);
 
-                // Save to database
-                const res = await fetch(API, {
+                // 🔒 Save via Worker (secure)
+                const res = await fetch(`${WORKER_URL}/save`, {
                     method: "POST",
-                    headers: {
-                        "apikey": KEY,
-                        "Authorization": `Bearer ${KEY}`,
-                        "Content-Type": "application/json",
-                        "Prefer": "return=representation"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data)
                 });
 
@@ -198,12 +195,12 @@
                     throw new Error("Save failed");
                 }
 
-                const saved = await res.json();
-                console.log("✅ Saved data:", saved);
-                const id = saved[0].id;
+                const result = await res.json();
+                console.log("✅ Saved:", result);
+                const id = result.id;
                 
                 console.log("🆔 Saved with ID:", id);
-                console.log("📸 Saved photo_url length:", saved[0].photo_url ? saved[0].photo_url.length : 0);
+                console.log("📸 ID received:", id);
                 st.textContent = "Success!";
                 
                 setTimeout(() => {
@@ -219,5 +216,37 @@
             }
         }
     </script>
+    <script>
+  atOptions = {
+    'key' : '1ebd39f717f9ee0cfed0ba342a0323f2',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script>
+  atOptions = {
+    'key' : '1ebd39f717f9ee0cfed0ba342a0323f2',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<!-- Ad Start -->
+<div style="position:fixed;bottom:0;left:0;width:100%;text-align:center;z-index:10;">
+<script>
+  atOptions = {
+    'key' : '1ebd39f717f9ee0cfed0ba342a0323f2',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highperformanceformat.com/1ebd39f717f9ee0cfed0ba342a0323f2/invoke.js"></script>
+</div>
+<!-- Ad End -->
 </body>
 </html>
