@@ -195,8 +195,8 @@
                 
                 // Load photos from base64
                 const codes = [];
-                if (w.photo_code) codes.push(w.photo_code);
-                if (w.photo_code_2) codes.push(w.photo_code_2);
+                if (w.photo_url) codes.push(w.photo_url);
+                if (w.photo_url_2) codes.push(w.photo_url_2);
                 
                 if (codes.length > 0) {
                     load(codes);
