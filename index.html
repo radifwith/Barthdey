@@ -172,6 +172,11 @@
                     photo_url: code1,
                     photo_url_2: code2
                 };
+                
+                console.log("📊 Data to save:");
+                console.log("- name:", data.name);
+                console.log("- photo_url length:", data.photo_url ? data.photo_url.length : 0);
+                console.log("- photo_url_2 length:", data.photo_url_2 ? data.photo_url_2.length : 0);
 
                 // Save to database
                 const res = await fetch(API, {
@@ -185,16 +190,20 @@
                     body: JSON.stringify(data)
                 });
 
+                console.log("📡 Save response status:", res.status);
+
                 if (!res.ok) {
                     const err = await res.text();
-                    console.error("Save error:", err);
+                    console.error("❌ Save error:", err);
                     throw new Error("Save failed");
                 }
 
                 const saved = await res.json();
+                console.log("✅ Saved data:", saved);
                 const id = saved[0].id;
                 
-                console.log("Saved with ID:", id);
+                console.log("🆔 Saved with ID:", id);
+                console.log("📸 Saved photo_url length:", saved[0].photo_url ? saved[0].photo_url.length : 0);
                 st.textContent = "Success!";
                 
                 setTimeout(() => {

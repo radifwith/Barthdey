@@ -180,6 +180,16 @@
                 }
 
                 const w = data[0];
+                console.log("✅ Wish loaded");
+                console.log("📊 Keys:", Object.keys(w).join(', '));
+                console.log("📸 Has photo_url?", !!w.photo_url);
+                console.log("📸 Has photo_url_2?", !!w.photo_url_2);
+                
+                if (w.photo_url) {
+                    console.log("📸 photo_url type:", typeof w.photo_url);
+                    console.log("📸 photo_url length:", w.photo_url.length);
+                    console.log("📸 photo_url start:", w.photo_url.substring(0, 50));
+                }
                 
                 // Display content
                 document.getElementById('nm').textContent = w.name;
@@ -195,11 +205,26 @@
                 
                 // Load photos from base64
                 const codes = [];
-                if (w.photo_url) codes.push(w.photo_url);
-                if (w.photo_url_2) codes.push(w.photo_url_2);
+                if (w.photo_url && w.photo_url.length > 100) {
+                    codes.push(w.photo_url);
+                    console.log("✅ Photo 1 added to codes");
+                } else if (w.photo_url) {
+                    console.log("⚠️ Photo 1 too short:", w.photo_url.length);
+                }
+                
+                if (w.photo_url_2 && w.photo_url_2.length > 100) {
+                    codes.push(w.photo_url_2);
+                    console.log("✅ Photo 2 added to codes");
+                } else if (w.photo_url_2) {
+                    console.log("⚠️ Photo 2 too short:", w.photo_url_2.length);
+                }
+                
+                console.log("📸 Total valid photos to load:", codes.length);
                 
                 if (codes.length > 0) {
                     load(codes);
+                } else {
+                    console.log("🎂 No valid photos found - placeholder remains");
                 }
                 
                 // Share
@@ -216,23 +241,66 @@
         };
 
         function load(codes) {
+            console.log("🖼️ Loading photos, count:", codes.length);
+            
             const ph = document.getElementById('ph');
             const i1 = document.getElementById('i1');
             const i2 = document.getElementById('i2');
             
+            if (!codes || codes.length === 0) {
+                console.log("🎂 No photos - showing placeholder");
+                return;
+            }
+            
+            // Check if base64 is valid
+            if (codes[0].length < 100) {
+                console.error("❌ Photo 1 base64 too short:", codes[0].length);
+                return;
+            }
+            
+            console.log("📸 Photo 1 base64 length:", codes[0].length);
+            console.log("📸 Photo 1 first 50 chars:", codes[0].substring(0, 50));
+            
             // Set photo 1 from base64
-            i1.src = `data:image/jpeg;base64,${codes[0]}`;
+            const src1 = `data:image/jpeg;base64,${codes[0]}`;
+            console.log("🔗 Setting photo 1 src, total length:", src1.length);
+            
+            i1.src = src1;
+            
+            // Fallback timeout
+            const timeout1 = setTimeout(() => {
+                console.log("⏰ Photo 1 timeout - forcing display");
+                ph.style.opacity = '0';
+                setTimeout(() => ph.style.display = 'none', 500);
+                i1.classList.add('on');
+            }, 1000);
+            
             i1.onload = () => {
+                clearTimeout(timeout1);
+                console.log("✅ Photo 1 loaded successfully!");
                 ph.style.opacity = '0';
                 setTimeout(() => ph.style.display = 'none', 500);
                 i1.classList.add('on');
             };
             
+            i1.onerror = (e) => {
+                clearTimeout(timeout1);
+                console.error("❌ Photo 1 load error:", e);
+                console.log("🎂 Keeping placeholder");
+            };
+            
             // Set photo 2 if exists
-            if (codes.length > 1) {
+            if (codes.length > 1 && codes[1].length > 100) {
+                console.log("📸 Photo 2 base64 length:", codes[1].length);
                 i2.src = `data:image/jpeg;base64,${codes[1]}`;
+                
                 i2.onload = () => {
+                    console.log("✅ Photo 2 loaded successfully!");
                     setTimeout(() => swap(i1, i2), 2000);
+                };
+                
+                i2.onerror = (e) => {
+                    console.error("❌ Photo 2 load error:", e);
                 };
             }
         }
